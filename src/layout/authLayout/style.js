@@ -2,75 +2,56 @@ import styled from "styled-components";
 
 export const Main=styled.div`
 .auth-container {
-  display: flex;
+  /* display: flex;
   align-items: stretch;    
   justify-content: center;
-  width: 100%;
+  width: 100%; */
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
 
+  @media (max-width: 960px) {
+    flex-direction: column;
+  }
 }
 
-.auth-image {
+/* .auth-image {
   width: 50%;
   overflow: hidden;
-}
+  width: 50%;
+  object-fit: cover;
+    @media (max-width: 960px) {
+    display: none;
+  }
+}  */
 
 
-.auth-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
+.auth-img {
+ width: 50%;
+ object-fit: cover;
+ height: 100vh;
+  
+  @media (max-width: 960px) {
+    display: none;
+  } 
 }
 
 .auth-content {
   width: 50%;
   display: flex;
-  align-items: center; 
+  flex-direction: column;
   justify-content: center;
-  padding: 40px;
-  box-sizing: border-box;
+  align-items: center;
+  background: var(--color-bg);
+  
+ 
+  @media (max-width: 960px) {
+    width: 100%;
+  }
+
+  div{
+    width: 100%;
+    /* margin-top: 5px; */
+  }
 }
 `;
-
-
-// import styled from "styled-components";
-
-// export const Main = styled.div`
-//   .auth-container {
-//     display: flex;
-//     width: 100%;
-//     min-height: 100vh;
-//     overflow: hidden;
-//   }
-
-//   .auth-image {
-//     width: 50%;
-//     overflow: hidden;
-//   }
-
-//   .auth-image img {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-//   }
-
-//   .auth-content {
-//     width: 50%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     box-sizing: border-box;
-//   }
-
-//   /* ----------- Responsive ----------- */
-//   @media (max-width: 900px) {
-//     .auth-image {
-//       display: none;
-//     }
-
-//     .auth-content {
-//       width: 100%;
-//       padding: 30px;
-//     }
-//   }
-// `;
-

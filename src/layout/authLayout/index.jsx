@@ -30,12 +30,9 @@ const AuthLayout = ({ children }) => {
   return (
     <Main>
       <div className="auth-container">
-        <div className="auth-image">
-          <img src={authImage} alt="Auth Visual" />
-        </div>
-
+          <img className='auth-img' src={authImage} alt="Auth Visual" />
         <div className="auth-content">
-          {children}
+          <div>{children}</div>
         </div>
       </div>
     </Main>

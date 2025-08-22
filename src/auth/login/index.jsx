@@ -4,8 +4,8 @@ import google from '../../assets/icons/google-icon.svg'
 import facebook from '../../assets/icons/Vector.svg'
 import logo from '../../assets/images/logo-image.png'
 import {
-  Wrapper,
-  ImageSide,
+  // Wrapper,
+  // ImageSide,
   FormSide,
   Card,
   Title,
@@ -13,7 +13,7 @@ import {
   Input,
   Button,
 } from "./style";
-import authImg from "../../assets/images/auth-img.jpg";
+// import authImg from "../../assets/images/auth-img.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
@@ -42,8 +42,8 @@ export default function LoginPage() {
   };
   
   return (
-    <Wrapper>
-      <ImageSide src={authImg} />
+    // <Wrapper>
+    //   <ImageSide src={authImg} />
       <FormSide>
         <Card>
           <Title> <img src={logo}/>
@@ -79,15 +79,17 @@ export default function LoginPage() {
             <div className='loginButton'>
               <p>Do you have an account? <a onClick={goToSignup}>SignUp</a></p>
               <h3>OR</h3>
-              <button>
+              <div>
+                 <button>
                 <img src={google} />
-                <p>Login with Google</p>
+                
               </button>
               <button>
                 <img src={facebook} />
-                <p>Login with Facebook</p>
+                
 
               </button>
+              </div>
               {/* <button>
                 <img src={apple} />
                 <p>SignIn with Apple</p>
@@ -96,6 +98,6 @@ export default function LoginPage() {
           </StyledForm>
         </Card>
       </FormSide>
-    </Wrapper>
+    // </Wrapper>
   );
 }

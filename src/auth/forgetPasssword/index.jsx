@@ -1,9 +1,9 @@
 import { useState } from "react";
-import authImg from "../../assets/images/auth-img.jpg";
-import logo from '../../assets/images/logo-image.png';
+// import authImg from "../../assets/images/auth-img.jpg";
+import Logo from '../../assets/images/logo-image.png';
 import {
-  Wrapper,
-  ImageSide,
+  // Wrapper,
+  // ImageSide,
   FormSide,
   Card,
   Title,
@@ -28,11 +28,11 @@ export default function ForgetPassword() {
             navigate('/login')
           };
   return (
-    <Wrapper>
-      <ImageSide src={authImg} />
+    // <Wrapper>
+    //   <ImageSide src={authImg} />
       <FormSide>
         <Card>
-          <Title><img src={logo} /> Forgot Password</Title>
+          <Title><img src={Logo} alt=""/> Forgot Password</Title>
 
           <StyledForm onSubmit={handleSubmit}>
             <Input
@@ -51,6 +51,6 @@ export default function ForgetPassword() {
           </StyledForm>
         </Card>
       </FormSide>
-    </Wrapper>
+    // </Wrapper>
   );
 }

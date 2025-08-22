@@ -1,25 +1,38 @@
 
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  display: flex;
-  min-height: 100vh;
+// export const Wrapper = styled.div`
+//   display: flex;
+//   min-height: 100vh;
+//   overflow-x: hidden;
 
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
-`;
+//   @media (max-width: 960px) {
+//     flex-direction: column;
+//   }
 
-export const ImageSide = styled.img`
-  width: 50%;
-  object-fit: cover;
+//   .checkbox{
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
 
-  
-  @media (max-width: 900px) {
-    display: none;
-  }
- 
-`;
+
+//     h4{
+//         color: var(--color-primary-light);
+//         cursor: pointer;
+//     }
+
+//    }
+// `;
+
+// export const ImageSide = styled.img`
+//   width: 50%;
+//   object-fit: cover;
+
+
+//   @media (max-width: 960px) {
+//     display: none;
+//   }
+// `;
 
 export const FormSide = styled.div`
   width: 50%;
@@ -28,33 +41,45 @@ export const FormSide = styled.div`
   justify-content: center;
   align-items: center;
   background: var(--color-bg);
-  padding: 1rem;
-   /* img{
-    height: 8rem;
-    width: 8rem;
-  } */
  
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     width: 100%;
-    padding: 30px;
-    margin-top: 3rem;
   }
+   
+
+    .checkbox{
+   display: flex;
+   justify-content: space-between;
+    align-items: center;
+    height: 1rem;
+    padding: 2px 0px 0px 0px;
+
+
+    h4{
+        color: var(--color-primary-light);
+        cursor: pointer;
+     }
+
+    }
+
 `;
 
 export const Card = styled.div`
   background: var(--color-section);
-  padding: 30px;
-  max-width: 420px;
+  padding: 10px 20px 10px 20px;
+  max-width: 80%;
   width: 100%;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0.20, 0, 0.20);
-  margin-top: 2rem;
-  
+    @media (max-width: 900px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 
 export const Title = styled.h2`
   margin-bottom: 20px;
-  margin-top: 5px;
+  margin-top: 0px;
   font-family: var(--font-secondary);
   font-size: 1.4rem;
   display: flex;
@@ -67,16 +92,15 @@ export const Title = styled.h2`
     width: 6.2rem;
   }
 `;
-
 export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 
   .loginButton {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
 
     p {
       text-align: center;
@@ -89,23 +113,29 @@ export const StyledForm = styled.form`
     }
     h3 {
       text-align: center;
-      margin: 0;
     }
 
+     div{
+       display: flex;
+       justify-content: center;
+       gap: 1rem;
 
+     }
     button {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.8rem;
-      height: 45px;
+      height: 50px;
+      width: 50px;
       background: var(--color-primary);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 50%;
+      /* padding: 12px; */
       cursor: pointer;
       transition: 0.2s;
+      
 
       &:hover {
         background: var(--color-primary-light);
@@ -138,5 +168,3 @@ export const Button = styled.button`
     background: var(--color-primary-light);
   }
 `;
-
-

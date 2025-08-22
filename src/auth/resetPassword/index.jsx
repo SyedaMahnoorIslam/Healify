@@ -2,8 +2,8 @@ import { useState } from "react";
 import authImg from "../../assets/images/auth-img.jpg";
 import logo from '../../assets/images/logo-image.png';
 import {
-  Wrapper,
-  ImageSide,
+  // Wrapper,
+  // ImageSide,
   FormSide,
   Card,
   Title,
@@ -31,8 +31,8 @@ export default function ResetPassword() {
         };
 
   return (
-    <Wrapper>
-      <ImageSide src={authImg} />
+    // <Wrapper>
+    //   <ImageSide src={authImg} />
       <FormSide>
         <Card>
           <Title><img src={logo} /> Reset Password</Title>
@@ -58,6 +58,6 @@ export default function ResetPassword() {
           </StyledForm>
         </Card>
       </FormSide>
-    </Wrapper>
+    // </Wrapper>
   );
 }

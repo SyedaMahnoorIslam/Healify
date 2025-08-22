@@ -6,12 +6,12 @@ import Signup from '../../auth/signup'
 import Otp from '../../auth/otp'
 import ResetPassword from '../../auth/resetPassword'
 import ForgetPassword from '../../auth/forgetPasssword'
-// import AuthLayout from '../../layout/authLayout'
+import AuthLayout from '../../layout/authLayout'
 
 const AuthRoutes = () => {
   return (
     <div>
-      {/* <AuthLayout> */}
+      <AuthLayout>
         <Routes>
           <Route path='/login' element={< Login />} />
           <Route path='/signup' element={<Signup />} />
@@ -19,7 +19,7 @@ const AuthRoutes = () => {
           <Route path='/resetPassword' element={<ResetPassword />} />
           <Route path='/forgetPassword' element={<ForgetPassword />} />
         </Routes>
-      {/* </AuthLayout> */}
+      </AuthLayout>
     </div>
   )
 }

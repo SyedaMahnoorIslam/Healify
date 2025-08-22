@@ -115,11 +115,11 @@
 
 
 import { useState } from "react";
-import authImg from "../../assets/images/auth-img.jpg";
+// import authImg from "../../assets/images/auth-img.jpg";
 import logo from '../../assets/images/logo-image.png';
 import {
-  Wrapper,
-  ImageSide,
+  // Wrapper,
+  // ImageSide,
   FormSide,
   Card,
   Title,
@@ -140,8 +140,8 @@ export default function OtpVerify() {
         navigate('/home')
       };
   return (
-    <Wrapper>
-      <ImageSide src={authImg} />
+    // <Wrapper>
+    //   <ImageSide src={authImg} />
       <FormSide>
         <Card>
           <Title><img src={logo} /> OTP Verification</Title>
@@ -161,6 +161,6 @@ export default function OtpVerify() {
           </StyledForm>
         </Card>
       </FormSide>
-    </Wrapper>
+    //  </Wrapper> 
   );
 }
