@@ -1,38 +1,61 @@
-import React from "react";
-import ProductCard from "../../../components/cards/productCard";
-import { CartWrapper, Header, CartContent, CartSummary, CheckoutButton } from "./style";
+import React, { useState } from "react";
+import {
+  CartContainer,
+  Tabs,
+  TabButton,
+  TabContent,
+  // CartItem,
+  // OrderItem,
+  // Heading
+} from "./style";
+import AddToCart from "./addToCart";
+import OrderHistory from "./orders";
 
-const Cart = () => {
-  
-  const subtotal = 970;
-  const delivery = 150;
-  const total = subtotal + delivery;
+const CartPage = () => {
+  const [activeTab, setActiveTab] = useState("cart");
 
   return (
-    <CartWrapper>
-      <Header>My Cart</Header>
-      <CartContent>
-        <ProductCard  total={7} />
+    <CartContainer>
+      
+      <Tabs>
+        <TabButton
+          active={activeTab === "cart"}
+          onClick={() => setActiveTab("cart")}
+        >
+          Add to Cart
+        </TabButton>
+        <TabButton
+          active={activeTab === "orders"}
+          onClick={() => setActiveTab("orders")}
+        >
+          Orders Detail
+        </TabButton>
+      </Tabs>
 
-        <CartSummary>
-          <h3>Order Summary</h3>
-          <div className="row">
-            <span>Subtotal</span>
-            <span>Rs. {subtotal}</span>
-          </div>
-          <div className="row">
-            <span>Delivery</span>
-            <span>Rs. {delivery}</span>
-          </div>
-          <div className="row total">
-            <span>Total</span>
-            <span>Rs. {total}</span>
-          </div>
-          <CheckoutButton>Proceed to Checkout</CheckoutButton>
-        </CartSummary>
-      </CartContent>
-    </CartWrapper>
+      {/* Tab Content */}
+      {activeTab === "cart" && (
+        <TabContent>
+        <AddToCart/>
+        </TabContent>
+
+      )}
+
+      {activeTab === "orders" && (
+        <TabContent>
+          {/* <Heading>📦 Order Details</Heading>
+          <OrderItem>
+            <p>Order #12345</p>
+            <span>Status: Delivered ✅</span>
+          </OrderItem>
+          <OrderItem>
+            <p>Order #12346</p>
+            <span>Status: Pending ⏳</span>
+          </OrderItem> */}
+          <OrderHistory/>
+        </TabContent>
+      )}
+    </CartContainer>
   );
 };
 
-export default Cart;
+export default CartPage;

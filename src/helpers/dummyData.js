@@ -229,3 +229,40 @@ export const productCards = [
     btnText: "Add to Cart",
   },
 ];
+
+
+export const orders = [
+  {
+    id: "ORD123",
+    date: "2025-08-15",
+    total: 4500,
+    status: "Delivered",
+    items: [
+      { name: "Paracetamol 500mg", qty: 2, price: 200 },
+      { name: "Vitamin C Tablets", qty: 1, price: 1500 },
+    ],
+    shipping: {
+      name: "Syeda Mahnoor",
+      address: "123 Main Street, RYK, Pakistan",
+      phone: "+92 300 1234567",
+    },
+    payment: "Cash on Delivery",
+  },
+  {
+    id: "ORD124",
+    date: "2025-08-20",
+    total: 2200,
+    status: "Shipped",
+    items: [
+      { name: "Blood Pressure Monitor", qty: 1, price: 2200 },
+    ],
+    shipping: {
+      name: "Syeda Mahnoor",
+      address: "123 Main Street, RYK, Pakistan",
+      phone: "+92 300 1234567",
+    },
+    payment: "JazzCash",
+  },
+];
+
+

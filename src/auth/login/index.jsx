@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
  const goToHome= ()=>{
-    navigate('/home')
+    navigate('/')
   };
    const goToForgetPassword= ()=>{
     navigate('/forgetPassword')

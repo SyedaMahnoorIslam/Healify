@@ -1,72 +1,70 @@
 import styled from "styled-components";
 
-export const CartWrapper = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-bg);
+export const CartContainer = styled.div`
   font-family: var(--font-primary);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  max-width: 100%;
+  align-items: center;
+  margin: 1rem;
+  
 `;
 
-export const Header = styled.div`
-  padding: 1.5rem 2rem;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-align: center;
+export const Tabs = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
 `;
 
-export const CartContent = styled.div`
+export const TabButton = styled.button`
   flex: 1;
-  padding: 2rem;
-  background-color: var(--color-section);
-`;
-
-export const CartSummary = styled.div`
-  margin-top: 2rem;
-  padding: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: ${({ active }) =>
+        active ? "var(--color-primary)" : "transparent"};
+  color: ${({ active }) =>
+        active ? "#fff" : "var(--color-text-secondary)"};
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background-color: var(--color-bg);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-
-  h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-bottom: 1rem;
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-    color: var(--color-text-secondary);
-  }
-
-  .total {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--color-text-primary);
-  }
-`;
-
-export const CheckoutButton = styled.button`
-  width: 100%;
-  padding: 1rem;
-  background-color: var(--color-primary);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  margin-top: 1rem;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: var(--color-primary-light);
+    background: ${({ active }) =>
+        active ? "var(--color-primary)" : "var(--color-primary-light)"};
+    color: #fff;
+  }
+`;
+
+export const TabContent = styled.div`
+  background: var(--color-section);
+  padding: 1.5rem;
+  border-radius: 10px;
+`;
+
+export const Heading = styled.h2`
+  font-family: var(--font-secondary);
+  margin-bottom: 1rem;
+`;
+
+export const CartItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  span {
+    color: var(--color-text-secondary);
+  }
+`;
+
+export const OrderItem = styled(CartItem)`
+  span {
+    font-weight: 600;
   }
 `;
