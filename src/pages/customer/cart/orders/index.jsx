@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 const OrderHistory = () => {
     const navigate = useNavigate();
      const goToOrderDetail = () => {
-    navigate('/orderDetail');
+    navigate('/');
   };
   return (
     <Container>

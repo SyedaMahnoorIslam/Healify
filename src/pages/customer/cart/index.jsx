@@ -5,8 +5,8 @@ import {
   TabButton,
   TabContent,
   // CartItem,
-  // OrderItem,
-  // Heading
+  OrderItem,
+  Heading
 } from "./style";
 import AddToCart from "./addToCart";
 import OrderHistory from "./orders";
@@ -42,12 +42,12 @@ const CartPage = () => {
 
       {activeTab === "orders" && (
         <TabContent>
-          {/* <Heading>📦 Order Details</Heading>
-          <OrderItem>
+          <Heading>📦 Order Details</Heading>
+          {/* <OrderItem>
             <p>Order #12345</p>
             <span>Status: Delivered ✅</span>
-          </OrderItem>
-          <OrderItem>
+          </OrderItem> */}
+          {/* <OrderItem>
             <p>Order #12346</p>
             <span>Status: Pending ⏳</span>
           </OrderItem> */}

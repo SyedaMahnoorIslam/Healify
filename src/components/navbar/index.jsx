@@ -37,6 +37,10 @@ export default function Navbar() {
     return location.pathname === path ? "active" : "";
   };
 
+   const goToProfile =()=>{
+    navigate("/profile")
+   }
+
   return (
     <StyledNav>
       <TopRow>
@@ -120,9 +124,9 @@ export default function Navbar() {
           </div>
           {dropdownOpen && (
             <DropdownMenu>
-              <li>Profile</li>
-              <li>Orders</li>
-              <li>Settings</li>
+              <li onClick={goToProfile}>Profile</li>
+              {/* <li>Orders History</li>
+              <li>Address Book</li> */}
               <li>Manage my Account</li>
               <li>Logout</li>
             </DropdownMenu>
