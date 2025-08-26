@@ -8,7 +8,7 @@ export const Heading =styled.div`
   text-align: center;
   height:5rem ;
   
-`
+`;
 export const ProfileSection = styled.section`
   /* background: var(--color-section); */
   padding: 2rem;

@@ -15,7 +15,7 @@
 //   ButtonGroup,
 //   Button,
 //   Button1,
-  
+
 // } from "./style";
 // import { productCards } from "../../../helpers/dummyData";
 
@@ -100,10 +100,21 @@ import {
   Button1,
 } from "./style";
 import { productCards } from "../../../helpers/dummyData";
+import { useNavigate } from "react-router-dom";
 
-const ProductDetail = ({ productId }) => {
+const ProductDetail = () => {
   // sirf pehla product le lo
+  const navigate = useNavigate();
+  
+      const goToCheckOut = () => {
+          navigate('/checkOut');
+      };
+      const goToCart = () => {
+          navigate('/cart');
+      };
   const product = productCards[3];
+
+
 
   return (
     <Wrapper>
@@ -156,8 +167,8 @@ const ProductDetail = ({ productId }) => {
 
             {/* Buttons */}
             <ButtonGroup>
-              <Button>Add to Cart</Button>
-              <Button1>Checkout</Button1>
+              <Button onClick={goToCart}>Add to Cart</Button>
+              <Button1 onClick={goToCheckOut}>Checkout</Button1>
             </ButtonGroup>
           </InfoWrapper>
         </Container>

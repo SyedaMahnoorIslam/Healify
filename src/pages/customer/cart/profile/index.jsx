@@ -21,6 +21,7 @@ import {
   CancelButton,
 } from "./style";
 import ProfileImg from '../../../../assets/images/profile.png'
+
 const Profile = () => {
   const [user, setUser] = useState({
     name: "Wan Fateh",
@@ -28,19 +29,31 @@ const Profile = () => {
     phone: "+92 300 1234567",
   });
 
-
   const [addresses, setAddresses] = useState([
     { id: 1, address: "123 Street, Karachi" },
     { id: 2, address: "456 Road, Lahore" },
   ]);
 
+  const [medicalHistory, setMedicalHistory] = useState([
+    { id: 1, note: "Diabetes Type 2" },
+    { id: 2, note: "Allergy: Penicillin" },
+  ]);
+
+  // States
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
   const [isEditAddressModalOpen, setIsEditAddressModalOpen] = useState(false);
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isEditHistoryModalOpen, setIsEditHistoryModalOpen] = useState(false);
+
   const [newAddress, setNewAddress] = useState("");
   const [editUser, setEditUser] = useState(user);
   const [editAddress, setEditAddress] = useState({ id: null, address: "" });
 
+  const [newHistory, setNewHistory] = useState("");
+  const [editHistory, setEditHistory] = useState({ id: null, note: "" });
+
+  // Address Handlers
   const handleSaveAddress = () => {
     if (newAddress.trim() !== "") {
       setAddresses([...addresses, { id: Date.now(), address: newAddress }]);
@@ -70,6 +83,33 @@ const Profile = () => {
       )
     );
     setIsEditAddressModalOpen(false);
+  };
+
+  // Medical History Handlers
+  const handleSaveHistory = () => {
+    if (newHistory.trim() !== "") {
+      setMedicalHistory([...medicalHistory, { id: Date.now(), note: newHistory }]);
+      setNewHistory("");
+      setIsHistoryModalOpen(false);
+    }
+  };
+
+  const handleDeleteHistory = (id) => {
+    setMedicalHistory(medicalHistory.filter((item) => item.id !== id));
+  };
+
+  const handleEditHistory = (item) => {
+    setEditHistory(item);
+    setIsEditHistoryModalOpen(true);
+  };
+
+  const handleSaveEditedHistory = () => {
+    setMedicalHistory(
+      medicalHistory.map((item) =>
+        item.id === editHistory.id ? { ...item, note: editHistory.note } : item
+      )
+    );
+    setIsEditHistoryModalOpen(false);
   };
 
   return (
@@ -114,6 +154,27 @@ const Profile = () => {
           + Add New Address
         </AddButton>
       </AddressBookSection>
+
+      {/* Medical History Section */}
+      <AddressBookSection>
+        <SectionTitle>Medical History</SectionTitle>
+        <AddressList>
+          {medicalHistory.map((item) => (
+            <AddressItem key={item.id}>
+              {item.note}
+              <div className="actions">
+                <SmallButton onClick={() => handleEditHistory(item)}>✏️</SmallButton>
+                <SmallButton del onClick={() => handleDeleteHistory(item.id)}>🗑️</SmallButton>
+              </div>
+            </AddressItem>
+          ))}
+        </AddressList>
+        <AddButton onClick={() => setIsHistoryModalOpen(true)}>
+          + Add Medical History
+        </AddButton>
+      </AddressBookSection>
+
+      {/* Address Modal */}
       {isAddressModalOpen && (
         <ModalOverlay>
           <ModalContent>
@@ -136,7 +197,7 @@ const Profile = () => {
         </ModalOverlay>
       )}
 
-    {/* Model Open Section */}
+      {/* Edit Info Modal */}
       {isEditInfoModalOpen && (
         <ModalOverlay>
           <ModalContent>
@@ -177,7 +238,7 @@ const Profile = () => {
         </ModalOverlay>
       )}
 
-  
+      {/* Edit Address Modal */}
       {isEditAddressModalOpen && (
         <ModalOverlay>
           <ModalContent>
@@ -195,6 +256,54 @@ const Profile = () => {
             <ModalFooter>
               <SaveButton onClick={handleSaveEditedAddress}>Save</SaveButton>
               <CancelButton onClick={() => setIsEditAddressModalOpen(false)}>
+                Cancel
+              </CancelButton>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* Add Medical History Modal */}
+      {isHistoryModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Add Medical History</ModalHeader>
+            <ModalBody>
+              <Input
+                type="text"
+                value={newHistory}
+                onChange={(e) => setNewHistory(e.target.value)}
+                placeholder="Enter medical condition or note"
+              />
+            </ModalBody>
+            <ModalFooter>
+              <SaveButton onClick={handleSaveHistory}>Save</SaveButton>
+              <CancelButton onClick={() => setIsHistoryModalOpen(false)}>
+                Cancel
+              </CancelButton>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* Edit Medical History Modal */}
+      {isEditHistoryModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Edit Medical History</ModalHeader>
+            <ModalBody>
+              <Input
+                type="text"
+                value={editHistory.note}
+                onChange={(e) =>
+                  setEditHistory({ ...editHistory, note: e.target.value })
+                }
+                placeholder="Update medical history"
+              />
+            </ModalBody>
+            <ModalFooter>
+              <SaveButton onClick={handleSaveEditedHistory}>Save</SaveButton>
+              <CancelButton onClick={() => setIsEditHistoryModalOpen(false)}>
                 Cancel
               </CancelButton>
             </ModalFooter>

@@ -134,25 +134,64 @@ export const Price = styled.div`
   }
 `;
 
-export const Button = styled.div`
+// export const Button = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin-top: auto;
+
+//   button {
+//     background: var(--color-primary);
+//     border: none;
+//     color: #fff;
+//     padding: 0.8rem 1.5rem;
+//     font-size: 0.85rem;
+//     font-weight: 600;
+//     border-radius: 0.5rem;
+//     cursor: pointer;
+//     transition: background 0.2s ease;
+
+//     &:hover {
+//       background: var(--color-primary-light);
+//     }
+//   }
+// `;
+
+export const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
-  margin-top: auto;
+  gap: 1rem;
+  margin-top: 1rem;
 
-  button {
-    background: var(--color-primary);
-    border: none;
-    color: #fff;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-
-    &:hover {
-      background: var(--color-primary-light);
-    }
+  @media (max-width: 480px) {
+    flex-direction: column;
   }
 `;
 
+export const Button = styled.button`
+  border: 2px solid var(--color-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--color-primary-light);
+
+ 
+  &:hover {
+    background: var(--color-secondary-light);
+  }
+`;
+export const Button1 = styled.button`
+  border: 2px solid var(--color-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+ 
+  &:hover {
+    background: var(--color-secondary-light);
+  }
+`;

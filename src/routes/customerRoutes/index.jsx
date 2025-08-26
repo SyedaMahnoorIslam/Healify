@@ -7,8 +7,9 @@ import WishList from '../../pages/customer/wishlist'
 import UploadPrescription from '../../pages/customer/prescription'
 import NotificationScreen from '../../pages/customer/notification'
 import CartPage from '../../pages/customer/cart'
-import OrderDetail from '../../pages/customer/cart/orderDetail'
 import Profile from '../../pages/customer/cart/profile'
+import AboutUs from '../../pages/customer/aboutus'
+import CheckOut from '../../pages/customer/checkout'
 
 
 const CustomerRoutes = () => {
@@ -22,8 +23,11 @@ const CustomerRoutes = () => {
                     <Route path='/cart' element={<CartPage />} />
                     <Route path='/wishlist' element={<WishList />} />
                     <Route path='/notifications' element={<NotificationScreen/>} />
-                    <Route path='/orderDetail' element={<OrderDetail/>} />
                     <Route path='/profile' element={<Profile/>} />
+                    <Route path='/aboutUs' element={<AboutUs/>} />
+                    <Route path='/checkOut' element={<CheckOut/>} />
+
+
 
 
                     

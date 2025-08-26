@@ -346,11 +346,17 @@ export const DropdownMenu = styled.ul`
   margin-top: 0.5rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   position: absolute;
+  right: 1rem;
+  width: 10rem;
+   gap: 5px;
+
   li {
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 0.875rem;
     color: var(--color-text-primary);
+    border: 1px solid rgba(148, 146, 146, 0.08);
+    
 
     &:hover {
       background-color: var(--color-section);
