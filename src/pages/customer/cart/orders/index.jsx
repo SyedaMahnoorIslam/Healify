@@ -1,10 +1,10 @@
 
-import React, { useState } from "react";
-import { orders } from "../../../../helpers/dummyData";
-import Logo from '../../../../assets/images/logo-image.png'
+import React, { useRef, useState } from "react";
+import { orders as dummyOrders } from "../../../../helpers/dummyData";
+import Logo from "../../../../assets/images/logo-image.png";
 import {
   Container, OrderCard, Button, ModalOverlay,
-  ModalContent, ModalBody, ModalFooter, CancelButton,
+  ModalContent, ModalBody, ModalFooter, SaveButton, CancelButton,
   InvoiceContainer, Header, CompanyInfo, InvoiceTitle, InvoiceDetails,
   DetailsRow, Table, TableHead, TableBody, TableRow, TableCell, Footer,
   TotalRow, TrackingContainer, Step, StepIcon, StepLabel, ProgressLine
@@ -14,8 +14,12 @@ import { useNavigate } from "react-router-dom";
 const OrderHistory = () => {
   const navigate = useNavigate();
 
+  const [orders, setOrders] = useState(dummyOrders);
   const [isViewDetailOpen, setisViewDetailOpen] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
   const [currentStep, setCurrentStep] = useState(2); // Example: 0=pending,1=packed,2=shipped,...
 
   const items = [
@@ -28,6 +32,25 @@ const OrderHistory = () => {
   const tax = subtotal * 0.1;
   const total = subtotal + tax;
 
+  const invoiceRef = useRef();
+  const handleDownload = () => {
+    const printContents = invoiceRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
+  const handleCancelOrder = () => {
+    setOrders(prev =>
+      prev.map(order =>
+        order.id === selectedOrderId ? { ...order, status: "Cancelled" } : order
+      )
+    );
+    setIsCancelOpen(false);
+  };
+
   return (
     <Container>
       <h2>Your Orders</h2>
@@ -39,9 +62,20 @@ const OrderHistory = () => {
             <p>Status: <strong>{order.status}</strong></p>
             <p>Total: Rs {order.total}</p>
           </div>
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             <Button onClick={() => setisViewDetailOpen(true)}>View Details</Button>
             <Button onClick={() => setIsTrackingOpen(true)} style={{ background: "#10B981" }}>Track Order</Button>
+            {order.status !== "Delivered" && order.status !== "Cancelled" && (
+              <Button
+                style={{ background: "#EF4444" }}
+                onClick={() => {
+                  setSelectedOrderId(order.id);
+                  setIsCancelOpen(true);
+                }}
+              >
+                Cancel Order
+              </Button>
+            )}
           </div>
         </OrderCard>
       ))}
@@ -69,11 +103,11 @@ const OrderHistory = () => {
         </ModalOverlay>
       )}
 
-      {/* 🔹 Invoice Modal (pehle se tha) */}
+      {/* 🔹 Invoice Modal */}
       {isViewDetailOpen && (
         <ModalOverlay>
           <ModalContent style={{ maxWidth: "700px" }}>
-            <InvoiceContainer>
+            <InvoiceContainer ref={invoiceRef}>
               <Header>
                 <InvoiceTitle><img src={Logo} alt="logo" />Healify</InvoiceTitle>
                 <CompanyInfo>
@@ -134,7 +168,24 @@ const OrderHistory = () => {
               </Footer>
             </InvoiceContainer>
             <ModalFooter>
+              <SaveButton onClick={handleDownload}>Download Invoice</SaveButton>
               <CancelButton onClick={() => setisViewDetailOpen(false)}>Close</CancelButton>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+
+      {/* 🔹 Cancel Order Confirmation Modal */}
+      {isCancelOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Cancel Order</h3>
+            <ModalBody>
+              <p>Are you sure you want to cancel this order?</p>
+            </ModalBody>
+            <ModalFooter>
+              <SaveButton onClick={handleCancelOrder}>Yes, Cancel</SaveButton>
+              <CancelButton onClick={() => setIsCancelOpen(false)}>No</CancelButton>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>

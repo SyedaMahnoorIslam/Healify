@@ -46,7 +46,7 @@ const Footer = () => {
           <Line>
           </Line>
           <LText>
-            ©2023 CharterCar. All rights reserved
+            ©2025 Healify. All rights reserved
           </LText>
         </LastDiv>
       </Foooter>

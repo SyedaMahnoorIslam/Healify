@@ -170,7 +170,7 @@ export const Button = styled.button`
   border: 2px solid var(--color-primary);
   font-size: 1rem;
   font-weight: 600;
-  padding: 0.7rem 1.4rem;
+  padding: 0.3rem 0.9rem;
   border-radius: 0.6rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -184,8 +184,8 @@ export const Button = styled.button`
 export const Button1 = styled.button`
   border: 2px solid var(--color-primary);
   font-size: 1rem;
-  font-weight: 600;
-  padding: 0.7rem 1.4rem;
+  font-weight: 400;
+  padding: 0.3rem 0.9rem;
   border-radius: 0.6rem;
   cursor: pointer;
   transition: all 0.2s ease;

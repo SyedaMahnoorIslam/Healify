@@ -67,6 +67,13 @@ export const Button = styled.button`
     background: var(--color-primary-light);
   }
 `;
+export const DangerButton = styled(Button)`
+  background: #EF4444;
+  &:hover {
+    background: #DC2626;
+  }
+`;
+
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
