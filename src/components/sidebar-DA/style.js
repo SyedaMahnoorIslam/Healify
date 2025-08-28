@@ -8,8 +8,11 @@ export const SidebarContainer = styled.div`
   padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  /* border-radius: 2rem;
-  margin: 1rem 1rem; */
+  border-radius: 2rem;
+  margin: 1rem 1rem;
+  /* box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.05); */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
 
    @media (max-width: 675px) {
     width: 50px;

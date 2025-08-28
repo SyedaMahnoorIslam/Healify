@@ -8,7 +8,8 @@ export const Main=styled.div`
   width: 100%; */
   display: flex;
   min-height: 100vh;
-  /* overflow: hidden; */
+  width: 100%;
+  /* overflow-x: hidden; */
 
   /* @media (max-width: 960px) {
     flex-direction: column;
@@ -29,7 +30,7 @@ export const Main=styled.div`
 .sidebar {
  width: 30%;
  object-fit: cover;
- height: 80vh;
+ /* height: 80vh; */
   
   /* @media (max-width: 690px) {
   width: 20%;
@@ -39,12 +40,8 @@ export const Main=styled.div`
 }
 
 .dA-content {
-  width: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: var(--color-bg);
+  width: 100%;
+  padding:1rem;
   
  
   /* @media (max-width: 960px) {
@@ -52,7 +49,7 @@ export const Main=styled.div`
   } */
 
   div{
-    width: 100%;
+    width: 98%;
   }
 }
 `;

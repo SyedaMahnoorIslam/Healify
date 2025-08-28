@@ -31,7 +31,7 @@ const Sidebar = () => {
           <IconWrapper><FaHome /></IconWrapper>
           <Label>Dashboard</Label>
         </MenuItem>
-        <MenuItem>
+        {/* <MenuItem>
           <IconWrapper><FaListAlt /></IconWrapper>
           <Label>Delivery Tasks</Label>
         </MenuItem>
@@ -46,7 +46,7 @@ const Sidebar = () => {
         <MenuItem>
           <IconWrapper><FaBell /></IconWrapper>
           <Label>Notifications</Label>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem>
           <IconWrapper><FaUserCircle /></IconWrapper>
           <Label>Profile / Settings</Label>

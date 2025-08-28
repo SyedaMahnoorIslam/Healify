@@ -5,12 +5,16 @@ import NavbarDA from '../../components/navbar-DA';
 const DALayout = ({children}) => {
   return (
     <>
-       <NavbarDA/>
+       
       <Main>
       <div className="dA-container">
           <div className='sidebar'><Sidebar/></div>
         <div className="dA-content">
-          <div>{children}</div>
+          {/* <NavbarDA/> */}
+          <div>
+            <NavbarDA/>
+            {children}
+            </div>
         </div>
       </div>
     </Main>
