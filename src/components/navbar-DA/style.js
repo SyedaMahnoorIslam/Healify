@@ -21,7 +21,7 @@ export const NavbarContainer=styled.div`
 export const Left=styled.div`
  display: flex;
  flex-direction: column;
- gap: 5px;
+ /* gap: 5px; */
 
  span{
   font-size: 25px;
@@ -36,6 +36,8 @@ export const Left=styled.div`
 `
 export const Right=styled.div`
 
+
+
 `
 export const Profile = styled.div`
   div {
@@ -43,11 +45,11 @@ export const Profile = styled.div`
     align-items: center;
     gap: 0.5rem;
     justify-content: center;
-    padding-left: 10rem;
+    /* padding-left: 10rem; */
 
     @media (max-width: 768px) {
-      margin-left: auto;
-      justify-content: flex-start;
+      
+      
     }
   }
 

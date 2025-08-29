@@ -1,24 +1,22 @@
 import React from 'react'
-import { Main } from './style';
+import { Main,LeftDiv } from './style';
 import Sidebar from '../../components/sidebar-DA';
 import NavbarDA from '../../components/navbar-DA';
-const DALayout = ({children}) => {
+const DALayout = ({ children }) => {
   return (
-    <>
-       
-      <Main>
-      <div className="dA-container">
-          <div className='sidebar'><Sidebar/></div>
-        <div className="dA-content">
-          {/* <NavbarDA/> */}
-          <div>
-            <NavbarDA/>
-            {children}
-            </div>
-        </div>
+
+    <Main>
+      <LeftDiv>
+        <Sidebar />
+      </LeftDiv>
+      {/* <div className='sidebar'></div> */}
+      <div className="dA-content">
+        <NavbarDA />
+        {children}
       </div>
+
     </Main>
-    </>
+
   )
 }
 

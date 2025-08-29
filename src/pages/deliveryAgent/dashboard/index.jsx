@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import{
 DashboardWrapper,LHeaderSection,RHeaderSection,Greeting,Subtitle,TaskList,TaskCard,TaskTitle,TaskSubtitle ,StatusBadge,
 ModalDetail,ModalOverlay,ModalContent,ModalHeader,ButtonRow,Button,GreetingSection,
+DAImage
 
-} from './style'
+} from './style';
+import DeliveryAgentPic from '../../../assets/images/Delivery-Agent1.png'
 import DateComponent from "../../../components/dateComponent";
 export default function DeliveryDashboard() {
   const [tasks, setTasks] = useState([
@@ -32,6 +34,7 @@ export default function DeliveryDashboard() {
       address: "Johar Town, Lahore",
       status: "Delivered",
     },
+    
   ]);
 
   const [selectedTask, setSelectedTask] = useState(null);
@@ -49,9 +52,10 @@ export default function DeliveryDashboard() {
       <div>
       <GreetingSection>
       <LHeaderSection>
+        <DAImage><img src={DeliveryAgentPic}/></DAImage>
         <div>
           <Greeting>Hello, WanFateh!</Greeting>
-          <Subtitle>Here are your delivery tasks today</Subtitle>
+          <Subtitle>Have a Good Day at Work!</Subtitle>
         </div>
       </LHeaderSection>
       <RHeaderSection>
@@ -62,6 +66,7 @@ export default function DeliveryDashboard() {
       </GreetingSection>
       </div>
       <TaskList>
+          {/* <h2>Task List</h2> */}
         {tasks.map((task) => (
           <TaskCard key={task.id} onClick={() => setSelectedTask(task)}>
             <div>

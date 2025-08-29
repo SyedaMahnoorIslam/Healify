@@ -27,12 +27,6 @@ const CustomerRoutes = () => {
                     <Route path='/aboutUs' element={<AboutUs/>} />
                     <Route path='/checkOut' element={<CheckOut/>} />
 
-
-
-
-                    
-                    
-
                 </Routes>
             </CustomerLayout>
         </div>

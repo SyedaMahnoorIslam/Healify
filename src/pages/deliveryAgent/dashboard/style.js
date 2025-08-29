@@ -1,6 +1,4 @@
 import styled from "styled-components";
-
-// === Styled Components ===
 export const DashboardWrapper = styled.div`
   
   background: var(--color-bg);
@@ -14,19 +12,37 @@ export const GreetingSection = styled.div`
  gap: 2rem;
  justify-content: space-between;
  align-items:center;
+ width: 100%;
+ @media (max-width: 768px) {
+  flex-wrap: wrap;
+  gap: 1rem;
+    }
 `;
 export const LHeaderSection = styled.div`
 background: var(--color-primary);
   color: white;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 2rem 1.5rem 0rem;
   border-radius: 16px;
   margin-bottom: 2rem;
   height: 10rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 65%;
+  @media (max-width: 768px) {
+    width: 100%;
+      
+    }
   
-`; export const RHeaderSection = styled.div`
+`;
+export const DAImage = styled.div`
+  padding-bottom: 1.9rem;
+  img{
+     height: 15rem;
+  }
+ `;
+
+export const RHeaderSection = styled.div`
   background: var(--color-primary);
   color: white;
   padding: 1.5rem 2rem;
@@ -35,8 +51,12 @@ background: var(--color-primary);
   height: 10rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  
+  justify-content: center;
+  width: 30%;
+  @media (max-width: 768px) {
+    width: 100%;
+      
+    }
   
 `;
 export const Greeting = styled.h2`

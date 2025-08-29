@@ -9,9 +9,9 @@ const AppRoutes = () => {
   return (
     <div>
       <Routes>
-        {/* <Route path='/*' element={<AuthRoutes/>}/> */}
-        {/* <Route path='/*' element={<CustomerRoutes/>}/> */}
-        <Route path='/*' element={<DeliveryAgentRoutes/>}/>
+        <Route path='/auth/*' element={<AuthRoutes/>}/>
+        <Route path='/customer/*' element={<CustomerRoutes/>}/>
+        <Route path='/delivery/*' element={<DeliveryAgentRoutes/>}/>
       </Routes>
     </div>
   )

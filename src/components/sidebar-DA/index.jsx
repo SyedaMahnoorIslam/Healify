@@ -23,7 +23,7 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <Logo>
-        <Image><img src={LogoImg}/></Image>
+        <Image><img src={LogoImg} alt="Logo"/></Image>
         <Name>Healify</Name>
       </Logo>
       <Menu>
