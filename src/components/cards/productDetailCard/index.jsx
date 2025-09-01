@@ -103,7 +103,6 @@ import { productCards } from "../../../helpers/dummyData";
 import { useNavigate } from "react-router-dom";
 
 const ProductDetail = () => {
-  // sirf pehla product le lo
   const navigate = useNavigate();
   
       const goToCheckOut = () => {
