@@ -137,7 +137,7 @@ export default function OtpVerify() {
   };
   const navigate = useNavigate('');
       const goToHome= ()=>{
-        navigate('/home')
+        navigate('/customer/medicine')
       };
   return (
     // <Wrapper>

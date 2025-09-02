@@ -11,15 +11,15 @@ const ProductCard = ({ total = productCards.length, perRow = 3 }) => {
     const navigate = useNavigate();
 
     const goToDetail = () => {
-        navigate('/productDetail');
+        navigate('/customer/productDetail');
     };
     const goToCheckOut = () => {
-        navigate('/checkOut');
+        navigate('/customer/checkOut');
     };
     const goToCart = () => {
-        navigate('/cart');
+        navigate('/customer/cart');
     }; const goToWishList = () => {
-        navigate('/wishlist');
+        navigate('/customer/wishlist');
     };
     return (
         <Main>

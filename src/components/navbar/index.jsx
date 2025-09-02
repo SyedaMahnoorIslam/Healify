@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
@@ -38,11 +37,11 @@ export default function Navbar() {
   };
 
    const goToProfile =()=>{
-    navigate("/profile")
+    navigate("/customer/profile")
    };
 
    const goToAboutUs =()=>{
-    navigate("/aboutUs")
+    navigate("/customer/aboutUs")
    }
 
   return (
@@ -60,24 +59,24 @@ export default function Navbar() {
             <ul>
               <li>
                 <a
-                  className={getActive("/")}
-                  onClick={() => handleNavClick("/")}
+                  className={getActive("/customer/medicine")}
+                  onClick={() => handleNavClick("/customer/medicine")}
                 >
                   Medicine
                 </a>
               </li>
               <li>
                 <a
-                  className={getActive("/productDetail")}
-                  onClick={() => handleNavClick("/productDetail")}
+                  className={getActive("/customer/productDetail")}
+                  onClick={() => handleNavClick("/customer/productDetail")}
                 >
                   Product Detail
                 </a>
               </li>
               <li>
                 <a
-                  className={getActive("/prescription")}
-                  onClick={() => handleNavClick("/prescription")}
+                  className={getActive("/customer/prescription")}
+                  onClick={() => handleNavClick("/customer/prescription")}
                 >
                   Upload Prescription
                 </a>
@@ -89,24 +88,24 @@ export default function Navbar() {
             <ul>
               <li>
                 <a
-                  className={getActive("/cart")}
-                  onClick={() => handleNavClick("/cart")}
+                  className={getActive("/customer/cart")}
+                  onClick={() => handleNavClick("/customer/cart")}
                 >
                   <MdOutlineShoppingCart />
                 </a>
               </li>
               <li>
                 <a
-                  className={getActive("/wishlist")}
-                  onClick={() => handleNavClick("/wishlist")}
+                  className={getActive("/customer/wishlist")}
+                  onClick={() => handleNavClick("/customer/wishlist")}
                 >
                   <FaRegHeart />
                 </a>
               </li>
               <li>
                 <a
-                  className={getActive("/notifications")}
-                  onClick={() => handleNavClick("/notifications")}
+                  className={getActive("/customer/notifications")}
+                  onClick={() => handleNavClick("/customer/notifications")}
                 >
                   <MdNotificationsNone />
                 </a>
@@ -143,48 +142,48 @@ export default function Navbar() {
         <ul>
           <li>
             <a
-              className={getActive("/")}
-              onClick={() => handleNavClick("/")}
+              className={getActive("/customer/medicine")}
+              onClick={() => handleNavClick("/customer/medicine")}
             >
               Medicine
             </a>
           </li>
           <li>
             <a
-              className={getActive("/productDetail")}
-              onClick={() => handleNavClick("/productDetail")}
+              className={getActive("/customer/productDetail")}
+              onClick={() => handleNavClick("/customer/productDetail")}
             >
               Product Detail
             </a>
           </li>
           <li>
             <a
-              className={getActive("/prescription")}
-              onClick={() => handleNavClick("/prescription")}
+              className={getActive("/customer/prescription")}
+              onClick={() => handleNavClick("/customer/prescription")}
             >
               Upload Prescription
             </a>
           </li>
           <li>
             <a
-              className={getActive("/cart")}
-              onClick={() => handleNavClick("/cart")}
+              className={getActive("/customer/cart")}
+              onClick={() => handleNavClick("/customer/cart")}
             >
               Cart
             </a>
           </li>
           <li>
             <a
-              className={getActive("/wishlist")}
-              onClick={() => handleNavClick("/wishlist")}
+              className={getActive("/customer/wishlist")}
+              onClick={() => handleNavClick("/customer/wishlist")}
             >
               Wishlist
             </a>
           </li>
           <li>
             <a
-              className={getActive("/notifications")}
-              onClick={() => handleNavClick("/notifications")}
+              className={getActive("/customer/notifications")}
+              onClick={() => handleNavClick("/customer/notifications")}
             >
               Notifications
             </a>

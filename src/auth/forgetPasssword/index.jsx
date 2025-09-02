@@ -22,10 +22,10 @@ export default function ForgetPassword() {
   };
   const navigate = useNavigate('');
   const goToResetPassword = () => {
-    navigate('/resetPassword')
+    navigate('/auth/resetPassword')
   };
   const goToLogin= ()=>{
-            navigate('/login')
+            navigate('/auth/login')
           };
   return (
     // <Wrapper>

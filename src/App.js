@@ -9,11 +9,15 @@ import CartPage from './pages/customer/cart/addToCart/index.jsx';
 import AddToCart from './pages/customer/cart/addToCart/index.jsx';
 import LoginPage from './auth/login/index.jsx';
 import Checkout from './pages/customer/checkout/index.jsx';
+import AdminDashboard from './pages/admin/dashboard/index.jsx';
+import PrescriptionManagement from './pages/admin/perscriptionManagment/index.jsx';
 
 function App() {
   return (
     <>
      <AppRoutes/>
+     {/* <PrescriptionManagement/> */}
+      {/* <AdminDashboard/> */}
      {/* <Checkout/> */}
      {/* <OrdersDetail/> */}
      {/* <AddToCart/> */}

@@ -4,9 +4,6 @@ import {
   NavbarContainer, Left,Right,Profile,DropdownMenu
 } from './style';
 
-
-
-
 const NavbarDA = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -15,7 +12,9 @@ const NavbarDA = () => {
     <div>
       <NavbarContainer>
         <Left>
-          <span>Delivery-Dashboard</span>
+          {/* <span>Delivery-Dashboard</span> */}
+          <span>Dashboard</span>
+
         </Left>
         <Right>
           <Profile>

@@ -17,7 +17,7 @@ const CustomerRoutes = () => {
         <div>
             <CustomerLayout>
                 <Routes>
-                    <Route path='/' element={< Medicine/>} />
+                    <Route path='/medicine' element={< Medicine/>} />
                     <Route path='/productDetail' element={<ProductDetailPage />} />
                     <Route path='/prescription' element={<UploadPrescription />} />
                     <Route path='/cart' element={<CartPage />} />

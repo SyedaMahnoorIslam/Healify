@@ -27,7 +27,7 @@ export default function ResetPassword() {
   };
   const navigate = useNavigate('');
         const goToLogin= ()=>{
-          navigate('/login')
+          navigate('/auth/login')
         };
 
   return (

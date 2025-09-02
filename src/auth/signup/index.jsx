@@ -26,10 +26,10 @@ export default function Signup() {
   };
   const navigate = useNavigate('');
   const goToLogin = () => {
-    navigate('/login')
+    navigate('/auth/login')
   };
   const goToOtp = () => {
-    navigate('/otp')
+    navigate('/auth/otp')
   };
 
 
