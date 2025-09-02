@@ -19,7 +19,8 @@ import {
   Card,
   CardHeader,
   ChartWrapper,
-  FadeIn
+  FadeIn,
+  ChartsDiv,
 } from "./style";
 
 ChartJS.register(
@@ -39,8 +40,8 @@ const salesData = {
     {
       label: "Sales ($)",
       data: [1200, 1900, 1500, 2200, 1800, 2400],
-      backgroundColor: "#6a5acd", 
-      borderRadius: 16,
+      backgroundColor: "#6a5acd",
+      borderRadius: 19,
     },
   ],
 };
@@ -51,10 +52,10 @@ const ordersData = {
     {
       label: "Orders",
       data: [50, 70, 60, 90, 100, 80, 120],
-      borderColor: "#ff7f50", 
+      borderColor: "#ff7f50",
       backgroundColor: "rgba(255,127,80,0.2)",
       tension: 0.4,
-      fill: true,
+      // fill: true,
     },
   ],
 };
@@ -94,15 +95,18 @@ export default function AdminDashboard() {
             </Card>
           </DashboardGrid>
           {/* Charts */}
-          <ChartWrapper>
-            <h2>Sales Overview</h2>
-            <Bar data={salesData} />
-          </ChartWrapper>
+          <ChartsDiv>
 
-          <ChartWrapper>
-            <h2>Orders This Week</h2>
-            <Line data={ordersData} />
-          </ChartWrapper>
+            <ChartWrapper>
+              <h2>Sales Overview</h2>
+              <Bar data={salesData} />
+            </ChartWrapper>
+
+            <ChartWrapper>
+              <h2>Orders This Week</h2>
+              <Line data={ordersData} />
+            </ChartWrapper>
+          </ChartsDiv>
         </FadeIn>
       </Main>
     </Container>

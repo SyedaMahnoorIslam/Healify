@@ -9,8 +9,8 @@ const DeliveryAgentRoutes = () => {
     <>
     <DALayout>
       <Routes>
-        <Route path='/delivery/dashboard' element={< Dashboard />} />   
-        <Route path='/delivery/profileSetting' element={< ProfilePage />} />   
+        <Route path='/dashboard' element={< Dashboard />} />   
+        <Route path='/profileSetting' element={< ProfilePage />} />   
      </Routes>
     </DALayout>
     </>

@@ -97,7 +97,6 @@ export const FadeIn = styled.div`
   animation: ${fadeInAnim} 0.8s ease forwards;
 `;
 
-// ===== Prescription Specific Styles =====
 export const CommentBox = styled.textarea`
   width: 100%;
   min-height: 60px;

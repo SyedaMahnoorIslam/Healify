@@ -5,9 +5,9 @@ export const Main=styled.div`
  width: 100%;
  box-sizing: border-box;
 
-/* .sidebar {
-  min-height: 100vh;
-} */
+.sidebar {
+ 
+}
 
 .dA-content {
   width: 100%;
@@ -16,4 +16,6 @@ export const Main=styled.div`
 `;
 export const LeftDiv = styled.div`
 min-height: 100vh;
+/* position: fixed; */
+/* width: 30%; */
 `

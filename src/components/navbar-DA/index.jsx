@@ -12,7 +12,6 @@ const NavbarDA = () => {
     <div>
       <NavbarContainer>
         <Left>
-          {/* <span>Delivery-Dashboard</span> */}
           <span>Dashboard</span>
 
         </Left>

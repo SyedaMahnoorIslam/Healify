@@ -45,8 +45,8 @@ export const Card = styled.div`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(1.06);
   }
-
   .stat-value {
     font-size: 1.6rem;
     font-weight: bold;
@@ -54,7 +54,6 @@ export const Card = styled.div`
     color: var(--color-text-primary);
   }
 `;
-
 export const CardHeader = styled.div`
   display: flex;
   align-items: center;
@@ -63,7 +62,10 @@ export const CardHeader = styled.div`
   font-weight: 600;
   color: var(--color-text-secondary);
 `;
-
+export const ChartsDiv = styled.div`
+ display: flex;
+ justify-content: space-between;
+`;
 export const ChartWrapper = styled.div`
   margin-top: 2rem;
   background: var(--color-section);
@@ -72,9 +74,10 @@ export const ChartWrapper = styled.div`
   border: 1px solid var(--color-border);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease;
+  width: 40%;
 
   &:hover {
-    transform: scale(1.01);
+    transform: scale(1.1);
   }
 
   h2 {

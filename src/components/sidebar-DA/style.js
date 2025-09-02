@@ -13,6 +13,7 @@ min-height: 100%;
   flex-direction: column;
   border-radius: 2rem;
   margin: 1rem 1rem;
+  
   /* box-sizing: border-box; */
   /* box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.05); */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
