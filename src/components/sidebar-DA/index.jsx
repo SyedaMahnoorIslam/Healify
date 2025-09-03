@@ -7,6 +7,11 @@ import {
   FaBell,
   FaUserCircle,
   FaSignOutAlt,
+  FaPills,
+  FaShoppingCart,
+  FaUser,
+  FaChartBar,
+  FaCog,
 } from "react-icons/fa";
 import {
   SidebarContainer,
@@ -19,16 +24,33 @@ import {
   Name,
 } from "./style";
 import { useNavigate } from "react-router-dom";
+import { FaFilePrescription } from "react-icons/fa6";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const goToProfile= () =>{
-       navigate('/delivery/profileSetting')
+  const goToDashboard= () =>{
+       navigate('/admin/dashboard')
   } 
-  const deliveryAgent = ["Dashboard", "Profile & Setting", "Logout"];
-  const daimg = [<FaHome/>,<FaListAlt />,<FaBoxOpen /> ];
-  const admin = ["Dashboard", "Medicine Managment", "Prescription Managment", "Order Managment", "Customer Managment","Report & Analysis", "CMS Section"];
-
+  const goToMedicineManagment= () =>{
+       navigate('/admin/medicineManagment')
+  }
+   const goToOrderManagment= () =>{
+       navigate('/admin/orderManagment')
+  }
+  const goToPrescriptionManagment= () =>{
+       navigate('/admin/prescriptionManagment')
+  }
+   const goToCustomerManagment= () =>{
+       navigate('/admin/customerManagment')
+  } 
+  const goToReportAnalytics= () =>{
+       navigate('/admin/report&Analytics')
+  } 
+  const goToCMSManagment= () =>{
+       navigate('/admin/cmsManagment')
+  } 
+ 
+   
   return (
     <SidebarContainer>
       <Logo>
@@ -36,42 +58,33 @@ const Sidebar = () => {
         <Name>Healify</Name>
       </Logo>
       <Menu>
-             {/* {admin.map((opt) => (
-            <MenuItem>
-            {daimg.map((img)=>(
-                <IconWrapper key={img}>{img}</IconWrapper>
-            ))}
-            <IconWrapper><FaHome /></IconWrapper>
-              <Label key={opt}>{opt}</Label>
-            </MenuItem>
-          ))} */}
-        <MenuItem>
+        <MenuItem onClick={goToDashboard}>
           <IconWrapper><FaHome /></IconWrapper>
           <Label>Dashboard</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaListAlt /></IconWrapper>
-          <Label>Delivery Tasks</Label>
+        <MenuItem onClick={goToMedicineManagment}>
+          <IconWrapper><FaPills /></IconWrapper>
+          <Label>Medicine Managment</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaBoxOpen /></IconWrapper>
-          <Label>Task Details</Label>
+        <MenuItem onClick={goToPrescriptionManagment}>
+          <IconWrapper><FaFilePrescription /></IconWrapper>
+          <Label>Prescription Managment</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaBoxOpen /></IconWrapper>
-          <Label>Update Status</Label>
+        <MenuItem onClick={goToOrderManagment}>
+          <IconWrapper><FaShoppingCart /></IconWrapper>
+          <Label>Order Managment</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaBell /></IconWrapper>
-          <Label>Notifications</Label>
+        <MenuItem onClick={goToCustomerManagment}>
+          <IconWrapper><FaUser /></IconWrapper>
+          <Label>Customer Managment</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaUserCircle /></IconWrapper>
-          <Label onClick={goToProfile}>Profile / Settings</Label>
+        <MenuItem onClick={goToReportAnalytics}>
+          <IconWrapper><FaChartBar /></IconWrapper>
+          <Label>Report & Analysis</Label>
         </MenuItem>
-        <MenuItem>
-          <IconWrapper><FaSignOutAlt /></IconWrapper>
-          <Label>Logout</Label>
+        <MenuItem onClick={goToCMSManagment}>
+          <IconWrapper><FaCog /></IconWrapper>
+          <Label>CMS Managment</Label>
         </MenuItem>
       </Menu>
     </SidebarContainer>
