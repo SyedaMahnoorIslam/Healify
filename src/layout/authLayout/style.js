@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Main=styled.div`
+export const Main = styled.div`
 .auth-container {
   /* display: flex;
   align-items: stretch;    

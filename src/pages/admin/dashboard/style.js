@@ -28,8 +28,8 @@ export const Main = styled.div`
 `;
 
 export const DashboardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  /* grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); */
   gap: 1.5rem;
   margin-top: 1.5rem;
 `;
@@ -39,8 +39,11 @@ export const Card = styled.div`
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
+  /* height: 6rem;
+  width: 6rem; */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease,
+  box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);

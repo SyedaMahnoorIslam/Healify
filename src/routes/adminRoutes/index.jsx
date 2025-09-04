@@ -22,11 +22,6 @@ const AdminRoutes = () => {
         <Route path='/customerManagment' element={<CustomerManagement/>} />
         <Route path='/report&Analytics' element={<ReportsAnalytics/>} />  
         <Route path='/cmsManagment' element={<CmsSection/>} />   
-
-
-
-
-
      </Routes>
     </AdminLayout>
     </>

@@ -16,6 +16,6 @@ export const Main=styled.div`
 `;
 export const LeftDiv = styled.div`
 min-height: 100vh;
-/* position: fixed; */
-/* width: 30%; */
+/* position: fixed;
+width: 30%; */
 `

@@ -9,6 +9,7 @@ import {
   Th,
   Td,
   StatusBadge,
+  Filter
 } from "./style";
 import {
   Chart as ChartJS,
@@ -77,7 +78,10 @@ const ReportsAnalytics = () => {
       {/* Charts in one row */}
       <ChartsRow>
         <ChartBox>
-          <h3>Daily Sales</h3>
+          <div>
+            <h3> Total Sales</h3>
+            <Filter>Filter</Filter>
+          </div>
           <Line data={salesData} />
         </ChartBox>
         <ChartBox>
