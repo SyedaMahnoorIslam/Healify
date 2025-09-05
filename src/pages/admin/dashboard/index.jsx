@@ -96,12 +96,10 @@ export default function AdminDashboard() {
           </DashboardGrid>
           {/* Charts */}
           <ChartsDiv>
-
             <ChartWrapper>
               <h2>Sales Overview</h2>
               <Bar data={salesData} />
             </ChartWrapper>
-
             <ChartWrapper>
               <h2>Orders This Week</h2>
               <Line data={ordersData} />

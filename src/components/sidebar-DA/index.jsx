@@ -49,6 +49,9 @@ const Sidebar = () => {
   const goToCMSManagment= () =>{
        navigate('/admin/cmsManagment')
   } 
+  const goTodeliveryAgentmangment= () =>{
+       navigate('/admin/deliveryAgentManagment')
+  } 
  
    
   return (
@@ -77,6 +80,10 @@ const Sidebar = () => {
         <MenuItem onClick={goToCustomerManagment}>
           <IconWrapper><FaUser /></IconWrapper>
           <Label>Customer Managment</Label>
+        </MenuItem>
+        <MenuItem onClick={goTodeliveryAgentmangment}>
+          <IconWrapper><FaUser /></IconWrapper>
+          <Label>DA Managment</Label>
         </MenuItem>
         <MenuItem onClick={goToReportAnalytics}>
           <IconWrapper><FaChartBar /></IconWrapper>

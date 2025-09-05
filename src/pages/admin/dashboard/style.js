@@ -30,8 +30,13 @@ export const Main = styled.div`
 export const DashboardGrid = styled.div`
   display: flex;
   /* grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); */
-  gap: 1.5rem;
+  gap: 2.1rem;
   margin-top: 1.5rem;
+  justify-content: space-evenly;
+
+  @media (max-width: 786px){
+    flex-wrap: wrap;
+  }
 `;
 
 export const Card = styled.div`
@@ -39,12 +44,14 @@ export const Card = styled.div`
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
-  /* height: 6rem;
-  width: 6rem; */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  height: 6rem;
+  width: 8rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease,
   box-shadow 0.3s ease;
-
+  @media (max-width: 786px){
+    width: 80%;
+  }
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
@@ -55,6 +62,7 @@ export const Card = styled.div`
     font-weight: bold;
     margin-top: 1rem;
     color: var(--color-text-primary);
+    
   }
 `;
 export const CardHeader = styled.div`
@@ -68,6 +76,10 @@ export const CardHeader = styled.div`
 export const ChartsDiv = styled.div`
  display: flex;
  justify-content: space-between;
+
+ @media (max-width: 786px){
+    flex-wrap: wrap;
+  }
 `;
 export const ChartWrapper = styled.div`
   margin-top: 2rem;
@@ -78,7 +90,9 @@ export const ChartWrapper = styled.div`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
   transition: transform 0.3s ease;
   width: 40%;
-
+   @media (max-width: 786px){
+    width: 80%;
+  }
   &:hover {
     transform: scale(1.1);
   }
@@ -88,6 +102,8 @@ export const ChartWrapper = styled.div`
     font-size: 1.3rem;
     color: var(--color-text-primary);
   }
+
+  
 `;
 
 export const FadeIn = styled.div`

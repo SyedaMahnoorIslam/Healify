@@ -62,6 +62,7 @@ import {
           <StatusWrapper>
             <p>Your prescription status:</p>
             <StatusBadge status={status}>{status}</StatusBadge>
+            <p>W8! Until Admin approve your Prescription 👀 </p>
           </StatusWrapper>
         )}
       </Card>

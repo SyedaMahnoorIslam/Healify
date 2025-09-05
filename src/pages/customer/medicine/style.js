@@ -31,22 +31,40 @@ export const CategoryButton = styled.button`
   }
 `;
 export const SearchWrapper = styled.div`
-  width: 180px;
+  width: 20rem;
   max-width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 5rem;
 
    @media (max-width: 880px) {
     width: 100%;
     order: 3;
   }
     @media (max-width: 500px) {
-    width: 50px;
+    width: 100%;
+  }
+
+  div{
+    background-color: var(--color-primary);
+    width: 4rem;
+    height: 2rem;
+    border-top-right-radius: 5rem;
+    border-bottom-right-radius: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
   }
 `;
 export const StyledInput = styled.input`
   width: 100%;
   padding: 0.5rem 2.5rem 0.5rem 1rem;
   border-radius: 1rem;
-  border: 1px solid var(--color-border);
+  /* border: 1px solid var(--color-border); */
+  border: none;
   background-color: var(--color-section);
   color: var(--color-text-primary);
   &:focus {

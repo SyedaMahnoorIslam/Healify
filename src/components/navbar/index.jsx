@@ -40,8 +40,8 @@ export default function Navbar() {
     navigate("/customer/profile")
    };
 
-   const goToAboutUs =()=>{
-    navigate("/customer/aboutUs")
+   const goToSupport =()=>{
+    navigate("/customer/support")
    }
 
   return (
@@ -130,7 +130,7 @@ export default function Navbar() {
               <li onClick={goToProfile}>Profile</li>
               {/* <li>Orders History</li>
               <li>Address Book</li> */}
-              <li onClick={goToAboutUs}>About Us</li>
+              <li onClick={goToSupport}>Support</li>
               <li>Logout</li>
             </DropdownMenu>
 

@@ -10,6 +10,7 @@ import CartPage from '../../pages/customer/cart'
 import Profile from '../../pages/customer/cart/profile'
 import AboutUs from '../../pages/customer/aboutus'
 import CheckOut from '../../pages/customer/checkout'
+import SupportScreen from '../../pages/customer/support'
 
 
 const CustomerRoutes = () => {
@@ -26,6 +27,8 @@ const CustomerRoutes = () => {
                     <Route path='/profile' element={<Profile/>} />
                     <Route path='/aboutUs' element={<AboutUs/>} />
                     <Route path='/checkOut' element={<CheckOut/>} />
+                    <Route path='/support' element={<SupportScreen/>} />
+
 
                 </Routes>
             </CustomerLayout>

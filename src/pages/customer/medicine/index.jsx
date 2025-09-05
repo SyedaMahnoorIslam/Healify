@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaSearch } from "react-icons/fa";
 import {
     CategoryRow,
     CategoryButton,
@@ -19,7 +20,8 @@ const Medicine = () => {
                     <CategoryButton key={opt}>{opt}</CategoryButton>
                 ))}
                 <SearchWrapper>
-                    <StyledInput type="text" placeholder="Search products..." />
+                    <StyledInput type="text" placeholder="Search products..."  />
+                    <div><FaSearch /></div>
                 </SearchWrapper>
             </CategoryRow>
             <Main>

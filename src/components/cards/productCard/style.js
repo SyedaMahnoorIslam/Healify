@@ -10,8 +10,8 @@ export const Main = styled.div`
 export const Grid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: flex-start;
+  gap: 2rem;
+  justify-content: space-evenly;
   align-items: center;
   margin: 0rem 5.5rem;
 `;
@@ -174,9 +174,7 @@ export const Button = styled.button`
   border-radius: 0.6rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: var(--color-primary-light);
-
- 
+  background-color: var(--color-primary-light); 
   &:hover {
     background: var(--color-secondary-light);
   }
@@ -189,9 +187,11 @@ export const Button1 = styled.button`
   border-radius: 0.6rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  background: var(--color-secondary-light);
+
 
  
   &:hover {
-    background: var(--color-secondary-light);
+    background: var(--color-primary);
   }
 `;
