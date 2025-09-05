@@ -1,21 +1,33 @@
 import styled from "styled-components";
 
-export const Main=styled.div`
+export const Main = styled.div`
  display: flex;
  width: 100%;
  box-sizing: border-box;
-
 .sidebar {
  
 }
 
 .dA-content {
   width: 100%;
-  padding: 1rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  @media (max-width:769px) {
+    padding: 1px;
+  }
 }
 `;
 export const LeftDiv = styled.div`
-min-height: 100vh;
-/* position: fixed;
-width: 30%; */
+max-height: 100vh;
+overflow: hidden;
+width: 30%;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+
+div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 `

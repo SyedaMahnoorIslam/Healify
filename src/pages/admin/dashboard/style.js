@@ -1,14 +1,4 @@
-import styled, { keyframes } from "styled-components";
-const fadeInAnim = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
+import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -107,5 +97,5 @@ export const ChartWrapper = styled.div`
 `;
 
 export const FadeIn = styled.div`
-  animation: ${fadeInAnim} 0.8s ease forwards;
+  
 `

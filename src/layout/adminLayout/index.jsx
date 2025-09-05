@@ -7,9 +7,9 @@ const AdminLayout = ({ children }) => {
   return (
     <Main>
       <LeftDiv>
-        <Sidebar />
+        <div><Sidebar /></div>
       </LeftDiv>
-      {/* <div className='sidebar'></div> */}
+    
       <div className="dA-content">
         <NavbarDA/>
         {children}

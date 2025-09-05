@@ -1,26 +1,26 @@
 import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
-  width: 250px;
-  /* min-height: 100vh;
-  height: auto; */
+  /* width: 250px; */
+  min-height: 100vh;
+  height: auto;
   background-color: var(--color-section);
   /* background-color: var(--color-primary); */
-min-height: 100%;
+  /* min-height: 100%; */
   border-right: 1px solid var(--color-border);
   padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  border-radius: 2rem;
-  margin: 1rem 1rem;
+  /* border-radius: 2rem; */
+  margin: 0rem;
   
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
   /* box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.05); */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 
 
    @media (max-width: 675px) {
-    width: 50px;
+    width: 70px;
   }
 `;
 
@@ -41,7 +41,7 @@ export const Logo = styled.h2`
     padding-left: 0;
   }
 `;
-export const Image =styled.div`
+export const Image = styled.div`
    justify-content: center;
   img{
     height: 3rem;
@@ -54,7 +54,7 @@ export const Image =styled.div`
   
 `;
 
-export const Name =styled.span`
+export const Name = styled.span`
 font-family: var(--font-secondary);
   font-size: 2rem;
   font-weight: 700;

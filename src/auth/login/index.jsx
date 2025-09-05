@@ -31,14 +31,14 @@ export default function LoginPage() {
   };
   const navigate = useNavigate('');
   const goToSignup= ()=>{
-    navigate('/signup')
+    navigate('/auth/signup')
   };
 
  const goToHome= ()=>{
-    navigate('/')
+    navigate('/customer/medicine')
   };
    const goToForgetPassword= ()=>{
-    navigate('/forgetPassword')
+    navigate('/auth/forgetPassword')
   };
   
   return (

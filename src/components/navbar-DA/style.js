@@ -8,9 +8,10 @@ export const NavbarContainer=styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1rem;
+  /* margin: 1rem; */
+  
 
 
    @media (max-width: 675px) {
