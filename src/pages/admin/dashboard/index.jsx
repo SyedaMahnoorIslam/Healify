@@ -40,7 +40,8 @@ const salesData = {
     {
       label: "Sales ($)",
       data: [1200, 1900, 1500, 2200, 1800, 2400],
-      backgroundColor: "#6a5acd",
+      // borderColor: "#1c9f94",
+      backgroundColor: "#53c7be",
       borderRadius: 19,
     },
   ],
@@ -52,8 +53,8 @@ const ordersData = {
     {
       label: "Orders",
       data: [50, 70, 60, 90, 100, 80, 120],
-      borderColor: "#ff7f50",
-      backgroundColor: "rgba(255,127,80,0.2)",
+      borderColor: "#1c9f94",
+      backgroundColor: "#53c7be",
       tension: 0.4,
       // fill: true,
     },

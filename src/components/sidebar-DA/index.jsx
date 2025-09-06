@@ -25,7 +25,7 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { FaFilePrescription } from "react-icons/fa6";
-
+ 
 const Sidebar = () => {
   const navigate = useNavigate();
   const goToDashboard= () =>{
