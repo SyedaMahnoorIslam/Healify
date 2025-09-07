@@ -89,14 +89,14 @@ const ProductCard = ({ total = productCards.length, perRow = 3 }) => {
         <Main>
             <Grid perRow={perRow}>
                 {productCards.slice(0, total).map((item) => (
-                    <Card onDoubleClick={goToDetail} key={item.id}> {/* Added key prop */}
+                    <Card onDoubleClick={goToDetail} key={item.id}> 
                         <Top>
-                            {item.discount && ( // Conditionally render discount if it exists
+                            {item.discount && ( 
                                 <Discount>
                                     <div>{item.discount}</div>
                                 </Discount>
                             )}
-                            {item.prescriptionRequired && ( // Conditionally render PrescriptionTag
+                            {item.prescriptionRequired && ( 
                                 <PrescriptionTag>Prescription Required</PrescriptionTag>
                             )}
                             <Wishlist onClick={goToWishList}>

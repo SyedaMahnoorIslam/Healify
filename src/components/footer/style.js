@@ -1,124 +1,134 @@
+
 import styled from "styled-components";
 
-export const Foooter = styled.div`
- background-color:var( --color-primary);
- color:black;
- overflow: hidden;
- height: auto;
-`;
-export const TopDiv = styled.div`
-    display:flex;
-    justify-content: space-around;
-    gap: 20%;
-    padding:3%;
-     @media (max-width: 1200px) {
-    flex-wrap:wrap;
-    padding: 3%;
- }
-
+export const FooterContainer = styled.footer`
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 3rem 2rem;
+    font-family: 'Poppins', sans-serif;
 `;
 
-export const First = styled.div`
-   display: flex;
-   flex-direction: column;
-   text-align:left;
-   font-family:sans-serif;
-   padding: 0%;
-   gap: 4rem;
-   justify-content: space-between;
-   align-items: center;
-     @media (max-width: 1200px) {
-    padding: 3%;
- }
- div{
-   display: flex;
-   text-align:left;
-   font-family:sans-serif;
-   padding: 0%;
-   gap: 1rem;
-   justify-content: center;
-   align-items: center;
-     @media (max-width: 1200px) {
-    padding: 3%;
- }
-    img{
-    height: 5rem;
-    width: 5rem;
-  }
- h3{
-    color:black;
- }
- }
-  
+export const FooterContent = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 `;
-export const SocialLinks = styled.div`
-  background-color: white;
-  height: 2rem;
-  width:2rem;
-  border-radius: 5px;
-  transition: transform 0.3s ease-out;
-  box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.8);
 
- &:hover{
-   transform: translateY(-5px);
-   transform: scale(1.6);
- }
-   
-`
-export const Second = styled.div`
-
-  display:flex;
-  justify-content:space-evenly;
-  gap: 4rem;
-  color:black;
-  font-family:sans-serif;
-  padding: 0%;
-
- @media (max-width: 700px) {
-    gap: 1rem;
- }
- @media (max-width: 550px) {
-    flex-wrap: wrap;
-    justify-content: left;
- }
-
-ul{
+export const FooterSection = styled.div`
     display: flex;
     flex-direction: column;
-    list-style-type:none;
-    gap: 0.5rem;
-}
-li{
+    gap: 1rem;
+    color: #fff;
+`;
+
+export const LogoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    img {
+        width: 150px;
+        height: auto;
+    }
+
+    p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+`;
+
+export const SocialLinks = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+export const SocialLinkItem = styled.a`
+    color: #fff;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
     
-}
+    &:hover {
+        color: var(--color-secondary);
+    }
+`;
 
-ul li a{
-    text-decoration:none;
-    color:black;
-    line-height:2
+export const FooterTitle = styled.h4`
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #fff;
+`;
+
+export const FooterLink = styled.a`
+    font-size: 0.9rem;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: var(--color-secondary);
+    }
+`;
+
+export const NewsletterSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #fff;
+
+    p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+`;
+
+export const NewsletterForm = styled.form`
+    display: flex;
+    width: 100%;
     
-}
 `;
-export const Detail = styled.p`
 
+export const NewsletterInput = styled.input`
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 1rem;
+    outline: none;
 `;
-export const Logo = styled.img`
-height: 5rem;
-width: 5rem;
 
-`;
-export const Line = styled.div`
-  height:2px;
-  width:90%;
-  background-color:black;
-`;
-export const LastDiv = styled.div`
-    padding-left: 5%;
+export const NewsletterButton = styled.button`
+    background-color: var(--color-secondary);
+    color: #fff;
+   background-color: #000;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
     
+    &:hover {
+        background-color: #000;
+    }
 `;
 
-
-
-export const LText = styled.h6`
-   text-align: center;
+export const CopyrightSection = styled.div`
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
 `;

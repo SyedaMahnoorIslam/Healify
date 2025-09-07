@@ -1,78 +1,78 @@
-import React from 'react'
-import logo from '../../assets/images/logo-image.png'
-import { FaFacebookF,FaInstagram ,FaTwitter ,FaLinkedin} from "react-icons/fa";
+import React from 'react';
 import {
-  Foooter, Logo, First, Second, Detail, Line, TopDiv, LText, LastDiv,SocialLinks
-} from './style'
-
-const healify = ["Medicines", "Health Care", "Wellness", "Supplements", "Personal Care", "Baby Care", "Lifestyle & Fitness", "Organic"];
-const category = ["Supplements", "Personal Care", "Baby Care", "Lifestyle & Fitness", "Organic"];
-const contact = ["+102 111 345 689", "healify@gmail.com", "200-A, SMCHS, Karachi Sindh"];
+  FaFacebookF, FaInstagram, FaTwitter, FaLinkedin, FaEnvelope
+} from "react-icons/fa";
+import {
+  FooterContainer,
+  FooterContent,
+  FooterSection,
+  FooterTitle,
+  FooterLink,
+  SocialLinks,
+  SocialLinkItem,
+  NewsletterSection,
+  NewsletterForm,
+  NewsletterInput,
+  NewsletterButton,
+  CopyrightSection,
+  LogoContainer
+} from './style';
+import logo from '../../assets/images/logo-image.png';
 
 const Footer = () => {
   return (
-    <>
-      <Foooter>
-        <TopDiv>
+    <FooterContainer>
+      <FooterContent>
+        {/* About & Logo */}
+        <FooterSection>
+          <LogoContainer>
+            <img src={logo} alt="Healify Logo" />
+            <p>Your trusted partner for health and wellness.</p>
+          </LogoContainer>
+          <SocialLinks>
+            <SocialLinkItem href="#"><FaFacebookF /></SocialLinkItem>
+            <SocialLinkItem href="#"><FaInstagram /></SocialLinkItem>
+            <SocialLinkItem href="#"><FaTwitter /></SocialLinkItem>
+            <SocialLinkItem href="#"><FaLinkedin /></SocialLinkItem>
+          </SocialLinks>
+        </FooterSection>
 
+        {/* Quick Links */}
+        <FooterSection>
+          <FooterTitle>Quick Links</FooterTitle>
+          <FooterLink href="#">Home</FooterLink>
+          <FooterLink href="#">About Us</FooterLink>
+          <FooterLink href="#">Blog</FooterLink>
+          <FooterLink href="#">FAQs</FooterLink>
+          <FooterLink href="#">Contact Us</FooterLink>
+        </FooterSection>
 
-          <div>
-            <Second>
-              <ul className='ul'>
-                <h3>Healify</h3>
-                {healify.map((opt) => (
-                  <li key={opt}>{opt}</li>
-                ))}
-              </ul>
-              <ul className='ul'>
-                <h3>Popular Category</h3>
-                {category.map((opt) => (
-                  <li key={opt}>{opt}</li>
-                ))}
-              </ul>
-              <ul className='ul'>
-                <h3>Contact</h3>
-                {contact.map((opt) => (
-                  <li key={opt}>{opt}</li>
-                ))}
-              </ul>
-            </Second>
-          </div>
-          <First>
-            <div>
-            <img src={logo} alt='' />
-            <h3>Happy Shopping!</h3>
-            </div>
-            <div>
-            <SocialLinks>
-              <FaFacebookF />
-            </SocialLinks>
-            <SocialLinks>
-              <FaInstagram />
-            </SocialLinks>
-            <SocialLinks>
-              <FaLinkedin />
-            </SocialLinks>
-            <SocialLinks>
-              <FaTwitter />
-            </SocialLinks>
-            </div>
-          </First>
-        </TopDiv>
-        <LastDiv>
-          <Line>
-          </Line>
-          <LText>
-            <p>© {new Date().getFullYear()} Healify. All Rights Reserved.</p>
-          </LText>
-        </LastDiv>
-      </Foooter>
-    </>
-  )
-}
-export default Footer
+        {/*  Shop Categories */}
+        <FooterSection>
+          <FooterTitle>Shop Categories</FooterTitle>
+          <FooterLink href="#">Medicines</FooterLink>
+          <FooterLink href="#">Health Care</FooterLink>
+          <FooterLink href="#">Supplements</FooterLink>
+          <FooterLink href="#">Personal Care</FooterLink>
+          <FooterLink href="#">Baby Care</FooterLink>
+        </FooterSection>
 
+        {/* Section 4: Newsletter */}
+        <NewsletterSection>
+          <FooterTitle>Stay Updated!</FooterTitle>
+          <p>Subscribe to our newsletter for the latest updates and promotions!</p>
+          <NewsletterForm>
+            <NewsletterInput type="email" placeholder="Enter your email" />
+            <NewsletterButton type="submit"><FaEnvelope /></NewsletterButton>
+          </NewsletterForm>
+        </NewsletterSection>
+      </FooterContent>
 
-        
-       
-     
+      <CopyrightSection>
+        &copy; {new Date().getFullYear()} Healify. All Rights Reserved.
+      </CopyrightSection>
+    </FooterContainer>
+  );
+};
+
+export default Footer;

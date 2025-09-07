@@ -64,7 +64,7 @@ export const Discount = styled.div`
   border-radius: 0.5rem;
 `;
 
-export const Wishlist =styled.button`
+export const Wishlist = styled.button`
   align-self: center;
   background: var(--color-primary);
   color: #fff;
@@ -134,16 +134,13 @@ export const Price = styled.div`
   }
 `;
 export const PrescriptionTag = styled.div`
-  position: absolute; /* Position it relative to the Card */
-  top: 0.5rem; /* Adjust as needed */
-  right: 0.5rem; /* Adjust as needed */
-  background: var(--color-alert); /* Using a distinct color for alerts */
+  background: var(--color-alert); 
   color: #fff;
   font-size: 0.65rem;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 0.5rem;
-  z-index: 1; /* Ensure it's above other elements */
+  z-index: 1; 
 `;
 // export const Button = styled.div`
 //   display: flex;

@@ -1,28 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Nunito:wght=400;700&display=swap');
+/* ===== Light Theme (Default) ===== */
 :root {
   /* Font */
   --font-primary: 'Poppins', sans-serif;
   --font-secondary: 'Nunito', sans-serif;
 
   /* Primary Colors (mint / teal ) */
-  --color-primary: #53c7be;           /* main buttons / links */
-  --color-primary-light: #1c9f94;     /* hover or very light background */
+  --color-primary: #53c7be; /* main buttons / links */
+  --color-primary-light: #1c9f94; /* hover or very light background */
+
   /* Accent / Supporting Pastels */
-  --color-accent-green: #7fd8b1;      /* soft green (like pills in image)  */
-  --color-accent-pink: #ffbdd5;       /* soft baby pink */
-  --color-accent-yellow: #fff3c9;     /* light pastel yellow */
-   --color-alert: #dc3545;
+  --color-accent-green: #7fd8b1; /* soft green (like pills in image) */
+  --color-accent-pink: #ffbdd5; /* soft baby pink */
+  --color-accent-yellow: #fff3c9; /* light pastel yellow */
+  --color-alert: #dc3545;
+
   /* Neutrals */
-  --color-bg: #ffffff;                /* very light mint/off-white */
-  --color-section: #eaf8f6;           /* light section background  */
+  --color-bg: #ffffff; /* very light mint/off-white */
+  --color-section: #eaf8f6; /* light section background */
   --color-text-primary: #1c1c1c;
   --color-text-secondary: #666666;
   --color-border: #d5e6e5;
 }
 
-/* ===== Dark Theme  ===== */
+/* ===== Dark Theme ===== */
 [data-theme="dark"] {
-
   --color-primary: #4aa7a0;
   --color-primary-light: #294749;
 
@@ -30,19 +31,22 @@
   --color-accent-green: #649b82;
   --color-accent-pink: #b58593;
   --color-accent-yellow: #9c9271;
-  --color-alert: #dc3545;
+  --color-alert: #dc3545; /* Alert color usually stays the same */
+
   /* Neutrals */
-  --color-bg: #0f1a1c;
-  --color-section: #182425;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #b9c0c6;
-  --color-border: #304346;
+  --color-bg: #0f1a1c; /* Dark background */
+  --color-section: #182425; /* Darker section background */
+  --color-text-primary: #f8fafc; /* Light primary text */
+  --color-text-secondary: #b9c0c6; /* Lighter secondary text */
+  --color-border: #304346; /* Darker borders */
 }
 
-body{
+body {
   margin: 0;
   padding: 0;
   font-family: var(--font-primary);
   overflow-x: hidden;
-
+  background-color: var(--color-bg); /* Apply background color */
+  color: var(--color-text-primary); /* Apply default text color */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
