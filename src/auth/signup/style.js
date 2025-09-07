@@ -136,7 +136,29 @@ export const Input = styled.input`
   border-radius: 8px;
   background: #f8fbff;
 `;
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccdce8;
+  border-radius: 8px;
+  background: #f8fbff;
+  
+`;
 
+export const PasswordInput = styled.input`
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: transparent;
+`;
+
+export const IconWrapper = styled.span`
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+  padding-right: 0.8rem;
+`;
 export const Button = styled.button`
   background: var(--color-primary);
   color: #fff;

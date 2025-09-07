@@ -147,13 +147,36 @@ export const StyledForm = styled.form`
     }
   }
 `;
-
-export const Input = styled.input`
-  padding: 12px;
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
   border: 1px solid #ccdce8;
   border-radius: 8px;
   background: #f8fbff;
+  
 `;
+
+export const Input = styled.input`
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: transparent;
+`;
+
+export const IconWrapper = styled.span`
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+  padding-right: 0.8rem;
+`;
+
+// export const Input = styled.input`
+//   padding: 12px;
+//   border: 1px solid #ccdce8;
+//   border-radius: 8px;
+//   background: #f8fbff;
+// `;
 
 export const Button = styled.button`
   background: var(--color-primary);

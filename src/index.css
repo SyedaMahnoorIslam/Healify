@@ -11,7 +11,7 @@
   --color-accent-green: #7fd8b1;      /* soft green (like pills in image)  */
   --color-accent-pink: #ffbdd5;       /* soft baby pink */
   --color-accent-yellow: #fff3c9;     /* light pastel yellow */
-
+   --color-alert: #dc3545;
   /* Neutrals */
   --color-bg: #ffffff;                /* very light mint/off-white */
   --color-section: #eaf8f6;           /* light section background  */
@@ -30,7 +30,7 @@
   --color-accent-green: #649b82;
   --color-accent-pink: #b58593;
   --color-accent-yellow: #9c9271;
-
+  --color-alert: #dc3545;
   /* Neutrals */
   --color-bg: #0f1a1c;
   --color-section: #182425;

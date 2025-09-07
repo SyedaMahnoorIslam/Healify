@@ -168,7 +168,7 @@ export default function LoginPage() {
               required
             />
             <IconWrapper onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </IconWrapper>
           </InputWrapper>
 

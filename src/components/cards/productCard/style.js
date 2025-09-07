@@ -133,7 +133,18 @@ export const Price = styled.div`
     
   }
 `;
-
+export const PrescriptionTag = styled.div`
+  position: absolute; /* Position it relative to the Card */
+  top: 0.5rem; /* Adjust as needed */
+  right: 0.5rem; /* Adjust as needed */
+  background: var(--color-alert); /* Using a distinct color for alerts */
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0.5rem;
+  z-index: 1; /* Ensure it's above other elements */
+`;
 // export const Button = styled.div`
 //   display: flex;
 //   justify-content: center;

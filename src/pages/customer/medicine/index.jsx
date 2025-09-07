@@ -25,7 +25,7 @@ const Medicine = () => {
                 </SearchWrapper>
             </CategoryRow>
             <Main>
-                <h1>Top Products</h1>
+                {/* <h1>Top Products</h1> */}
                 {/* {productCards.map((product) => (
                     <ProductCard key={product.id} product={product} />
                 ))} */}
