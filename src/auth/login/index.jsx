@@ -1,106 +1,3 @@
-// import { useState } from "react";
-// import google from '../../assets/icons/google-icon.svg'
-// // import apple from '../../assets/icons/Black.svg'
-// import facebook from '../../assets/icons/Vector.svg'
-// import logo from '../../assets/images/logo-image.png'
-// import {
-//   // Wrapper,
-//   // ImageSide,
-//   FormSide,
-//   Card,
-//   Title,
-//   StyledForm,
-//   Input,
-//   Button,
-// } from "./style";
-// // import authImg from "../../assets/images/auth-img.jpg";
-// import { useNavigate } from "react-router-dom";
-
-// export default function LoginPage() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [isChecked, setIsChecked] = useState(false);
-
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//   };
-//   const handleCheckboxChange = () => {
-//     setIsChecked(!isChecked);
-//   };
-//   const navigate = useNavigate('');
-//   const goToSignup= ()=>{
-//     navigate('/auth/signup')
-//   };
-
-//  const goToHome= ()=>{
-//     navigate('/customer/medicine')
-//   };
-//    const goToForgetPassword= ()=>{
-//     navigate('/auth/forgetPassword')
-//   };
-  
-//   return (
-//     // <Wrapper>
-//     //   <ImageSide src={authImg} />
-//       <FormSide>
-//         <Card>
-//           <Title> <img src={logo}/>
-//            Welcome Back! <br/> Login to Your Account</Title>
-//           <StyledForm onSubmit={handleSubmit}>
-//             <Input
-//               type="email"
-//               placeholder="Email"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//               required
-//             />
-//             <Input
-//               type="password"
-//               placeholder="Password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               required
-//             />
-//             <Button type="submit" onClick={goToHome}>Login</Button>
-//               <div className='checkbox'>
-//                 <label >
-//                   <input
-//                     type="checkbox"
-//                     checked={isChecked}
-//                     onChange={handleCheckboxChange}
-//                   />
-//                   Remember Me!
-//                 </label>
-//                 <h4 onClick={goToForgetPassword}>Forgot Password?</h4>
-//               </div>
-
-//             <div className='loginButton'>
-//               <p>Do you have an account? <a onClick={goToSignup}>SignUp</a></p>
-//               <h3>OR</h3>
-//               <div>
-//                  <button>
-//                 <img src={google} />
-                
-//               </button>
-//               <button>
-//                 <img src={facebook} />
-                
-
-//               </button>
-//               </div>
-//               {/* <button>
-//                 <img src={apple} />
-//                 <p>SignIn with Apple</p>
-//               </button> */}
-//             </div>
-//           </StyledForm>
-//         </Card>
-//       </FormSide>
-//     // </Wrapper>
-//   );
-// }
 import { useState } from "react";
 import google from '../../assets/icons/google-icon.svg'
 import facebook from '../../assets/icons/Vector.svg'
@@ -117,25 +14,49 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from "axios";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const [isChecked, setIsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://192.168.100.163:3000/api/auth/login",
+        formData
+      );
+      console.log("Login Successful:", response.data);
+      alert("Login Successful!");
+      localStorage.setItem("token", response.data.token);
+      navigate("/customer/medicine");
+    } catch (error) {
+      console.error("Login Failed:", error);
+      alert("Invalid email or password");
+    }
   };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
 
-  const navigate = useNavigate('');
-  const goToSignup= ()=> navigate('/auth/signup');
-  const goToHome= ()=> navigate('/customer/medicine');
-  const goToForgetPassword= ()=> navigate('/auth/forgetPassword');
+  const goToSignup = () => navigate('/auth/signup');
+  const goToForgetPassword = () => navigate('/auth/forgetPassword');
 
   return (
     <FormSide>
@@ -146,25 +67,24 @@ export default function LoginPage() {
         </Title>
 
         <StyledForm onSubmit={handleSubmit}>
-          
-         
           <InputWrapper>
             <Input
               type="email"
+              name="email" 
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </InputWrapper>
 
-          
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
+              name="password"   
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
             <IconWrapper onClick={() => setShowPassword(!showPassword)}>
@@ -172,7 +92,7 @@ export default function LoginPage() {
             </IconWrapper>
           </InputWrapper>
 
-          <Button type="submit" onClick={goToHome}>Login</Button>
+          <Button type="submit">Login</Button>
           
           <div className='checkbox'>
             <label>

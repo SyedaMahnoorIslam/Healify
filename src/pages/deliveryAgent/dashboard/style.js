@@ -1,6 +1,6 @@
 import styled from "styled-components";
 export const DashboardWrapper = styled.div`
-  
+  margin-top: 1rem;
   background: var(--color-bg);
   min-height: 100vh;
 `;
@@ -8,7 +8,6 @@ export const DashboardWrapper = styled.div`
 
 export const GreetingSection = styled.div`
  display: flex;
- /* width: 100vw; */
  gap: 2rem;
  justify-content: space-between;
  align-items:center;
@@ -144,7 +143,7 @@ export const ModalContent = styled.div`
 
 export const ModalHeader = styled.h3`
   margin: 0 0 1rem;
-  color: var(--color-text-primary);
+  color: var(--color-primary);
 `;
 
 export const ModalDetail = styled.p`

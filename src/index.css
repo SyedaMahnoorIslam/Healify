@@ -37,8 +37,8 @@
   --color-bg: #0f1a1c; /* Dark background */
   --color-section: #182425; /* Darker section background */
   --color-text-primary: #f8fafc; /* Light primary text */
-  --color-text-secondary: #b9c0c6; /* Lighter secondary text */
-  --color-border: #304346; /* Darker borders */
+  --color-text-secondary: #b9c0c6; 
+  --color-border: #304346; 
 }
 
 body {
@@ -46,7 +46,7 @@ body {
   padding: 0;
   font-family: var(--font-primary);
   overflow-x: hidden;
-  background-color: var(--color-bg); /* Apply background color */
-  color: var(--color-text-primary); /* Apply default text color */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  background-color: var(--color-bg); 
+  color: var(--color-text-primary); 
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }

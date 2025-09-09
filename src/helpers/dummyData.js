@@ -10,19 +10,19 @@ import img9 from '../assets/images/Male & Female Fertility Product.jpeg'
 import img10 from '../assets/images/download (1).jpeg'
 import img11 from '../assets/images/download (2).jpeg'
 import img12 from '../assets/images/download.jpeg'
-    // {
-    //     id:1,
-    //     image:{},
-    //     discount:`${'30%'} off`,
-    //     name: 'Almond oil 120 ml Bottle',
-    //     type: 'oil',
-    //     packSize:'70ml',
-    //     discountPrice:'560',
-    //     originalPrice:'860',
-    //     company:'',
-    //     category:'',
-    //     btnText:'Add to Cart',
-    // },
+// {
+//     id:1,
+//     image:{},
+//     discount:`${'30%'} off`,
+//     name: 'Almond oil 120 ml Bottle',
+//     type: 'oil',
+//     packSize:'70ml',
+//     discountPrice:'560',
+//     originalPrice:'860',
+//     company:'',
+//     category:'',
+//     btnText:'Add to Cart',
+// },
 export const productCards = [
   {
     id: 1,
@@ -39,7 +39,7 @@ export const productCards = [
     dosage: "1–2 tablets every 6 hours, not exceeding 8 tablets in 24 hours.",
     sideEffects: "May cause nausea, allergic reactions, or liver damage with overdose.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -57,7 +57,7 @@ export const productCards = [
     dosage: "1 capsule every 8 hours for 5–7 days, as prescribed by doctor.",
     sideEffects: "Diarrhea, rash, nausea, or allergic reaction.",
     prescriptionRequired: true,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -75,7 +75,7 @@ export const productCards = [
     dosage: "1 tablet daily after meal.",
     sideEffects: "May cause stomach upset or kidney stones in high doses.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -93,7 +93,7 @@ export const productCards = [
     dosage: "10ml three times daily after meals.",
     sideEffects: "Drowsiness, mild dizziness, or stomach upset.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -111,7 +111,7 @@ export const productCards = [
     dosage: "1 tablet daily, preferably after meal.",
     sideEffects: "Stomach irritation, bleeding risk, or allergic reaction.",
     prescriptionRequired: true,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -129,7 +129,7 @@ export const productCards = [
     dosage: "Apply small amount on skin or hair as needed.",
     sideEffects: "Generally safe, may cause allergic reaction in sensitive users.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -147,7 +147,7 @@ export const productCards = [
     dosage: "1 tablet every 6 hours if required, not exceeding daily limit.",
     sideEffects: "Liver damage on overdose, mild nausea.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -165,7 +165,7 @@ export const productCards = [
     dosage: "1 tablet per day with water.",
     sideEffects: "May cause diarrhea or nausea in sensitive people.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -183,7 +183,7 @@ export const productCards = [
     dosage: "10ml twice a day or as directed.",
     sideEffects: "Minimal, may cause mild stomach upset.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -201,7 +201,7 @@ export const productCards = [
     dosage: "1 tablet every 6–8 hours as needed.",
     sideEffects: "Stomach upset, dizziness, or risk of ulcers.",
     prescriptionRequired: true,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -219,7 +219,7 @@ export const productCards = [
     dosage: "5 drops daily or as directed by pediatrician.",
     sideEffects: "Very rare, may cause nausea or constipation.",
     prescriptionRequired: false,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
   {
@@ -237,7 +237,7 @@ export const productCards = [
     dosage: "1 tablet daily or as advised by doctor.",
     sideEffects: "Stomach bleeding, nausea, dizziness.",
     prescriptionRequired: true,
-    quantity:'20',
+    quantity: '20',
     btnText: "Add to Cart",
   },
 ];

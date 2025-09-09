@@ -15,6 +15,9 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function ForgetPassword() {
+
+  // react hook form
+
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {

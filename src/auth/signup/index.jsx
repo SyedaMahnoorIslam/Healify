@@ -3,8 +3,6 @@ import google from '../../assets/icons/google-icon.svg'
 import facebook from '../../assets/icons/Vector.svg'
 import logo from '../../assets/images/logo-image.png'
 import {
-  // Wrapper,
-  // ImageSide,
   FormSide,
   Card,
   Title,
@@ -15,78 +13,108 @@ import {
   IconWrapper,
   PasswordInput
 } from "./style";
-// import authImg from "../../assets/images/auth-img.jpg";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-
-
+import axios from "axios";
 export default function Signup() {
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
+  const [showPassword, setShowPassword] = useState(false);
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post('http://192.168.100.163:3000/api/auth/register', formData);
+  //     console.log("Signup Succesfully done", response.data);
+  //     alert("Signup Successfull");
+  //   } catch (error) {
+  //     console.log("Signup Failed!", error);
+  //     alert("Signup Failed");
+
+  //   }
+  // };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post(
+      "http://192.168.100.163:3000/api/auth/register",
+      formData
+    );
+    console.log("Signup Successfully done", response.data);
+    alert("Signup Successful");
+    navigate("/auth/otp");
+  } catch (error) {
+    console.log("Signup Failed!", error);
+    alert("Signup Failed");
+  }
+};
   const navigate = useNavigate('');
   const goToLogin = () => {
     navigate('/auth/login')
   };
-  const goToOtp = () => {
-    navigate('/auth/otp')
-  };
-
+  // const goToOtp = () => {
+  //   navigate('/auth/otp')
+  // };
 
   return (
-    // <Wrapper>
-
-    //   <ImageSide src={authImg} />
     <FormSide>
       <Card>
         <Title><img src={logo} /> Create an Account</Title>
-
         <StyledForm onSubmit={handleSubmit}>
+
           <Input
+            name="name"
             type="text"
             placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            value={formData.name}
+            onChange={handleChange}
             required
           />
 
           <Input
+            name="phone"
             type="tel"
             placeholder="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={formData.phone}
+            onChange={handleChange}
             required
           />
 
           <Input
+            name="email"
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
             required
           />
 
           <InputWrapper>
             <PasswordInput
+              name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
+
             <IconWrapper onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </IconWrapper>
           </InputWrapper>
 
-          <Button type="submit" onClick={goToOtp}>Signup</Button>
+          <Button type="submit">Signup</Button>
+
           <div className='loginButton'>
             <p>Already have an account? <a onClick={goToLogin}>Login</a></p>
             <h3> Signup with</h3>
@@ -98,11 +126,10 @@ export default function Signup() {
                 <img src={facebook} alt="" />
               </button>
             </div>
-
           </div>
+
         </StyledForm>
       </Card>
     </FormSide>
-    // </Wrapper>
   );
 }
