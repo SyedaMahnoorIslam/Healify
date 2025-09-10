@@ -70,6 +70,15 @@ export const Menu = styled.ul`
   padding: 0;
   margin: 0;
   flex: 1;
+
+  .active {
+  background-color: var(--color-primary-light);
+  color: #fff;
+  border-radius: 8px;
+  svg{
+    color:#fff;
+  }
+}
 `;
 
 export const MenuItem = styled.li`

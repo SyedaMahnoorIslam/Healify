@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { productCards } from '../../../helpers/dummyData'; // Assuming this is the correct path
+import { productCards } from '../../../helpers/dummyData'; 
 import {
-    Card, Main, Grid, Discount, Image, ProductName, Detail, Price, Button, Wishlist, Top, Button1, ButtonGroup, PrescriptionTag // Import the new styled component
+    Card, Main, Grid, Discount, Image, ProductName, Detail, Price, Button, Wishlist, Top, Button1, ButtonGroup, PrescriptionTag 
 } from "./style";
 import { useNavigate } from 'react-router-dom';
 import { FaRegHeart } from "react-icons/fa";

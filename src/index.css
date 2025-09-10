@@ -9,36 +9,36 @@
   --color-primary-light: #1c9f94; /* hover or very light background */
 
   /* Accent / Supporting Pastels */
-  --color-accent-green: #7fd8b1; /* soft green (like pills in image) */
+  --color-accent-green: #7fd8b1; /* soft green */
   --color-accent-pink: #ffbdd5; /* soft baby pink */
   --color-accent-yellow: #fff3c9; /* light pastel yellow */
   --color-alert: #dc3545;
 
   /* Neutrals */
-  --color-bg: #ffffff; /* very light mint/off-white */
-  --color-section: #eaf8f6; /* light section background */
+  --color-bg: #ffffff; 
+  --color-section: #eaf8f6;
   --color-text-primary: #1c1c1c;
   --color-text-secondary: #666666;
   --color-border: #d5e6e5;
 }
 
-/* ===== Dark Theme ===== */
+/* ===== Dark Theme (White Background, Indigo/Blue Shades) ===== */
 [data-theme="dark"] {
-  --color-primary: #4aa7a0;
-  --color-primary-light: #294749;
+  --color-primary: #3b82f6; /* bright blue */
+  --color-primary-light: #1e40af; /* deep indigo hover */
 
-  /* Desaturated accents */
-  --color-accent-green: #649b82;
-  --color-accent-pink: #b58593;
-  --color-accent-yellow: #9c9271;
-  --color-alert: #dc3545; /* Alert color usually stays the same */
+  /* Accents (cool palette) */
+  --color-accent-green: #38bdf8; /* cyan-blue */
+  --color-accent-pink: #818cf8;  /* soft indigo pink */
+  --color-accent-yellow: #fcd34d; /* golden yellow */
+  --color-alert: #ef4444; /* strong red */
 
-  /* Neutrals */
-  --color-bg: #0f1a1c; /* Dark background */
-  --color-section: #182425; /* Darker section background */
-  --color-text-primary: #f8fafc; /* Light primary text */
-  --color-text-secondary: #b9c0c6; 
-  --color-border: #304346; 
+  /* Neutrals (background stays white) */
+  --color-bg: #ffffff; 
+  --color-section: #f1f5f9; /* very light gray-blue */
+  --color-text-primary: #111827; /* dark navy text */
+  --color-text-secondary: #475569; /* muted blue-gray text */
+  --color-border: #cbd5e1; /* light gray-blue border */
 }
 
 body {
@@ -46,7 +46,7 @@ body {
   padding: 0;
   font-family: var(--font-primary);
   overflow-x: hidden;
-  background-color: var(--color-bg); 
-  color: var(--color-text-primary); 
-  transition: background-color 0.3s ease, color 0.3s ease; 
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

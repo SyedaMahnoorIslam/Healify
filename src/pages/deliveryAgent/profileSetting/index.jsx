@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import ProfileImg from '../../../assets/images/profile.png'
 import {
-Container, HeaderCard,ProfileImage,UserInfo,DetailsCard,Form,FormRow,Input,SaveButton,
+  Container, HeaderCard, ProfileImage, UserInfo, DetailsCard, Form, FormRow, Input, SaveButton,
 
 } from './style'
 const ProfilePage = () => {

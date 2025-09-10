@@ -8,7 +8,7 @@ DAImage
 } from './style';
 import DeliveryAgentPic from '../../../assets/images/Delivery-Agent1.png'
 import DateComponent from "../../../components/dateComponent";
-export default function DeliveryDashboard() {
+ function DeliveryDashboard() {
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -117,4 +117,4 @@ export default function DeliveryDashboard() {
       )}
     </DashboardWrapper>
   );
-}
+}export default DeliveryDashboard

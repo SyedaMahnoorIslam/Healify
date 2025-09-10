@@ -13,9 +13,8 @@ const AppRoutes = () => {
         <Route path='/' element={<Navigate to={'/auth/login'}/>}/>
         <Route path='/auth/*' element={<AuthRoutes/>}/>
         <Route path='/customer/*' element={<CustomerRoutes/>}/>
-        <Route path='/deliveryAgent/*' element={<DeliveryAgentRoutes/>}/>
+        <Route path='/delivery-agent/*' element={<DeliveryAgentRoutes/>}/>
         <Route path='admin/*' element={<AdminRoutes/>}/>
-
       </Routes>
     </div>
   )

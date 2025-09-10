@@ -1,12 +1,9 @@
 import React from "react";
 import LogoImg from "../../assets/images/logo-image.png";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+
 import {
   FaHome,
-  FaListAlt,
-  FaBoxOpen,
-  FaBell,
-  FaUserCircle,
-  FaSignOutAlt,
   FaPills,
   FaShoppingCart,
   FaUser,
@@ -23,37 +20,58 @@ import {
   Image,
   Name,
 } from "./style";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaFilePrescription } from "react-icons/fa6";
- 
+import { Roles } from "../../enum/roles";
+
 const Sidebar = () => {
   const navigate = useNavigate();
-  const goToDashboard= () =>{
-       navigate('/admin/dashboard')
-  } 
-  const goToMedicineManagment= () =>{
-       navigate('/admin/medicineManagment')
-  }
-   const goToOrderManagment= () =>{
-       navigate('/admin/orderManagment')
-  }
-  const goToPrescriptionManagment= () =>{
-       navigate('/admin/prescriptionManagment')
-  }
-   const goToCustomerManagment= () =>{
-       navigate('/admin/customerManagment')
-  } 
-  const goToReportAnalytics= () =>{
-       navigate('/admin/report&Analytics')
-  } 
-  const goToCMSManagment= () =>{
-       navigate('/admin/cmsManagment')
-  } 
-  const goTodeliveryAgentmangment= () =>{
-       navigate('/admin/deliveryAgentManagment')
-  } 
- 
-   
+  const location = useLocation();
+  // const goToDashboard= () =>{
+  //      navigate('/admin/dashboard')
+  // } 
+  // const goToMedicineManagment= () =>{
+  //      navigate('/admin/medicineManagment')
+  // }
+  //  const goToOrderManagment= () =>{
+  //      navigate('/admin/orderManagment')
+  // }
+  // const goToPrescriptionManagment= () =>{
+  //      navigate('/admin/prescriptionManagment')
+  // }
+  //  const goToCustomerManagment= () =>{
+  //      navigate('/admin/customerManagment')
+  // } 
+  // const goToReportAnalytics= () =>{
+  //      navigate('/admin/report&Analytics')
+  // } 
+  // const goToCMSManagment= () =>{
+  //      navigate('/admin/cmsManagment')
+  // } 
+  // const goTodeliveryAgentmangment= () =>{
+  //      navigate('/admin/deliveryAgentManagment')
+  // } 
+
+  const adminMenu = [
+    { label: "Dashboard", icon: <FaHome />, path: "/admin/dashboard" },
+    { label: "Medicine Managment", icon: <FaPills />, path: "/admin/medicineManagment" },
+    { label: "Prescription Managment", icon: <FaFilePrescription />, path: "/admin/prescriptionManagment" },
+    { label: "Order Managment", icon: <FaShoppingCart />, path: "/admin/orderManagment" },
+    { label: "Customer Managment", icon: <FaUser />, path: "/admin/customerManagment" },
+    { label: "DA Managment", icon: <FaUser />, path: "/admin/deliveryAgentManagment" },
+    { label: "Report & Analysis", icon: <FaChartBar />, path: "/admin/report&Analytics" },
+    { label: "CMS Managment", icon: <FaCog />, path: "/admin/cmsManagment" },
+  ];
+  const deliveryAgentMenu = [
+    { label: "Dashboard", icon: <FaHome />, path: "/delivery-agent/delivery-dashboard" },
+    { label: "Profile & Setting", icon: <MdOutlineAdminPanelSettings />, path: "/delivery-agent/profile-setting" },
+  ];
+  const userRole = localStorage.getItem("role") || Roles.ADMIN;
+  let menuItems = [];
+  if (userRole === Roles.ADMIN) menuItems = adminMenu;
+  else if (userRole === Roles.DELIVERYAGENT) menuItems = deliveryAgentMenu;
+
+
   return (
     <SidebarContainer>
       <Logo>
@@ -61,38 +79,16 @@ const Sidebar = () => {
         <Name>Healify</Name>
       </Logo>
       <Menu>
-        <MenuItem onClick={goToDashboard}>
-          <IconWrapper><FaHome /></IconWrapper>
-          <Label>Dashboard</Label>
-        </MenuItem>
-        <MenuItem onClick={goToMedicineManagment}>
-          <IconWrapper><FaPills /></IconWrapper>
-          <Label>Medicine Managment</Label>
-        </MenuItem>
-        <MenuItem onClick={goToPrescriptionManagment}>
-          <IconWrapper><FaFilePrescription /></IconWrapper>
-          <Label>Prescription Managment</Label>
-        </MenuItem>
-        <MenuItem onClick={goToOrderManagment}>
-          <IconWrapper><FaShoppingCart /></IconWrapper>
-          <Label>Order Managment</Label>
-        </MenuItem>
-        <MenuItem onClick={goToCustomerManagment}>
-          <IconWrapper><FaUser /></IconWrapper>
-          <Label>Customer Managment</Label>
-        </MenuItem>
-        <MenuItem onClick={goTodeliveryAgentmangment}>
-          <IconWrapper><FaUser /></IconWrapper>
-          <Label>DA Managment</Label>
-        </MenuItem>
-        <MenuItem onClick={goToReportAnalytics}>
-          <IconWrapper><FaChartBar /></IconWrapper>
-          <Label>Report & Analysis</Label>
-        </MenuItem>
-        <MenuItem onClick={goToCMSManagment}>
-          <IconWrapper><FaCog /></IconWrapper>
-          <Label>CMS Managment</Label>
-        </MenuItem>
+        {menuItems.map((item) => (
+          <MenuItem
+            key={item.path}
+            onClick={() => navigate(item.path)}
+            className={location.pathname === item.path ? "active" : ""}
+          >
+            <IconWrapper>{item.icon}</IconWrapper>
+            <Label>{item.label}</Label>
+          </MenuItem>
+        ))}
       </Menu>
     </SidebarContainer>
   );

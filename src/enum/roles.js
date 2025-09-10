@@ -1,5 +1,5 @@
-export enum Roles = {
- ADMIN = 'ADMIN',
- CUSTOMER = 'CUSTOMER',
- DELIVERYAGENT = 'DELIVERY_AGENT',
+export const Roles = {
+ ADMIN : 'ADMIN',
+ CUSTOMER : 'CUSTOMER',
+ DELIVERYAGENT : 'DELIVERY_AGENT',
 } 

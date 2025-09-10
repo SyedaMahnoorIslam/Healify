@@ -34,22 +34,8 @@ export default function LoginPage() {
 
   const navigate = useNavigate('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://192.168.100.163:3000/api/auth/login",
-        formData
-      );
-      console.log("Login Successful:", response.data);
-      alert("Login Successful!");
-      localStorage.setItem("token", response.data.token);
-      navigate("/customer/medicine");
-    } catch (error) {
-      console.error("Login Failed:", error);
-      alert("Invalid email or password");
-    }
-  };
+  const handleSubmit =(e) => {
+    e.preventDefault();  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);

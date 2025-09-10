@@ -619,69 +619,60 @@ export const DropdownMenu = styled.ul`
 `;
 
 /* Theme Toggle Button */
-// export const ThemeToggle = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   cursor: pointer;
-//   margin-left: 0.5rem; 
-// `;
+export const ThemeToggle = styled.div`
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 0.5rem;  */
+`;
 
-// export const ToggleSwitch = styled.label`
-//   position: relative;
-//   display: inline-block;
-//   width: 50px;
-//   height: 24px;
-//   background-color: ${(props) => (props.checked ? "var(--color-primary-light)" : "#ccc")};
-//   border-radius: 24px;
-//   cursor: pointer;
-//   transition: background-color 0.3s;
+export const ToggleSwitch = styled.label`
+  /* display: inline-block;
+  width: 50px;
+  height: 24px;
+  background-color: ${(props) => (props.checked ? "var(--color-primary-light)" : "#ccc")};
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s; */
+  
+  input {
+    /* opacity: 0;
+    width: 0;
+    height: 0; */
+  }
+`;
 
-//   input {
-//     opacity: 0;
-//     width: 0;
-//     height: 0;
-//   }
-// `;
-
-// export const ToggleSlider = styled.span`
-//   position: absolute;
-//   top: 2px;
-//   left: 2px;
-//   width: 20px;
-//   height: 20px;
-//   background-color: white;
-//   border-radius: 50%;
-//   transition: transform 0.3s;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   color: ${(props) => (props.checked ? "#f1c40f" : "#ccc")};
-// `;
+export const ToggleSlider = styled.span`
+  /* background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => (props.checked ? "#f1c40f" : "#ccc")}; */
+`;
 
 /* Hamburger */
 export const Hamburger = styled.div`
   display: none;
   flex-direction: column;
-  gap: 4px; /* Slightly smaller gap */
+  gap: 4px;
   cursor: pointer;
-  padding: 5px; /* Add padding for easier clicking */
+  padding: 5px; 
 
   span {
-    width: 22px; /* Slightly smaller width */
+    width: 22px; 
     height: 3px;
     background-color: var(--color-text-primary);
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
   }
 
-  /* Hamburger animation on open */
-  /* This would typically be controlled by JS adding a class, but for styled-components, we can assume it might be needed */
-  /* If you have a 'menuOpen' class, you could add styles here */
 
   @media (max-width: 768px) {
-    display: flex; /* Show hamburger on mobile */
-    margin-left: 0.5rem; /* Space from the right section */
+    display: flex;
+    margin-left: 0.5rem; 
   }
 `;
 
@@ -694,34 +685,34 @@ export const MobileMenu = styled.div`
     width: 100%;
     background-color: var(--color-bg);
     border-top: 1px solid var(--color-border);
-    padding-top: 0.5rem; /* Add padding at the top */
-    padding-bottom: 0.5rem; /* Add padding at the bottom */
+    padding-top: 0.5rem; 
+    padding-bottom: 0.5rem; 
 
     ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem; /* Slightly reduced gap */
-      padding: 0; /* Reset padding */
+      gap: 0.75rem; 
+      padding: 0; 
       margin: 0;
     }
 
     li {
-      padding: 0.5rem 1rem; /* Consistent padding for links */
+      padding: 0.5rem 1rem; 
     }
 
     li a {
       font-size: 1rem;
       color: var(--color-text-primary);
       cursor: pointer;
-      display: block; /* Make the whole link area clickable */
-      padding: 0.5rem 0; /* Add vertical padding to links */
+      display: block;
+      padding: 0.5rem 0; 
     }
 
     li a.active {
       color: var(--color-primary);
       font-weight: 600;
-      /* Removed border-bottom from mobile menu for cleaner look */
+      
     }
   }
 `;

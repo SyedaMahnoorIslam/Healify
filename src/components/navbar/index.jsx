@@ -4,7 +4,7 @@ import Logo from "../../assets/images/logo-image.png";
 import profile from "../../assets/images/profile.png";
 import { MdNotificationsNone, MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa6";
-import { FaSun, FaMoon } from "react-icons/fa"; 
+import { FaSun, FaMoon } from "react-icons/fa";
 
 import {
   StyledNav,
@@ -17,15 +17,15 @@ import {
   Nav,
   Hamburger,
   MobileMenu,
-  ThemeToggle, 
-  ToggleSwitch, 
-  ToggleSlider, 
+  ThemeToggle,
+  ToggleSwitch,
+  ToggleSlider,
 } from "./style";
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light"); 
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const navigate = useNavigate();
@@ -41,7 +41,6 @@ export default function Navbar() {
   const handleThemeToggle = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
-  // --- End Theme Toggle Logic ---
 
   const handleNavClick = (path) => {
     setMenuOpen(false);

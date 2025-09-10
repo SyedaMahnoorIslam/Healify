@@ -4,7 +4,6 @@ export const Main = styled.div`
  display: flex;
  width: 100%;
  box-sizing: border-box;
- gap: 1rem;
 .sidebar {
  
 }
@@ -13,7 +12,6 @@ export const Main = styled.div`
   width: 100%;
   max-height: 100vh;
   overflow-y: auto;
-  
   @media (max-width:769px) {
     padding: 1px;
   }
