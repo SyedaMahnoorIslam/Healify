@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import logo from '../../assets/images/logo-image.png';
 import {
   FormSide,
@@ -10,46 +9,40 @@ import {
   Button,
 } from "./style";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useForm } from "react-hook-form";
 
 export default function OtpVerify() {
-  const [otp, setOtp] = useState("");
-  const navigate = useNavigate('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://192.168.100.163:3000/api/auth/verify-otp",
-        { otp }  
-      );
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-      console.log("OTP Verified Successfully:", response.data);
-      alert("OTP Verified Successfully!");
-
-    
-      navigate("/auth/login");
-
-    } catch (error) {
-      console.error("OTP Verification Failed:", error);
-      alert("Invalid OTP, please try again.");
-    }
+  const onSubmit = (data) => {
+    alert("OTP Verified Successfully!");
+    navigate("/auth/resetPassword");
   };
 
   return (
     <FormSide>
       <Card>
-        <Title><img src={logo} alt="logo" /> OTP Verification</Title>
+        <Title>
+          <img src={logo} alt="logo" /> OTP Verification
+        </Title>
 
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="text"
             placeholder="Enter 6 digit OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
+            {...register("otp", {
+              required: "OTP is required",
+              pattern: {
+                value: /^[0-9]{6}$/,
+                message: "OTP must be 6 digits",
+              },
+            })}
             maxLength={6}
+            autoFocus
           />
+          {errors.otp && <span style={{ color: "red" }}>{errors.otp.message}</span>}
 
           <Button type="submit">Verify</Button>
         </StyledForm>

@@ -31,7 +31,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // --- Theme Toggle Logic ---
+  // Theme Toggle Logic
   useEffect(() => {
     const root = window.document.documentElement;
     root.setAttribute("data-theme", theme);
@@ -146,7 +146,7 @@ export default function Navbar() {
               <DropdownMenu>
                 <li onClick={goToProfile}>Profile</li>
                 <li onClick={goToSupport}>Support</li>
-                <li>Logout</li>
+                <li logout>Logout</li>
               </DropdownMenu>
             )}
           </Profile>

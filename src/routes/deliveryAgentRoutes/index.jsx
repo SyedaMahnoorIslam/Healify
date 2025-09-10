@@ -16,5 +16,4 @@ const DeliveryAgentRoutes = () => {
     </>
   )
 }
-
 export default DeliveryAgentRoutes

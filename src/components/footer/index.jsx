@@ -30,10 +30,10 @@ const Footer = () => {
             <p>Your trusted partner for health and wellness.</p>
           </LogoContainer>
           <SocialLinks>
-            <SocialLinkItem href="#"><FaFacebookF /></SocialLinkItem>
-            <SocialLinkItem href="#"><FaInstagram /></SocialLinkItem>
-            <SocialLinkItem href="#"><FaTwitter /></SocialLinkItem>
-            <SocialLinkItem href="#"><FaLinkedin /></SocialLinkItem>
+            <SocialLinkItem style={{color:"blue"}} href="#"><FaFacebookF /></SocialLinkItem>
+            <SocialLinkItem style={{color:"red"}} href="#"><FaInstagram /></SocialLinkItem>
+            <SocialLinkItem style={{color:"black"}} href="#"><FaTwitter /></SocialLinkItem>
+            <SocialLinkItem  style={{color:"darkblue"}} href="#"><FaLinkedin /></SocialLinkItem>
           </SocialLinks>
         </FooterSection>
 

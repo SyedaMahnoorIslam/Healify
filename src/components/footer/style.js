@@ -51,14 +51,25 @@ export const LogoContainer = styled.div`
 export const SocialLinks = styled.div`
     display: flex;
     gap: 1rem;
+    
+
 `;
 
 export const SocialLinkItem = styled.a`
-    color: #fff;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-    
-    &:hover {
+   background-color: #fff;
+   border-radius: 5px;
+   justify-content: center;
+   align-items: center;
+   padding: 5px;
+   color: #fff;
+   font-size: 1.2rem;
+   transition: color 0.3s ease;
+     box-shadow: 0px 3px 10px rgba(248, 248, 248, 1);
+
+
+   &:hover {
+     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
         color: var(--color-secondary);
     }
 `;

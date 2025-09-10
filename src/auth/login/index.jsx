@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import google from '../../assets/icons/google-icon.svg'
 import facebook from '../../assets/icons/Vector.svg'
 import logo from '../../assets/images/logo-image.png'
@@ -14,28 +15,24 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import axios from "axios";
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const [isChecked, setIsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
-  const navigate = useNavigate('');
+  const navigate = useNavigate();
 
-  const handleSubmit =(e) => {
-    e.preventDefault();  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("Form Submitted:", data);
+
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -47,40 +44,54 @@ export default function LoginPage() {
   return (
     <FormSide>
       <Card>
-        <Title> 
-          <img src={logo} alt="logo"/>
-          Welcome Back! <br/> Login to Your Account
+        <Title>
+          <img src={logo} alt="logo" />
+          Welcome Back! <br /> Login to Your Account
         </Title>
 
-        <StyledForm onSubmit={handleSubmit}>
+        <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <InputWrapper>
             <Input
               type="email"
-              name="email" 
               placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Enter a valid email address",
+                },
+              })}
             />
           </InputWrapper>
+          {errors.email && (
+            <p style={{ color: "red", fontSize: "0.8rem" }}>{errors.email.message}</p>
+          )}
+
 
           <InputWrapper>
             <Input
               type={showPassword ? "text" : "password"}
-              name="password"   
               placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
             />
             <IconWrapper onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             </IconWrapper>
           </InputWrapper>
+          {errors.password && (
+            <p style={{ color: "red", fontSize: "0.8rem" }}>{errors.password.message}</p>
+          )}
 
           <Button type="submit">Login</Button>
+
           
-          <div className='checkbox'>
+          <div className="checkbox">
             <label>
               <input
                 type="checkbox"
@@ -92,12 +103,15 @@ export default function LoginPage() {
             <h4 onClick={goToForgetPassword}>Forgot Password?</h4>
           </div>
 
-          <div className='loginButton'>
-            <p>Do you have an account? <a onClick={goToSignup}>SignUp</a></p>
+          
+          <div className="loginButton">
+            <p>
+              Do you have an account? <a onClick={goToSignup}>SignUp</a>
+            </p>
             <h3>OR</h3>
             <div>
-              <button><img src={google} alt="google"/></button>
-              <button><img src={facebook} alt="facebook"/></button>
+              <button type="button"><img src={google} alt="google" /></button>
+              <button type="button"><img src={facebook} alt="facebook" /></button>
             </div>
           </div>
         </StyledForm>

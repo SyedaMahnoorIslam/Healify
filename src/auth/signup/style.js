@@ -1,38 +1,4 @@
 import styled from "styled-components";
-
-// export const Wrapper = styled.div`
-//   display: flex;
-//   min-height: 100vh;
-//   overflow-x: hidden;
-
-//   @media (max-width: 960px) {
-//     flex-direction: column;
-//   }
-
-//   .checkbox{
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
-
-
-//     h4{
-//         color: var(--color-primary-light);
-//         cursor: pointer;
-//     }
-
-//    }
-// `;
-
-// export const ImageSide = styled.img`
-//   width: 50%;
-//   object-fit: cover;
-
-
-//   @media (max-width: 960px) {
-//     display: none;
-//   }
-// `;
-
 export const FormSide = styled.div`
   width: 50%;
   display: flex;
