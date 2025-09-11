@@ -45,7 +45,7 @@ export const Image = styled.div`
    justify-content: center;
   img{
     height: 3rem;
-    width: 3rem;
+     width: 3rem;
      @media (max-width: 675px) {
     height: 3.5rem;
     width: 3.5rem;

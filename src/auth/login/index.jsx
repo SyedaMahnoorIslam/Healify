@@ -15,10 +15,12 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import UseAuth from "../useHook";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const {login} = UseAuth()
 
   const navigate = useNavigate();
 
@@ -31,7 +33,9 @@ export default function LoginPage() {
 
   const onSubmit = (data) => {
     console.log("Form Submitted:", data);
-
+    login(data)
+    // navigate("/customer/medicine")
+    
   };
 
   const handleCheckboxChange = () => {
@@ -40,6 +44,8 @@ export default function LoginPage() {
 
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
+
+
 
   return (
     <FormSide>
@@ -106,7 +112,7 @@ export default function LoginPage() {
           
           <div className="loginButton">
             <p>
-              Do you have an account? <a onClick={goToSignup}>SignUp</a>
+              Do you have an account? <a  onClick={goToSignup}>SignUp</a>
             </p>
             <h3>OR</h3>
             <div>
@@ -114,6 +120,7 @@ export default function LoginPage() {
               <button type="button"><img src={facebook} alt="facebook" /></button>
             </div>
           </div>
+          
         </StyledForm>
       </Card>
     </FormSide>

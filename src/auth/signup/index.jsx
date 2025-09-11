@@ -16,16 +16,25 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import UseAuth from "../useHook";
+
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { signup } = UseAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = () => {
+
+
+  const onSubmit = (params) => {
+    console.log("Form Submitted:", params);
+    signup(params)
+    
   };
 
   const goToLogin = () => navigate('/auth/login');

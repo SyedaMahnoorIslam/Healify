@@ -10,8 +10,7 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
-export default function OtpVerify() {
+ function OtpVerify() {
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -49,4 +48,4 @@ export default function OtpVerify() {
       </Card>
     </FormSide>
   );
-}
+} export default OtpVerify

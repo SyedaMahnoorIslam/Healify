@@ -27,31 +27,6 @@ import { Roles } from "../../enum/roles";
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // const goToDashboard= () =>{
-  //      navigate('/admin/dashboard')
-  // } 
-  // const goToMedicineManagment= () =>{
-  //      navigate('/admin/medicineManagment')
-  // }
-  //  const goToOrderManagment= () =>{
-  //      navigate('/admin/orderManagment')
-  // }
-  // const goToPrescriptionManagment= () =>{
-  //      navigate('/admin/prescriptionManagment')
-  // }
-  //  const goToCustomerManagment= () =>{
-  //      navigate('/admin/customerManagment')
-  // } 
-  // const goToReportAnalytics= () =>{
-  //      navigate('/admin/report&Analytics')
-  // } 
-  // const goToCMSManagment= () =>{
-  //      navigate('/admin/cmsManagment')
-  // } 
-  // const goTodeliveryAgentmangment= () =>{
-  //      navigate('/admin/deliveryAgentManagment')
-  // } 
-
   const adminMenu = [
     { label: "Dashboard", icon: <FaHome />, path: "/admin/dashboard" },
     { label: "Medicine Managment", icon: <FaPills />, path: "/admin/medicineManagment" },
@@ -66,11 +41,11 @@ const Sidebar = () => {
     { label: "Dashboard", icon: <FaHome />, path: "/delivery-agent/delivery-dashboard" },
     { label: "Profile & Setting", icon: <MdOutlineAdminPanelSettings />, path: "/delivery-agent/profile-setting" },
   ];
-  const userRole = localStorage.getItem("role") || Roles.ADMIN;
+  const userRole = localStorage.getItem("role") || Roles.DELIVERYAGENT;
   let menuItems = [];
   if (userRole === Roles.ADMIN) menuItems = adminMenu;
   else if (userRole === Roles.DELIVERYAGENT) menuItems = deliveryAgentMenu;
-
+  
 
   return (
     <SidebarContainer>

@@ -1,31 +1,24 @@
 import './App.css';
-import Footer from './components/footer/index.jsx';
 import AppRoutes from './AppRoutes.jsx';
-import Navbar from './components/navbar/index.jsx';
-import Medicine from './pages/customer/medicine/index.jsx';
-import ProductDetailPage from './pages/customer/productDetail/index.jsx';
-import NotificationScreen from './pages/customer/notification/index.jsx';
-import CartPage from './pages/customer/cart/addToCart/index.jsx';
-import AddToCart from './pages/customer/cart/addToCart/index.jsx';
-import LoginPage from './auth/login/index.jsx';
-import Checkout from './pages/customer/checkout/index.jsx';
-import AdminDashboard from './pages/admin/dashboard/index.jsx';
-import PrescriptionManagement from './pages/admin/perscriptionManagment/index.jsx';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
-     <AppRoutes/>
-     {/* <PrescriptionManagement/> */}
-      {/* <AdminDashboard/> */}
-     {/* <Checkout/> */}
-     {/* <OrdersDetail/> */}
-     {/* <AddToCart/> */}
-     {/* <Navbar/>
-     <Medicine/>
-     <ProductDetailPage/>
-     <Footer/>  */}
-     
+      <AppRoutes />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }
