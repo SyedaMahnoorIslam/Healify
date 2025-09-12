@@ -1,12 +1,16 @@
 import React from 'react'
 import { ApiEndPoints } from '../libs/http-service/api/endPoint'
 import toastr from 'toastr'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Roles } from '../enum/roles';
 const UseAuth = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    //--------------- Login ----------------
+
     const login = async (body) => {
         try {
             const response = await ApiEndPoints.login(body);
@@ -16,29 +20,35 @@ const UseAuth = () => {
             } else {
                 toast.error(response?.error || "Something went wrong");
             }
-            // For Role Base login
+            // For Role Base and verified login
             const role = response?.data?.user?.role;
-            if (role) {
+            if (role) {   //store Role
                 localStorage.setItem("role", role);
             }
-            const verified = response?.data?.user?.isVerified;
-            const isVerified = (verified === true || verified === "true");
+            // check user verification status
+            const verified = response?.data?.isVerified;
+            const Verified = (verified === true || verified === "true");
             const isNotVerified = (verified === false || verified === "false");
             console.log("isVerified from backend:", response?.data?.isVerified);
-            console.log("isVerified from backend 2:", response?.data?.user?.isVerified);
+            //Navigation on base of Role and verification status
+            if (role === Roles.CUSTOMER && Verified) {
+                toast.success("Welcome to the HEALIFY");
+                setTimeout(() => navigate("/customer/medicine"), 300);
+                return;
+            } else if (role === Roles.ADMIN && Verified) {
+                toast.success("Welcome to the HEALIFY");
+                setTimeout(() => navigate("/admin/dashboard"), 300);
+                return;
 
+            } else if (role === Roles.DELIVERYAGENT && Verified) {
+                toast.success("Welcome to the HEALIFY");
+                setTimeout(() => navigate("/delivery-agent/delivery-dashboard"), 300);
+                return;
 
-            if (isNotVerified) {
+            } else if (isNotVerified) {
                 toast.info("Please verify your account with OTP");
                 setTimeout(() => navigate("/auth/otp"), 500);
                 return;
-            }
-            else if (role === Roles.CUSTOMER && isVerified) {
-                navigate("/customer/medicine");
-            } else if (role === Roles.ADMIN && isVerified) {
-                navigate("/admin/dashboard");
-            } else if (role === Roles.DELIVERYAGENT && isVerified) {
-                navigate("/delivery-agent/delivery-dashboard");
             } else {
                 console.warn("No role found: ", response);
             }
@@ -48,6 +58,8 @@ const UseAuth = () => {
         }
     };
 
+
+    //--------------- Signup ----------------
     const signup = async (params) => {
         const response = await ApiEndPoints.signup(params)
         if (response?.data) {
@@ -59,27 +71,22 @@ const UseAuth = () => {
         }
     }
 
-    const otp = async (params) => {
-        const response = await ApiEndPoints.otp(params)
-        if (response?.data) {
-            toastr.success(response.message);
-            const role = response?.data?.user?.role;
-            const verified = response?.data?.isVerified;
-
-            const isVerified = (verified === true)
-            if (role === Roles.CUSTOMER && isVerified) {
-                navigate("/customer/medicine");
-            } else if (role === Roles.ADMIN && isVerified) {
-                navigate("/admin/dashboard");
-            } else if (role === Roles.DELIVERYAGENT && isVerified) {
-                navigate("/delivery-agent/delivery-dashboard");
+    const otp = async (body) => {
+        const response = await ApiEndPoints.otp(body);
+        const userEmail = response?.data?.email;
+        const typeOnLocation = () => {
+            if (location.pathname === '/auth/signup' || location.pathname === '/auth/login') {
+                return 'registration'
+            } else if (location.pathname === '/auth/forgetPassword') {
+                return 'password-reset'
             } else {
-                console.warn("No role found: ", response);
+                toast.error('Inavlid Path')
             }
-        } else {
-            toastr.error(response.error);
-
         }
+        const otpType = typeOnLocation();
+        // console.log("OTP TYPE :", otpType);
+        // console.log("USER EMAIL :", userEmail);
+        body = { email:userEmail ,type: otpType , otp: otp}
     }
     return { login, signup, otp, }
 }

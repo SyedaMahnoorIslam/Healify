@@ -10,15 +10,19 @@ import {
 } from "./style";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import UseAuth from '../useHook';
 
 export default function ForgetPassword() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
+  const { register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+  const { forgetPassword } = UseAuth();
   const onSubmit = (data) => {
-    const { email } = data;
-
-    alert("Reset link sent to " + email);
+    // const { email } = data;
+    // alert("Reset link sent to " + email);
+    forgetPassword(data)
     navigate('/auth/resetPassword');
   };
 

@@ -41,10 +41,10 @@ const Sidebar = () => {
     { label: "Dashboard", icon: <FaHome />, path: "/delivery-agent/delivery-dashboard" },
     { label: "Profile & Setting", icon: <MdOutlineAdminPanelSettings />, path: "/delivery-agent/profile-setting" },
   ];
-  const userRole = localStorage.getItem("role") || Roles.DELIVERYAGENT;
+  const userRole = localStorage.getItem("role");
   let menuItems = [];
-  if (userRole === Roles.ADMIN) menuItems = adminMenu;
-  else if (userRole === Roles.DELIVERYAGENT) menuItems = deliveryAgentMenu;
+  if (userRole === Roles.ADMIN || location.pathname ==='/admin/*') menuItems = adminMenu;
+  else if (userRole === Roles.DELIVERYAGENT || location.pathname ==='/delivery-agent/*') menuItems = deliveryAgentMenu;
   
 
   return (

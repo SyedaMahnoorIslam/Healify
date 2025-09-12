@@ -38,9 +38,9 @@ export default function Navbar() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const handleThemeToggle = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  // const handleThemeToggle = () => {
+  //   setTheme(theme === "light" ? "dark" : "light");
+  // };
 
   const handleNavClick = (path) => {
     setMenuOpen(false);

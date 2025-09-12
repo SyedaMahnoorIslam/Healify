@@ -1,4 +1,3 @@
-
 import logo from '../../assets/images/logo-image.png';
 import {
   FormSide,
@@ -10,14 +9,40 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
- function OtpVerify() {
-  const navigate = useNavigate();
+import UseAuth from '../useHook';
+import { useEffect, useState } from "react";
 
+function OtpVerify() {
+  const navigate = useNavigate();
+  const { otp } = UseAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  // Timer for resend otp
+  const [timer, setTimer] = useState(30);
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
+
+  useEffect(() => {
+    let countdown;
+    if (timer > 0) {
+      countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else {
+      setIsResendDisabled(false);
+      clearInterval(countdown);
+    }
+    return () => clearInterval(countdown);
+  }, [timer]);
 
   const onSubmit = (data) => {
-    alert("OTP Verified Successfully!");
-    navigate("/auth/resetPassword");
+    console.log("Form Submitted:", data);
+    otp(data);
+  };
+
+  const handleResendOtp = () => {
+    console.log("Resend OTP clicked");
+    // Reset timer again
+    setTimer(30);
+    setIsResendDisabled(true);
   };
 
   return (
@@ -45,7 +70,19 @@ import { useForm } from "react-hook-form";
 
           <Button type="submit">Verify</Button>
         </StyledForm>
+
+        <div style={{ marginTop: "15px", textAlign: "center" }}>
+          {isResendDisabled ? (
+            <p style={{ color: "gray" }}>
+              Resend OTP in {timer}s
+            </p>
+          ) : (
+            <Button style={{ width: '100%', backgroundColor: 'var(--color-accent-pink)' }} onClick={handleResendOtp}>Resend OTP</Button>
+          )}
+        </div>
       </Card>
     </FormSide>
   );
-} export default OtpVerify
+}
+
+export default OtpVerify;
