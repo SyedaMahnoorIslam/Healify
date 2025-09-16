@@ -1,13 +1,13 @@
-import React from 'react'
+
 import { ApiEndPoints } from '../libs/http-service/api/endPoint'
 import toastr from 'toastr'
 import { toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Roles } from '../enum/roles';
 const UseAuth = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+
 
     //--------------- Login ----------------
 
@@ -22,8 +22,10 @@ const UseAuth = () => {
             }
             // For Role Base and verified login
             const role = response?.data?.user?.role;
-            if (role) {   //store Role
+            if (role) {
                 localStorage.setItem("role", role);
+            } else {
+                console.log("Role not found!")
             }
             // check user verification status
             const verified = response?.data?.isVerified;
@@ -47,7 +49,9 @@ const UseAuth = () => {
 
             } else if (isNotVerified) {
                 toast.info("Please verify your account with OTP");
-                setTimeout(() => navigate("/auth/otp"), 500);
+                setTimeout(() => navigate("/auth/otp-verify", {
+                    state: { email: response?.data?.email, type: "registration" }
+                }), 500);
                 return;
             } else {
                 console.warn("No role found: ", response);
@@ -64,30 +68,66 @@ const UseAuth = () => {
         const response = await ApiEndPoints.signup(params)
         if (response?.data) {
             toastr.success(response.message);
-            navigate("/auth/otp")
+            navigate("/auth/otp-verify", {
+                state: { email: response?.data?.email, type: "registration" }
+            })
         } else {
             toastr.error(response.error);
 
         }
     }
 
-    const otp = async (body) => {
-        const response = await ApiEndPoints.otp(body);
-        const userEmail = response?.data?.email;
-        const typeOnLocation = () => {
-            if (location.pathname === '/auth/signup' || location.pathname === '/auth/login') {
-                return 'registration'
-            } else if (location.pathname === '/auth/forgetPassword') {
-                return 'password-reset'
-            } else {
-                toast.error('Inavlid Path')
+    const otp = async ({ email, otp, type, isResend = false }) => {
+        try {
+            let body = { email, type };
+
+            if (!isResend) {
+                body.otp = otp;
             }
+
+
+            const response = await ApiEndPoints.otp(body);
+            console.log(response)
+            // Agar resend case hai
+            if (isResend) {
+                if (response?.success) {
+                    toast.info(response?.message || "OTP Resent Successfully!");
+                } else {
+                    toast.error(response?.error || "Failed to resend OTP");
+                }
+                return;
+            }
+
+            // OTP Verify case
+            if (
+                response?.message === "Email verified successfully! You can now log in." ||
+                response?.message === "This account is already verified."
+            ) {
+                toast.success(response?.message);
+
+                switch (type) {
+                    case "registration":
+                        setTimeout(() => navigate("/customer/medicine"), 500);
+                        break;
+
+                    case "password_reset":
+                        setTimeout(() => navigate("/auth/resetPassword"), 500);
+                        break;
+
+                    default:
+                        toast.error("Unknown OTP type");
+                        break;
+                }
+            } else {
+                toast.error(response?.message || "Invalid OTP");
+            }
+        } catch (error) {
+            toast.error("OTP API failed, please try again!");
+            console.error("OTP Error:", error);
         }
-        const otpType = typeOnLocation();
-        // console.log("OTP TYPE :", otpType);
-        // console.log("USER EMAIL :", userEmail);
-        body = { email:userEmail ,type: otpType , otp: otp}
-    }
+    };
+
+
     return { login, signup, otp, }
 }
 
