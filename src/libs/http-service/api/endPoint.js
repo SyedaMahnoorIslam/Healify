@@ -1,4 +1,4 @@
-import { postData } from "../methods";
+import { getData, postData } from "../methods";
 
 export const ApiEndPoints = {
   login: async (body) => await postData("/auth/login", body),
@@ -6,5 +6,5 @@ export const ApiEndPoints = {
   forgetPassword: async (body) => await postData("/auth/forgot-password", body),
   resetPassword: async (params) => await postData("/auth/reset-password", params),
   otp: async (body) => await postData("/auth/handle-otp", body),
-  google: async (body) => await postData("/auth/google", body),
+  google: async (body) => await getData("/auth/google", body),
 };

@@ -11,14 +11,19 @@ import {
   InputWrapper,
   IconWrapper,
 } from "./style";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form"; 
+import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import UseAuth from "../useHook";
 
 export default function ResetPassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { resetPassword } = UseAuth();
+  const email = location.state?.email;
+  const resetToken = location.state?.resetToken;
 
   const {
     register,
@@ -30,11 +35,16 @@ export default function ResetPassword() {
   const newPassword = watch("newPassword");
 
   const onSubmit = (data) => {
-    console.log("Password Reset Data:", data);
-    alert("Password reset successfully!");
-    navigate("/auth/login");
-  };
+    if (data.newPassword !== data.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
 
+    resetPassword({
+      resetToken,
+      password: data.newPassword
+    });
+  };
   return (
     <FormSide>
       <Card>
@@ -43,7 +53,7 @@ export default function ResetPassword() {
         </Title>
 
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          
+
           <InputWrapper>
             <Input
               type={showNewPassword ? "text" : "password"}

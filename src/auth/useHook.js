@@ -1,94 +1,53 @@
-
 import { ApiEndPoints } from '../libs/http-service/api/endPoint'
-import toastr from 'toastr'
 import { toast } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 import { Roles } from '../enum/roles';
+
 const UseAuth = () => {
     const navigate = useNavigate();
 
-
-    //--------------- Login ----------------
-
-    const login = async (body) => {
+    // -------- Login ----------
+    const login = async (data) => {
         try {
-            const response = await ApiEndPoints.login(body);
+            const response = await ApiEndPoints.login(data);
 
-            if (response?.message) {
-                toast.success(response.message);
+            if (response?.success || response?.message?.includes("success")) {
+                toast.success(response?.message || "Logged in successfully!");
+                handleNavigation(response?.data);
             } else {
-                toast.error(response?.error || "Something went wrong");
-            }
-            // For Role Base and verified login
-            const role = response?.data?.user?.role;
-            if (role) {
-                localStorage.setItem("role", role);
-            } else {
-                console.log("Role not found!")
-            }
-            // check user verification status
-            const verified = response?.data?.isVerified;
-            const Verified = (verified === true || verified === "true");
-            const isNotVerified = (verified === false || verified === "false");
-            console.log("isVerified from backend:", response?.data?.isVerified);
-            //Navigation on base of Role and verification status
-            if (role === Roles.CUSTOMER && Verified) {
-                toast.success("Welcome to the HEALIFY");
-                setTimeout(() => navigate("/customer/medicine"), 300);
-                return;
-            } else if (role === Roles.ADMIN && Verified) {
-                toast.success("Welcome to the HEALIFY");
-                setTimeout(() => navigate("/admin/dashboard"), 300);
-                return;
-
-            } else if (role === Roles.DELIVERYAGENT && Verified) {
-                toast.success("Welcome to the HEALIFY");
-                setTimeout(() => navigate("/delivery-agent/delivery-dashboard"), 300);
-                return;
-
-            } else if (isNotVerified) {
-                toast.info("Please verify your account with OTP");
-                setTimeout(() => navigate("/auth/otp-verify", {
-                    state: { email: response?.data?.email, type: "registration" }
-                }), 500);
-                return;
-            } else {
-                console.warn("No role found: ", response);
+                toast.error(response?.error || "Login failed!");
             }
         } catch (error) {
-            toast.error("Login failed, please try again");
-            console.error("Login error:", error);
+            toast.error("Login API failed!");
+            console.error("Login Error:", error);
         }
     };
 
-
     //--------------- Signup ----------------
     const signup = async (params) => {
-        const response = await ApiEndPoints.signup(params)
-        if (response?.data) {
-            toastr.success(response.message);
-            navigate("/auth/otp-verify", {
-                state: { email: response?.data?.email, type: "registration" }
-            })
-        } else {
-            toastr.error(response.error);
-
+        try {
+            const response = await ApiEndPoints.signup(params);
+            if (response?.data) {
+                toast.success(response?.message);
+                navigate("/auth/otp-verify", {
+                    state: { email: response?.data?.email, type: "registration" }
+                })
+            } else {
+                toast.error(response?.error || "Signup failed");
+            }
+        } catch (error) {
+            toast.error("Signup API failed!");
+            console.error(error);
         }
-    }
+    };
 
+    //--------------- Otp ----------------
     const otp = async ({ email, otp, type, isResend = false }) => {
         try {
-            let body = { email, type };
-
-            if (!isResend) {
-                body.otp = otp;
-            }
-
-
+            const body = { email, otp, type };
             const response = await ApiEndPoints.otp(body);
-            console.log(response)
-            // Agar resend case hai
+
             if (isResend) {
                 if (response?.success) {
                     toast.info(response?.message || "OTP Resent Successfully!");
@@ -98,25 +57,15 @@ const UseAuth = () => {
                 return;
             }
 
-            // OTP Verify case
-            if (
-                response?.message === "Email verified successfully! You can now log in." ||
-                response?.message === "This account is already verified."
-            ) {
-                toast.success(response?.message);
+            if (response?.message?.includes("verified")) {
+                toast.success(response.message);
 
-                switch (type) {
-                    case "registration":
-                        setTimeout(() => navigate("/customer/medicine"), 500);
-                        break;
-
-                    case "password_reset":
-                        setTimeout(() => navigate("/auth/resetPassword"), 500);
-                        break;
-
-                    default:
-                        toast.error("Unknown OTP type");
-                        break;
+                if (type === "registration") {
+                    navigate("/customer/medicine");
+                } else if (type === "password_reset") {
+                    navigate("/auth/resetpassword", {
+                        state: { resetToken: response?.data?.resetToken }
+                    });
                 }
             } else {
                 toast.error(response?.message || "Invalid OTP");
@@ -128,7 +77,88 @@ const UseAuth = () => {
     };
 
 
-    return { login, signup, otp, }
+    //--------------- Forget Password ----------------
+    const forgetPassword = async (body) => {
+        try {
+            const response = await ApiEndPoints.forgetPassword(body);
+            if (response?.data) {
+                toast.success(response?.message || "Password reset link sent to your email");
+                navigate("/auth/otp-verify", {
+                    state: { email: response?.data?.email, type: "password_reset" }
+                });
+            } else {
+                toast.error(response?.error || "Failed to send reset link");
+            }
+        } catch (error) {
+            toast.error("Forget Password API failed!");
+            console.error(error);
+        }
+    };
+
+    //--------------- Reset Password ----------------
+    const resetPassword = async ({ resetToken, password }) => {
+        try {
+            const response = await ApiEndPoints.resetPassword({ resetToken, password });
+
+            if (response?.message === "Your password has been reset successfully.") {
+                toast.success(response?.message || "Password reset successfully!");
+                setTimeout(() => navigate("/auth/login"), 500);
+            } else {
+                toast.error(response?.error || response?.message || "Failed to reset password");
+            }
+        } catch (error) {
+            toast.error("Reset Password API failed!");
+            console.error(error);
+        }
+    };
+
+
+    // -------- Google Login ----------
+    const googleLogin = async (token) => {
+        try {
+            const response = await ApiEndPoints.google({ token });
+
+            if (response?.success || response?.message?.includes("success")) {
+                toast.success(response?.message || "Logged in successfully!");
+                handleNavigation(response?.data);
+            } else {
+                toast.error(response?.error || "Google login failed!");
+            }
+        } catch (error) {
+            toast.error("Google login API failed!");
+            console.error("Google Login Error:", error);
+        }
+    };
+
+    // -------- Navigation & Role Handling ----------
+    const handleNavigation = (data) => {
+        const role = data?.role;
+        if (role) {
+            localStorage.setItem("role", role);
+        }
+
+        const verified = data?.isVerified;
+        const Verified = verified === true || verified === "true";
+
+        if (role === Roles.CUSTOMER && Verified) {
+            navigate("/customer/medicine");
+        } else if (role === Roles.ADMIN && Verified) {
+            navigate("/admin/dashboard");
+        } else if (role === Roles.DELIVERYAGENT && Verified) {
+            navigate("/delivery-agent/delivery-dashboard");
+        } else if (!Verified) {
+            toast.info("Please verify your account with OTP");
+            setTimeout(() => navigate("/auth/otp-verify", {
+                state: { email: data?.email, type: "registration" }
+            }), 500);
+            return;
+        } else {
+            console.warn("No role found: ", data?.message);
+        }
+
+    };
+
+    return { login, signup, otp, forgetPassword, resetPassword, googleLogin }
 }
 
-export default UseAuth
+export default UseAuth;

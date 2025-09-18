@@ -1,8 +1,8 @@
 import React from 'react'
 import DALayout from '../../layout/deliveryAgentLayout'
 import { Route, Routes } from 'react-router-dom'
-import ProfilePage from '../../pages/deliveryAgent/profileSetting'
 import DeliveryDashboard from '../../pages/deliveryAgent/delivery_dashboard'
+import ProfilePage from '../../components/profileSetting'
 
 const DeliveryAgentRoutes = () => {
   return (

@@ -17,12 +17,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import UseAuth from "../useHook";
+import { useGoogleLogin } from "@react-oauth/google";
 
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { signup } = UseAuth();
+  const { signup,googleLogin } = UseAuth();
 
   const {
     register,
@@ -38,7 +39,13 @@ export default function Signup() {
   };
 
   const goToLogin = () => navigate('/auth/login');
-
+  const googleLoginHandler = useGoogleLogin({
+      onSuccess: (res) => {
+        console.log("Google Token:", res.access_token);
+        googleLogin(res.access_token);
+      },
+      onError: (err) => console.error("Google Login Error:", err),
+    });
   return (
     <FormSide>
       <Card>
@@ -101,7 +108,7 @@ export default function Signup() {
             <p>Already have an account? <a onClick={goToLogin}>Login</a></p>
             <h3>Signup with</h3>
             <div>
-              <button type="button">
+              <button type="button" onClick={()=> googleLoginHandler()}>
                 <img src={google} alt="google" />
               </button>
               <button type="button">

@@ -16,12 +16,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import UseAuth from "../useHook";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const {login} = UseAuth()
-
+  const { login ,googleLogin} = UseAuth()
   const navigate = useNavigate();
 
 
@@ -34,8 +34,7 @@ export default function LoginPage() {
   const onSubmit = (data) => {
     console.log("Form Submitted:", data);
     login(data)
-    // navigate("/customer/medicine")
-    
+
   };
 
   const handleCheckboxChange = () => {
@@ -44,8 +43,14 @@ export default function LoginPage() {
 
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
-
-
+ 
+const googleLoginHandler = useGoogleLogin({
+    onSuccess: (res) => {
+      console.log("Google Token:", res.access_token);
+      googleLogin(res.access_token);
+    },
+    onError: (err) => console.error("Google Login Error:", err),
+  });
 
   return (
     <FormSide>
@@ -96,7 +101,7 @@ export default function LoginPage() {
 
           <Button type="submit">Login</Button>
 
-          
+
           <div className="checkbox">
             <label>
               <input
@@ -109,18 +114,18 @@ export default function LoginPage() {
             <h4 onClick={goToForgetPassword}>Forgot Password?</h4>
           </div>
 
-          
+
           <div className="loginButton">
             <p>
-              Do you have an account? <a  onClick={goToSignup}>SignUp</a>
+              Do you have an account? <a onClick={goToSignup}>SignUp</a>
             </p>
             <h3>OR</h3>
             <div>
-              <button type="button"><img src={google} alt="google" /></button>
+              <button type="button" onClick={()=> googleLoginHandler()}><img src={google} alt="google" /></button>
               <button type="button"><img src={facebook} alt="facebook" /></button>
             </div>
           </div>
-          
+
         </StyledForm>
       </Card>
     </FormSide>
