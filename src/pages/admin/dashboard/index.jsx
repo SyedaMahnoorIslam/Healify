@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaShoppingCart, FaClipboardList, FaPills, FaBoxOpen } from "react-icons/fa";
 import { Bar, Line } from "react-chartjs-2";
 import {
@@ -22,6 +22,7 @@ import {
   FadeIn,
   ChartsDiv,
 } from "./style";
+import { UseAdmin } from "../useHooks";
 
 ChartJS.register(
   CategoryScale,
@@ -61,6 +62,30 @@ const ordersData = {
   ],
 };
 export default function AdminDashboard() {
+  const { dashboardStats } = UseAdmin();
+  const [dashboardStat, setDashboardStat] = useState();
+
+  // useEffect(() => {
+  //   const fetchAgents = async () => {
+  //     const data = await dashboardStats();
+  //     console.log("API Response:", data);
+  //     setDashboardStat(data);
+  //     console.log("Final Dashboard Stats:", dashboardStat);
+  //   };
+  //   fetchAgents();
+  // }, []);
+  useEffect(() => {
+  const fetchAgents = async () => {
+    const data = await dashboardStats();
+    console.log("API Response:", Response);
+    setDashboardStat(data);
+  };
+  fetchAgents();
+}, []);
+
+useEffect(() => {
+  console.log("Final Dashboard Stats:", dashboardStat);
+}, [dashboardStat]);
   return (
     <Container>
       <Main>
@@ -71,28 +96,28 @@ export default function AdminDashboard() {
               <CardHeader>
                 <FaShoppingCart color="var(--color-primary)" /> Sales
               </CardHeader>
-              <p className="stat-value">$12,400</p>
+              <p className="stat-value">${dashboardStat?.totalSales??0}</p>
             </Card>
 
             <Card>
               <CardHeader>
                 <FaClipboardList color="var(--color-primary)" /> Orders
               </CardHeader>
-              <p className="stat-value">320</p>
+              <p className="stat-value">{dashboardStat?.totalOrders??0}</p>
             </Card>
 
             <Card>
               <CardHeader>
                 <FaPills color="var(--color-primary)" /> Pending Prescriptions
               </CardHeader>
-              <p className="stat-value">14</p>
+              <p className="stat-value">{dashboardStat?.pendingPrescriptions??0}</p>
             </Card>
 
             <Card>
               <CardHeader>
                 <FaBoxOpen color="var(--color-primary)" /> Low Inventory
               </CardHeader>
-              <p className="stat-value">8 Items</p>
+              <p className="stat-value">{dashboardStat?.lowStockItems??0} items</p>
             </Card>
           </DashboardGrid>
           {/* Charts */}

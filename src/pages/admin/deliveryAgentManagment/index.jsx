@@ -1,38 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   PageWrapper, Title, Button, Table, Th, Td, Tr,
   ActionBtn, ModalOverlay, ModalContent, Input,
-  UploadLabel, PreviewImage
 } from "./style";
+import { UseAdmin } from "../useHooks";
 
 export default function DeliveryAgentManagement() {
-  const [agents, setAgents] = useState([
-    { id: 1, name: "Ali Khan", phone: "0301-1234567", city: "Lahore", photo: "" },
-    { id: 2, name: "Ahmed Raza", phone: "0302-9876543", city: "Karachi", photo: "" },
-  ]);
-
+  const { deliveryAgentRegister,getDeliveryAgents } = UseAdmin();
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(null);
+    const [deliveryAgent, setDeliveryAgent] = useState([]);
+  
+  // React Hook Form setup
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  const [newAgent, setNewAgent] = useState({
-    name: "", phone: "", city: "", photo: ""
+  // Submit Handler
+  const onSubmit = (params) => {
+  console.log("Form Submitted:", params);
+  deliveryAgentRegister({
+    ...params,
+    role: "delivery_agent",
   });
-
-  const handleRegister = () => {
-    if (!newAgent.name || !newAgent.phone || !newAgent.city) return;
-    setAgents([...agents, { id: Date.now(), ...newAgent }]);
-    setNewAgent({ name: "", phone: "", city: "", photo: "" });
-    setShowForm(false);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageURL = URL.createObjectURL(file);
-      setNewAgent({ ...newAgent, photo: imageURL });
-    }
-  };
-
+};
+ useEffect(() => {
+    const fetchAgents = async () => {
+      const data = await getDeliveryAgents();
+      console.log("API Response:", data); 
+      setDeliveryAgent(data); 
+    };
+    fetchAgents();
+  }, []);
   return (
     <PageWrapper>
       <Title>Delivery Agent Management</Title>
@@ -42,26 +40,22 @@ export default function DeliveryAgentManagement() {
       <Table>
         <thead>
           <Tr>
-            <Th>Photo</Th>
             <Th>Name</Th>
+            <Th>Email</Th>
             <Th>Phone</Th>
-            <Th>City</Th>
+            {/* <Th>Password</Th> */}
+            <Th>Role</Th>
             <Th>Actions</Th>
           </Tr>
         </thead>
         <tbody>
-          {agents.map((agent) => (
+          {deliveryAgent.map((agent) => (
             <Tr key={agent.id}>
-              <Td>
-                {agent.photo ? (
-                  <PreviewImage src={agent.photo} alt={agent.name} />
-                ) : (
-                  "No Photo"
-                )}
-              </Td>
               <Td>{agent.name}</Td>
+              <Td>{agent.email}</Td>
               <Td>{agent.phone}</Td>
-              <Td>{agent.city}</Td>
+              {/* <Td>{agent.password}</Td> */}
+              <Td>{"Delivery Agent"}</Td>
               <Td>
                 <ActionBtn onClick={() => setShowDetails(agent)}>View</ActionBtn>
               </Td>
@@ -70,32 +64,60 @@ export default function DeliveryAgentManagement() {
         </tbody>
       </Table>
 
-      {/* Register Form Modal */}
+      {/* Register Popup Modal */}
       {showForm && (
         <ModalOverlay>
           <ModalContent>
             <h2>Register Delivery Agent</h2>
-            {newAgent.photo && <PreviewImage src={newAgent.photo} alt="preview" />}
-            <UploadLabel>Upload Photo:</UploadLabel>
-            <Input type="file" accept="image/*" onChange={handleFileChange} />
 
-            <Input
-              placeholder="Full Name"
-              value={newAgent.name}
-              onChange={(e) => setNewAgent({ ...newAgent, name: e.target.value })}
-            />
-            <Input
-              placeholder="Phone Number"
-              value={newAgent.phone}
-              onChange={(e) => setNewAgent({ ...newAgent, phone: e.target.value })}
-            />
-            <Input
-              placeholder="City"
-              value={newAgent.city}
-              onChange={(e) => setNewAgent({ ...newAgent, city: e.target.value })}
-            />
-            <Button onClick={handleRegister}>Save</Button>{" "}
-            <Button onClick={() => setShowForm(false)} style={{ background: "gray" }}>Cancel</Button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                placeholder="Full Name"
+                {...register("name", { required: "Name is required" })}
+              />
+              {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+
+              <Input
+                placeholder="Email"
+                type="email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" }
+                })}
+              />
+              {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>}
+
+              <Input
+                placeholder="Phone Number"
+                {...register("phone", {
+                  required: "Phone number is required",
+                  minLength: { value: 11, message: "Phone must be at least 11 digits" }
+                })}
+              />
+              {errors.phone && <p style={{ color: "red" }}>{errors.phone.message}</p>}
+
+              <Input
+                placeholder="Password"
+                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: { value: 6, message: "Password must be at least 6 characters" }
+                })}
+              />
+              {errors.password && <p style={{ color: "red" }}>{errors.password.message}</p>}
+
+              {/* Role is fixed */}
+              <Input value="delivery_agent" readOnly {...register("role")} />
+
+              <Button type="submit">Save</Button>{" "}
+              <Button
+                type="button"
+                onClick={() => { setShowForm(false); reset(); }}
+                style={{ background: "gray" }}
+              >
+                Cancel
+              </Button>
+            </form>
           </ModalContent>
         </ModalOverlay>
       )}
@@ -105,10 +127,11 @@ export default function DeliveryAgentManagement() {
         <ModalOverlay>
           <ModalContent>
             <h2>Agent Details</h2>
-            {showDetails.photo && <PreviewImage src={showDetails.photo} alt={showDetails.name} />}
             <p><b>Name:</b> {showDetails.name}</p>
+            <p><b>Email:</b> {showDetails.email}</p>
             <p><b>Phone:</b> {showDetails.phone}</p>
-            <p><b>City:</b> {showDetails.city}</p>
+            <p><b>Password:</b> {showDetails.password}</p>
+            <p><b>Role:</b> {showDetails.role}</p>
             <Button onClick={() => setShowDetails(null)}>Close</Button>
           </ModalContent>
         </ModalOverlay>

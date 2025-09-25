@@ -69,6 +69,7 @@ export const ChartsDiv = styled.div`
 
  @media (max-width: 786px){
     flex-wrap: wrap;
+    padding-left: 1.5rem;
   }
 `;
 export const ChartWrapper = styled.div`

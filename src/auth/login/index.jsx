@@ -21,7 +21,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const { login ,googleLogin} = UseAuth()
+  const { login } = UseAuth()
   const navigate = useNavigate();
 
 
@@ -43,14 +43,15 @@ export default function LoginPage() {
 
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
+  
+
  
-const googleLoginHandler = useGoogleLogin({
-    onSuccess: (res) => {
-      console.log("Google Token:", res.access_token);
-      googleLogin(res.access_token);
-    },
-    onError: (err) => console.error("Google Login Error:", err),
-  });
+//  const googlelogin = useGoogleLogin({
+//     onSuccess:(tokenResponse) => console.log(tokenResponse)
+//  })
+const handleGoogleRedirect = () => {
+  window.location.href = "http://192.168.1.7:3000/api/auth/google";
+};
 
   return (
     <FormSide>
@@ -121,7 +122,7 @@ const googleLoginHandler = useGoogleLogin({
             </p>
             <h3>OR</h3>
             <div>
-              <button type="button" onClick={()=> googleLoginHandler()}><img src={google} alt="google" /></button>
+              <button type="button" onClick={handleGoogleRedirect}><img src={google} alt="google" /></button>
               <button type="button"><img src={facebook} alt="facebook" /></button>
             </div>
           </div>

@@ -14,6 +14,11 @@ const UseAuth = () => {
 
             if (response?.success || response?.message?.includes("success")) {
                 toast.success(response?.message || "Logged in successfully!");
+                if (response?.data?.accessToken) {
+                    localStorage.setItem("token", response?.data?.accessToken);
+                    console.log("token", response?.data?.accessToken);
+
+                }
                 handleNavigation(response?.data);
             } else {
                 toast.error(response?.error || "Login failed!");

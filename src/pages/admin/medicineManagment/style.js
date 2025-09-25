@@ -357,6 +357,7 @@ export const UploadButton = styled.button`
     background-color: var(--color-primary-light);
   }
 `;
+
 export const FormTitle = styled.h2`
   margin-bottom: 1.2rem;
   font-weight: 700;
@@ -398,8 +399,23 @@ export const FormTextarea = styled.textarea`
   }
 `;
 
+// export const FormRow = styled.div`
+//   margin-bottom: 1rem;
+// `;
 export const FormRow = styled.div`
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+
+  label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-primary);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
 `;
 
 export const CheckboxLabel = styled.label`
@@ -433,4 +449,45 @@ export const CloseButton = styled.button`
     transform: rotate(90deg);
   }
 `;
+
+// Container for multi-select checkboxes
+export const MultiSelectContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+  background-color: #fafafa;
+`;
+
+// Each checkbox option
+export const MultiSelectOption = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s;
+
+  input {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+
+  input:checked + & {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+  }
+`;
+
 
