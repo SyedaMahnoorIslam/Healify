@@ -10,19 +10,22 @@ export default function DeliveryAgentManagement() {
   const { deliveryAgentRegister,getDeliveryAgents } = UseAdmin();
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(null);
-    const [deliveryAgent, setDeliveryAgent] = useState([]);
-  
-  // React Hook Form setup
+  const [deliveryAgent, setDeliveryAgent] = useState([]);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  // Submit Handler
-  const onSubmit = (params) => {
+  const onSubmit = async (params) => {
   console.log("Form Submitted:", params);
-  deliveryAgentRegister({
+  await deliveryAgentRegister({
     ...params,
     role: "delivery_agent",
   });
+
+  reset(); 
+  setShowForm(false); 
+  const data = await getDeliveryAgents();
+  setDeliveryAgent(data);
 };
+
  useEffect(() => {
     const fetchAgents = async () => {
       const data = await getDeliveryAgents();
@@ -40,10 +43,10 @@ export default function DeliveryAgentManagement() {
       <Table>
         <thead>
           <Tr>
+            <Th>Id</Th>
             <Th>Name</Th>
             <Th>Email</Th>
             <Th>Phone</Th>
-            {/* <Th>Password</Th> */}
             <Th>Role</Th>
             <Th>Actions</Th>
           </Tr>
@@ -51,10 +54,10 @@ export default function DeliveryAgentManagement() {
         <tbody>
           {deliveryAgent.map((agent) => (
             <Tr key={agent.id}>
+              <Td>{agent.id}</Td>
               <Td>{agent.name}</Td>
               <Td>{agent.email}</Td>
               <Td>{agent.phone}</Td>
-              {/* <Td>{agent.password}</Td> */}
               <Td>{"Delivery Agent"}</Td>
               <Td>
                 <ActionBtn onClick={() => setShowDetails(agent)}>View</ActionBtn>
@@ -107,7 +110,7 @@ export default function DeliveryAgentManagement() {
               {errors.password && <p style={{ color: "red" }}>{errors.password.message}</p>}
 
               {/* Role is fixed */}
-              <Input value="delivery_agent" readOnly {...register("role")} />
+              {/* <Input value="delivery_agent" readOnly {...register("role")} /> */}
 
               <Button type="submit">Save</Button>{" "}
               <Button
@@ -127,11 +130,11 @@ export default function DeliveryAgentManagement() {
         <ModalOverlay>
           <ModalContent>
             <h2>Agent Details</h2>
+            <p><b>Id:</b> {showDetails.id}</p>
             <p><b>Name:</b> {showDetails.name}</p>
             <p><b>Email:</b> {showDetails.email}</p>
             <p><b>Phone:</b> {showDetails.phone}</p>
-            <p><b>Password:</b> {showDetails.password}</p>
-            <p><b>Role:</b> {showDetails.role}</p>
+            <p><b>Role:</b> Delivery Agent</p>
             <Button onClick={() => setShowDetails(null)}>Close</Button>
           </ModalContent>
         </ModalOverlay>

@@ -111,12 +111,39 @@ export const StatusBadge = styled.span`
   color: white;
   background: ${(props) =>
     props.status === "Pending"
-      ? "#e53e3e"
-      : props.status === "Picked"
-        ? "#ed8936"
-        : "#38a169"};
+      ? "var(--color-accent-pink)"
+      : props.status === "Packed"
+      ? "var(--color-accent-green)"
+      : props.status === "Shipped"
+      ? "var(--color-primary-light)"
+      : props.status === "Delivered"
+      ? "#53b653"
+      : "var(--color-alert)"};
 `;
 
+ export const StatusSelect = styled.select`
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  outline: none;
+  margin-left: 0.5rem;
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 5px rgba(83, 199, 190, 0.4);
+  }
+`;
+
+ export const ModalDetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+  font-size: 0.95rem;
+  label {
+    font-weight: 600;
+    margin-right: 1rem;
+  }
+`;
 // === Modal ===
 export const ModalOverlay = styled.div`
   position: fixed;

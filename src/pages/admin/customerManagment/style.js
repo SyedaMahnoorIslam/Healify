@@ -1,3 +1,4 @@
+
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -63,65 +64,80 @@ export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(28, 28, 28, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
 `;
+
 
 export const ModalContent = styled.div`
-  background: var(--color-bg);
-  color: var(--color-text-primary);
-  padding: 30px;
+  background-color: var(--color-bg);
+  padding: 2rem;
   border-radius: 12px;
-  width: 600px;
-  max-width: 95%;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  position: relative;
+  color: var(--color-text-primary);
   max-height: 90vh;
   overflow-y: auto;
-  position: relative;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  animation: slideIn 0.3s ease forwards;
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 `;
+
 
 export const CloseButton = styled.button`
   position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  background: transparent;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--color-alert);
+  color: #fff;
   border: none;
-  color: var(--color-text-primary);
-  cursor: pointer;
-`;
-
-export const ModalSection = styled.div`
-  margin-top: 20px;
-`;
-
-export const PrescriptionImage = styled.img`
-  width: 120px;
-  height: auto;
-  margin: 10px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  transition: transform 0.2s ease;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    background-color: #b52b30;
   }
+`;
+
+
+export const ModalSection = styled.div`
+  margin-top: 1.5rem;
+
+  h3 {
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    li {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  p {
+    color: var(--color-text-secondary);
+  }
+`;
+
+export const PrescriptionImage = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-right: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
 `;

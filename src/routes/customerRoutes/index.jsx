@@ -19,7 +19,7 @@ const CustomerRoutes = () => {
             <CustomerLayout>
                 <Routes>
                     <Route path='/medicine' element={< Medicine/>} />
-                    <Route path='/productDetail' element={<ProductDetailPage />} />
+                    <Route path='/productDetail/:id' element={<ProductDetailPage />} />
                     <Route path='/prescription' element={<UploadPrescription />} />
                     <Route path='/cart' element={<CartPage />} />
                     <Route path='/wishlist' element={<WishList />} />

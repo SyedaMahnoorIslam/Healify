@@ -241,7 +241,7 @@ export const ButtonGroup = styled.div`
 
 export const ActionButton = styled.button`
   background: ${(props) =>
-    props.delete ? "#e53935" : "var(--color-primary)"};
+    props.$delete ? "#e53935" : "var(--color-primary)"};
   color: #fff;
   border: none;
   border-radius: 0.6rem;

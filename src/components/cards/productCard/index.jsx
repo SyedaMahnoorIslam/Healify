@@ -1,17 +1,16 @@
 
 import React from 'react';
-import { productCards } from '../../../helpers/dummyData'; 
 import {
     Card, Main, Grid, Discount, Image, ProductName, Detail, Price, Button, Wishlist, Top, Button1, ButtonGroup, PrescriptionTag 
 } from "./style";
 import { useNavigate } from 'react-router-dom';
 import { FaRegHeart } from "react-icons/fa";
 
-const ProductCard = ({ total = productCards.length, perRow = 3 }) => {
+const ProductCard = ({ products = [], perRow = 3 }) => {
     const navigate = useNavigate();
 
-    const goToDetail = () => {
-        navigate('/customer/productDetail');
+    const goToDetail = (id) => {
+        navigate(`/customer/productDetail/${id}`);  //id for detail page
     };
     const goToCheckOut = () => {
         navigate('/customer/checkOut');
@@ -26,15 +25,15 @@ const ProductCard = ({ total = productCards.length, perRow = 3 }) => {
     return (
         <Main>
             <Grid perRow={perRow}>
-                {productCards.slice(0, total).map((item) => (
-                    <Card onDoubleClick={goToDetail} key={item.id}> 
+                {products.map((item) => (
+                    <Card onDoubleClick={() => goToDetail(item.id)} key={item.id}> 
                         <Top>
-                            {item.discount && ( 
+                            {item.discount_percentage !== "0.00" && ( 
                                 <Discount>
-                                    <div>{item.discount}</div>
+                                    <div>{`${item.discount_percentage}% OFF`}</div>
                                 </Discount>
                             )}
-                            {item.prescriptionRequired && ( 
+                            {item.requires_prescription && ( 
                                 <PrescriptionTag>Prescription Required</PrescriptionTag>
                             )}
                             <Wishlist onClick={goToWishList}>
@@ -42,18 +41,23 @@ const ProductCard = ({ total = productCards.length, perRow = 3 }) => {
                             </Wishlist>
                         </Top>
                         <Image>
-                            <img src={item.image} alt='Healify' />
+                            <img 
+                                src={`${process.env.REACT_APP_API_URL}/${item.images?.[0]?.file_path}`} 
+                                alt={item.name} 
+                            />
                         </Image>
                         <ProductName>
                             <h3>{item.name}</h3>
                         </ProductName>
                         <Detail>
-                            <p>{item.type}</p>
-                            <p>{item.packSize}</p>
+                            <p>{item.brand}</p>
+                            <p>{item.category}</p>
                         </Detail>
                         <Price>
-                            <h3>{`Rs ${item.discountPrice}`}</h3>
-                            <h6>{`Rs ${item.originalPrice}`}</h6>
+                            <h3>{`Rs ${item.final_price}`}</h3>
+                            {item.discount_percentage !== "0.00" && (
+                              <h6>{`Rs ${item.price}`}</h6>
+                            )}
                         </Price>
                         <ButtonGroup>
                             <Button onClick={goToCart}>Add to Cart</Button>

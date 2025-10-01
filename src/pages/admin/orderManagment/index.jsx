@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Container,
@@ -20,64 +19,83 @@ import {
   FormLabel,
   FormSelect,
 } from "./style";
+import { UseAdmin } from "../useHooks";
+import { toast } from "react-toastify";
 
 const OrderManagement = () => {
-  const [orders, setOrders] = useState([
-    {
-      id: 101,
-      customer: "Ali Khan",
-      items: "Paracetamol, Vitamin C",
-      total: "PKR 1200",
-      status: "New",
-      address: "Lahore, Pakistan",
-      agent: "Unassigned",
-    },
-    {
-      id: 102,
-      customer: "Sara Ahmed",
-      items: "Amoxicillin",
-      total: "PKR 900",
-      status: "Packed",
-      address: "Karachi, Pakistan",
-      agent: "Unassigned",
-    },
-    {
-      id: 103,
-      customer: "Bilal Hussain",
-      items: "Ibuprofen",
-      total: "PKR 500",
-      status: "Shipped",
-      address: "Islamabad, Pakistan",
-      agent: "Unassigned",
-    },
-  ]);
-
+  const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [agents, setAgents] = useState([]);
+
   const { control, handleSubmit } = useForm();
+  const { getOrders, getDeliveryAgents, assignDeliveryAgent, updateOrderStatus } = UseAdmin();
+  
+  const onSubmit = async (data) => {
+  if (!selectedOrder) return;
+  try {
+    await updateOrderStatus(selectedOrder.id, { status: data.status });
 
-  const updateStatus = (id, newStatus) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === id ? { ...order, status: newStatus } : order
-      )
-    );
-  };
-
-  const assignAgent = (id, agent) => {
-    setOrders(
-      orders.map((order) =>
-        order.id === id ? { ...order, agent } : order
-      )
-    );
-  };
-
-  const onSubmit = (data) => {
-    if (selectedOrder) {
-      updateStatus(selectedOrder.id, data.status);
-      assignAgent(selectedOrder.id, data.agent);
-      setSelectedOrder(null);
+    if (data.agent) {
+      await assignDeliveryAgent({ orderId: selectedOrder.id, agentId: data.agent });
     }
-  };
+    setOrders(prev =>
+      prev.map(order =>
+        order.id === selectedOrder.id
+          ? { 
+              ...order, 
+              status: data.status, 
+              agent: agents.find(a => a.id === data.agent)?.name || "Unassigned"
+            }
+          : order
+      )
+    );
+
+    toast.success("Order updated successfully");
+    setSelectedOrder(null);
+
+  } catch (error) {
+    console.error("Error in odr api:", error);
+  }
+};
+
+
+
+  // Orders fetch
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getOrders();
+        if (Array.isArray(data)) {
+          setOrders(data);
+        } else {
+          setOrders([]);
+        }
+      } catch (error) {
+        console.error("Error fetching odrs:", error);
+        setOrders([]);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  // DA LIST fetch
+  useEffect(() => {
+    const fetchDeliveryAgents = async () => {
+      try {
+        const data = await getDeliveryAgents();
+        console.log("DA api Response:", data);
+        if (Array.isArray(data)) {
+          setAgents(data);
+        } else {
+          setAgents([]);
+        }
+      } catch (error) {
+        console.error("Error fetching DA :", error);
+        setAgents([]);
+      }
+    };
+    fetchDeliveryAgents();
+  }, []);
 
   return (
     <Container>
@@ -95,28 +113,34 @@ const OrderManagement = () => {
           </TableHead>
         </thead>
         <tbody>
-          {orders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell>{order.id}</TableCell>
-              <TableCell>{order.customer}</TableCell>
-              <TableCell>{order.items}</TableCell>
-              <TableCell>{order.total}</TableCell>
-              <TableCell>
-                <Status status={order.status}>{order.status}</Status>
-              </TableCell>
-              <TableCell>{order.agent}</TableCell>
-              <TableCell>
-                <ActionGroup>
-                  <ActionButton
-                    color="#2196f3"
-                    onClick={() => setSelectedOrder(order)}
-                  >
-                    View Details
-                  </ActionButton>
-                </ActionGroup>
-              </TableCell>
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{order.customer?.name}</TableCell>
+                <TableCell>{order.item_count}</TableCell>
+                <TableCell>{order.total_amount}</TableCell>
+                <TableCell>
+                  <Status status={order.status}>{order.status}</Status>
+                </TableCell>
+                <TableCell>{order.delivery_agent_id || "Unassigned"}</TableCell>
+                <TableCell>
+                  <ActionGroup>
+                    <ActionButton
+                      color="#2196f3"
+                      onClick={() => setSelectedOrder(order)}
+                    >
+                      View Details
+                    </ActionButton>
+                  </ActionGroup>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan="7">No orders found</TableCell>
             </TableRow>
-          ))}
+          )}
         </tbody>
       </OrderTable>
 
@@ -127,16 +151,17 @@ const OrderManagement = () => {
             <ModalTitle>Order #{selectedOrder.id} Details</ModalTitle>
 
             <p>
-              <b>Customer:</b> {selectedOrder.customer}
+              <b>Customer:</b> {selectedOrder.customer?.name} (
+              {selectedOrder.customer?.email})
             </p>
             <p>
-              <b>Items:</b> {selectedOrder.items}
+              <b>Items:{selectedOrder.item_count}</b>
             </p>
             <p>
-              <b>Total:</b> {selectedOrder.total}
+              <b>Total:</b> {selectedOrder.total_amount}
             </p>
             <p>
-              <b>Address:</b> {selectedOrder.address}
+              <b>Address:</b> {selectedOrder.shipping_address}
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -148,8 +173,9 @@ const OrderManagement = () => {
                   defaultValue={selectedOrder.status}
                   render={({ field }) => (
                     <FormSelect {...field}>
-                      <option value="New">New</option>
-                      <option value="Packed">Packed</option>
+                      <option value="Pending">New</option>
+                      <option value="Processing">New</option>
+                      <option value="Assigned">Packed</option>
                       <option value="Shipped">Shipped</option>
                       <option value="Delivered">Delivered</option>
                       <option value="Cancelled">Cancelled</option>
@@ -163,18 +189,23 @@ const OrderManagement = () => {
                 <Controller
                   name="agent"
                   control={control}
-                  defaultValue={selectedOrder.agent}
+                  defaultValue={selectedOrder.agentId || ""}
                   render={({ field }) => (
                     <FormSelect {...field}>
-                      <option value="Unassigned">Unassigned</option>
-                      <option value="Agent A">Agent A</option>
-                      <option value="Agent B">Agent B</option>
-                      <option value="Agent C">Agent C</option>
+                      <option value="">Unassigned</option>
+                      {agents.length > 0 ? (
+                        agents.map((agent) => (
+                          <option key={agent.id} value={agent.id}>
+                            {agent.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option disabled>No agents available</option>
+                      )}
                     </FormSelect>
                   )}
                 />
               </FormRow>
-
               <ActionButton type="submit" color="#4caf50">
                 Save Changes
               </ActionButton>

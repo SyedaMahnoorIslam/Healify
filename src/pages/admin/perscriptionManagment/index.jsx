@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { FaCheckCircle, FaTimesCircle, FaPhone, FaEnvelope } from "react-icons/fa";
-import DocPrescription from '../../../assets/images/doc-prescription.jpeg'
-import DocPrescription2 from '../../../assets/images/prescription2.jpeg'
 
+import React, { useEffect, useState } from "react";
+import { FaCheckCircle, FaTimesCircle, FaPhone, FaEnvelope } from "react-icons/fa";
 import {
   Container,
   Main,
@@ -14,41 +12,65 @@ import {
   ButtonGroup,
   ActionButton,
   ContactLinks,
-  Image
+  Image,
+  StatusBadge
 } from "./style";
 import { toast } from "react-toastify";
-
-
-const prescriptions = [
-  {
-    id: 1,
-    customer: "Wan Fateh",
-    email: "pm@malysia.com",
-    phone: "+1234567890",
-    prescription: DocPrescription,
-  },
-  {
-    id: 2,
-    customer: "Taliya Murad",
-    email: "conartist@example.com",
-    phone: "+9876543210",
-    prescription: DocPrescription2,
-  },
-];
+import { UseAdmin } from "../useHooks";
 
 export default function PrescriptionManagement() {
+  const { getPrescription, prescriptionStatus } = UseAdmin();
+  const [prescriptions, setPrescriptions] = useState([]);
   const [comments, setComments] = useState({});
+
+  const BASE_URL = process.env.REACT_APP_API_URL;
+
+  const fetchPrescriptions = async () => {
+    try {
+      const data = await getPrescription();
+      if (Array.isArray(data)) setPrescriptions(data);
+      else toast.error("No prescriptions found");
+    } catch (error) {
+      console.error("Error fetching prescriptions:", error);
+      toast.error("Failed to fetch prescriptions");
+    }
+  };
+
+  useEffect(() => {
+    fetchPrescriptions();
+  }, []);
 
   const handleCommentChange = (id, value) => {
     setComments({ ...comments, [id]: value });
   };
 
-  const handleApprove = () => {
-     toast.success("Prescription Approved ✅", { autoClose: 2000 });
-  };
+  const handleStatusUpdate = async (id, status) => {
+    const comment = comments[id]?.trim();
+    if (!comment) {
+      toast.error("Please add a comment before updating status");
+      return;
+    }
 
-  const handleReject = () => {
-     toast.warning("Prescription Rejected ❌", { autoClose: 2000 });
+    try {
+      const body = {
+        status,
+        pharmacist_notes: comment
+      };
+      const res = await prescriptionStatus(id, body);
+      if (res) {
+        toast.success(`Prescription #${id} ${status}`);
+        
+        setPrescriptions(prev =>
+          prev.map(p =>
+            p.id === id ? { ...p, status, pharmacist_notes: comment } : p
+          )
+        );
+        setComments({ ...comments, [id]: "" }); 
+      }
+    } catch (error) {
+      toast.error(`Failed to ${status} prescription`);
+      console.error(error);
+    }
   };
 
   return (
@@ -60,40 +82,66 @@ export default function PrescriptionManagement() {
             {prescriptions.map((item) => (
               <Card key={item.id}>
                 <CardHeader>
-                  Prescription #{item.id} - {item.customer}
+                  Prescription #{item.id} - {item.User?.name || "Unknown"}
                 </CardHeader>
-                 <Image>
-                        <img style={{ margin: "0.5rem 0" }} src={item.prescription}/>
-                 </Image>
-                
 
-                <CommentBox
-                  placeholder="Add comment..."
-                  value={comments[item.id] || ""}
-                  onChange={(e) => handleCommentChange(item.id, e.target.value)}
-                  required
-                />
-                <ButtonGroup>
-                  <ActionButton
-                    bg="var(--color-accent-green)"
-                    onClick={handleApprove}
-                  >
-                    <FaCheckCircle /> Approve
-                  </ActionButton>
+                {/* Status */}
+                <StatusBadge status={item.status}>{item.status}</StatusBadge>
 
-                  <ActionButton
-                    bg="var(--color-accent-pink)"
-                    onClick={handleReject}
-                  >
-                    <FaTimesCircle /> Reject
-                  </ActionButton>
-                </ButtonGroup>
+                {/* Images */}
+                {item.images && item.images.length > 0 ? (
+                  item.images.map(img => (
+                    <Image key={img.id}>
+                      <img
+                        src={`${BASE_URL}/${img.file_path}`}
+                        alt={`Prescription #${item.id}`}
+                      />
+                    </Image>
+                  ))
+                ) : (
+                  <p>No images uploaded</p>
+                )}
 
+                {/* Pharmacist notes */}
+                {item.pharmacist_notes && (
+                  <p style={{ color: "red", fontStyle: "italic" }}>
+                    Notes: {item.pharmacist_notes}
+                  </p>
+                )}
+
+                {/*comment box & buttons show only if status is pending */}
+                {item.status === "Pending" && (
+                  <>
+                    <CommentBox
+                      placeholder="Add comment..."
+                      value={comments[item.id] || ""}
+                      onChange={(e) => handleCommentChange(item.id, e.target.value)}
+                    />
+
+                    <ButtonGroup>
+                      <ActionButton
+                        bg="var(--color-accent-green)"
+                        onClick={() => handleStatusUpdate(item.id, "Approved")}
+                      >
+                        <FaCheckCircle /> Approve
+                      </ActionButton>
+
+                      <ActionButton
+                        bg="var(--color-accent-pink)"
+                        onClick={() => handleStatusUpdate(item.id, "Rejected")}
+                      >
+                        <FaTimesCircle /> Reject
+                      </ActionButton>
+                    </ButtonGroup>
+                  </>
+                )}
+
+                {/* Contact Links */}
                 <ContactLinks>
-                  <a href={`tel:${item.phone}`}>
+                  <a href={`tel:${item.User?.phone || ""}`}>
                     <FaPhone /> Call
                   </a>
-                  <a href={`mailto:${item.email}`}>
+                  <a href={`mailto:${item.User?.email || ""}`}>
                     <FaEnvelope /> Email
                   </a>
                 </ContactLinks>

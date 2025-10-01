@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 20px;
-  background: var(--color-section);
+  /* background: var(--color-section); */
   min-height: 100vh;
   font-family: var(--font-primary);
   

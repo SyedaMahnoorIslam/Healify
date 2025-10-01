@@ -1,20 +1,66 @@
-
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import styled from "styled-components";
-import{
-
-PageContainer,Card,Title,Label,Select,SaveButton,
-} from './style'
+import {
+  PageContainer,
+  Card,
+  Title,
+  Label,
+  Select,
+  SaveButton,
+} from "./style";
+import { UseAdmin } from "../useHooks";
 
 const CmsManagement = () => {
-  const [selectedPage, setSelectedPage] = useState("About Us");
-  const [content, setContent] = useState("");
+  const { getCmsSectionDetail, addCmsSection } = UseAdmin();
 
-  const handleSave = () => {
-    console.log("Saving Page:", selectedPage, "Content:", content);
-    alert(`${selectedPage} page updated successfully!`);
+  const { control, handleSubmit, watch, setValue } = useForm({
+    defaultValues: {
+      selectedPage: "About Us",
+      content: "",
+    },
+  });
+
+  const selectedPage = watch("selectedPage");
+
+  const pageMap = {
+    "About Us": { title: "About Us", slug: "about-us" },
+    "Privacy Policy": { title: "Privacy Policy", slug: "privacy-policy" },
+    Terms: { title: "Our Terms and Conditions", slug: "terms-and-conditions" },
+    FAQs: { title: "FAQs", slug: "faqs" },
+  };
+
+  // Fetch content when page changes
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const slug = pageMap[selectedPage].slug;
+        const data = await getCmsSectionDetail(slug);
+        console.log("Fetched CMS data:", data);
+
+        const content = data?.content || ""; 
+        setValue("content", content);
+      } catch (err) {
+        console.error("Error fetching CMS content:", err);
+        setValue("content", "");
+      }
+    };
+
+    fetchContent();
+  }, [selectedPage, setValue]);
+
+  // Submit CMS content
+  const onSubmit = async ({ content }) => {
+    try {
+      const { title, slug } = pageMap[selectedPage];
+      const payload = { title, slug, content };
+      console.log("Sending payload:", payload);
+
+      await addCmsSection(payload);
+    } catch (err) {
+      console.error("Error saving CMS content:", err);
+    }
   };
 
   return (
@@ -22,30 +68,43 @@ const CmsManagement = () => {
       <Card>
         <Title>CMS Management</Title>
 
-        <div>
-          <Label>Select Page</Label>
-          <Select
-            value={selectedPage}
-            onChange={(e) => setSelectedPage(e.target.value)}
-          >
-            <option>About Us</option>
-            <option>Privacy Policy</option>
-            <option>Terms</option>
-            <option>FAQs</option>
-          </Select>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Page Selector */}
+          <div>
+            <Label>Select Page</Label>
+            <Controller
+              name="selectedPage"
+              control={control}
+              render={({ field }) => (
+                <Select {...field}>
+                  <option>About Us</option>
+                  <option>Privacy Policy</option>
+                  <option>Terms</option>
+                  <option>FAQs</option>
+                </Select>
+              )}
+            />
+          </div>
 
-        <div>
-          <Label>Edit Content</Label>
-          <ReactQuill
-            value={content}
-            onChange={setContent}
-            theme="snow"
-            style={{ height: "200px", marginBottom: "2rem" }}
-          />
-        </div>
+          {/* Content Editor */}
+          <div>
+            <Label>Edit Content</Label>
+            <Controller
+              name="content"
+              control={control}
+              render={({ field }) => (
+                <ReactQuill
+                  {...field}
+                  theme="snow"
+                  style={{ height: "300px", marginBottom: "2rem" }}
+                  onChange={(content) => field.onChange(content)}
+                />
+              )}
+            />
+          </div>
 
-        <SaveButton onClick={handleSave}>Save Changes</SaveButton>
+          <SaveButton type="submit">Save Changes</SaveButton>
+        </form>
       </Card>
     </PageContainer>
   );

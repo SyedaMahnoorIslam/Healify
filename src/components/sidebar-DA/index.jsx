@@ -39,7 +39,7 @@ const Sidebar = () => {
   ];
   const deliveryAgentMenu = [
     { label: "Dashboard", icon: <FaHome />, path: "/delivery-agent/delivery-dashboard" },
-    { label: "Profile & Setting", icon: <MdOutlineAdminPanelSettings />, path: "/delivery-agent/profile-setting" },
+    { label: "Profile & Setting", icon: <MdOutlineAdminPanelSettings />, path: "/delivery-agent/profileSetting" },
   ];
   const userRole = localStorage.getItem("role");
   let menuItems = [];

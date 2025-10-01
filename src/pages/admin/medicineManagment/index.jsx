@@ -32,95 +32,110 @@ const categoriesList = [
   "Baby Care",
   "Organic",
 ];
-
 const MedicineManagement = () => {
   const [medicines, setMedicines] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [file, setFile] = useState(null);
   const [editingMedicine, setEditingMedicine] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [imageId, setImageId] = useState();
 
 
-  const { getMedicines, addMedicines ,deleteMedicine,editMedicine} = UseAdmin();
-
+  const { getMedicines, addMedicines, deleteMedicine, editMedicine, uploadMedImage } = UseAdmin();
   const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
-    defaultValues: {
-      id: null,
-      image: "",
-      name: "",
-      brand: "",
-      price: "",
-      final_price: "",
-      discount_percentage: "0.00",
-      category: [],
-      description: "",
-      dosage: "",
-      side_effects: "",
-      requires_prescription: false,
-      inventory_quantity: "",
-      expiry_date: "",
-    },
+
   });
 
+  // BASEURL for image
+  const BASE_URL = process.env.REACT_APP_API_URL;
+
+  // ek hi jagah fetch function
+  const fetchMedicines = async () => {
+    const meds = await getMedicines();
+    setMedicines(meds || []);
+  };
   useEffect(() => {
-    const fetchMedicines = async () => {
-      const meds = await getMedicines();
-      setMedicines(meds || []);
-    };
     fetchMedicines();
   }, []);
 
- const onSubmit = async (params) => {
-  console.log("Form Submitted:", params);
-
-  if (editingMedicine) {
-    // 🔹 Edit API call
-    const updated = await editMedicine(editingMedicine.id, params);
-    if (updated) {
-      // state update so UI refresh automatically
-      setMedicines((prev) =>
-        prev.map((med) => (med.id === editingMedicine.id ? updated : med))
-      );
-    }
-  } else {
-    // 🔹 Add API call
-    const newMed = await addMedicines(params);
-    if (newMed) {
-      setMedicines((prev) => [...prev, newMed]); // add new medicine in list
-    }
-  }
-
-  resetForm(); // close form & clear state
-};
-
-
-
-const handleEdit = (med) => {
-  reset(med); 
-  setEditingMedicine(med); 
-  setIsFormVisible(true);
-};
-
-
-
 
   const handleDelete = async (id) => {
-  const confirmed = window.confirm("Are you sure you want to delete this medicine?");
-  if (!confirmed) return;
-  const success = await deleteMedicine(id);
-  if (success) {
-    setMedicines((prev) => prev.filter((med) => med.id !== id));
-  }
-};
+    const confirmed = window.confirm("Are you sure you want to delete this medicine?");
+    if (!confirmed) return;
+    const success = await deleteMedicine(id);
+    if (success) {
+      // fresh list laao after delete
+      await fetchMedicines();
+    }
+  };
 
+  // Edit handler
+  const handleEdit = (med) => {
+    reset(med);
+    setEditingMedicine(med);
+
+    if (med.images?.length > 0) {
+      const imagePath = med.images[0]?.file_path
+        ? `${BASE_URL}/${med.images[0].file_path}`
+        : med.images[0]
+      setPreview(imagePath);
+    } else {
+      setPreview(null);
+    }
+
+    setFile(null);
+    setIsFormVisible(true);
+  };
+  // Form reset
+
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+
+    if (selectedFile) {
+      const previewUrl = URL.createObjectURL(selectedFile);
+      setPreview(previewUrl);
+    }
+
+    uploadMedImage(selectedFile, setImageId)
+
+  };
+
+  const onSubmit = async (params) => {
+    console.log("on submit data:", params);
+    console.log(params);
+
+    try {
+
+      if (editingMedicine) {
+        const body = {
+          ...params,
+          ...(imageId ? { imageId } : {}),
+          medicineId: editingMedicine.id
+        }
+        await editMedicine(body);
+      } else {
+        const body = {
+          ...params,
+          imageId: imageId
+        }
+        const newMed = await addMedicines(body);
+        setMedicines((prev) => [...prev, newMed]);
+      };
+
+      await fetchMedicines();
+      resetForm();
+    } catch (error) {
+      console.error("Save Medicine Error:", error);
+    }
+  };
   const resetForm = () => {
-  reset();
-  setIsFormVisible(false);
-  setFile(null);
-  setEditingMedicine(null);
-};
-
-
-  const handleFileChange = (e) => setFile(e.target.files[0]);
+    reset();
+    setIsFormVisible(false);
+    setFile(null);
+    setPreview(null);
+    setEditingMedicine(null);
+  };
 
   return (
     <PageContainer>
@@ -129,7 +144,20 @@ const handleEdit = (med) => {
 
       {medicines.map((med) => (
         <MedicineCard key={med.id}>
-          <Top>{med.image && <MedicineImage src={med.image} alt={med.name} />}</Top>
+          <Top>
+            {med.images?.length > 0 ? (
+              <MedicineImage
+                src={`${BASE_URL}/${med.images[0].file_path}`}
+                alt={med.name}
+              />
+            ) : (
+              <MedicineImage
+                src="/default-medicine.png"
+                alt="No Image"
+              />
+            )}
+
+          </Top>
           <MedicineInfo>
             <strong>{med.name}</strong> <br />
             Brand: {med.brand || "N/A"} <br />
@@ -144,18 +172,19 @@ const handleEdit = (med) => {
           </MedicineInfo>
           <ButtonGroup>
             <ActionButton onClick={() => handleEdit(med)}>Edit</ActionButton>
-            <ActionButton delete onClick={() => handleDelete(med.id)}>Delete</ActionButton>
+            <ActionButton $delete onClick={() => handleDelete(med.id)}>Delete</ActionButton>
           </ButtonGroup>
         </MedicineCard>
       ))}
 
       {isFormVisible && (
         <FormOverlay>
-          <FormContainer>
+          <FormContainer as="form" onSubmit={handleSubmit(onSubmit)}>
             <CloseButton onClick={resetForm}>×</CloseButton>
             <FormTitle>Add / Edit Medicine</FormTitle>
 
             {/* Image Upload */}
+
             <FormRow>
               <UploadArea>
                 <UploadLabel htmlFor="fileInput">Upload Image</UploadLabel>
@@ -165,6 +194,15 @@ const handleEdit = (med) => {
                   accept="image/*"
                   onChange={handleFileChange}
                 />
+                <input type="hidden" {...register("imageId", { valueAsNumber: true, })} />
+
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    style={{ marginTop: "10px", width: "120px", borderRadius: "8px" }}
+                  />
+                )}
               </UploadArea>
             </FormRow>
 
@@ -206,7 +244,6 @@ const handleEdit = (med) => {
                 placeholder="Discount %"
               />
 
-              {/* Final Price auto calculated by my technique sorry due to my logic*/}
               <label>Final Price</label>
               <FormInput
                 {...register("final_price", { valueAsNumber: true })}
@@ -216,7 +253,6 @@ const handleEdit = (med) => {
                 style={{ backgroundColor: "#f0f0f0", cursor: "not-allowed" }}
               />
             </FormRow>
-
 
             <FormRow>
               <label>Category</label>
@@ -266,8 +302,7 @@ const handleEdit = (med) => {
               <FormInput type="date" {...register("expiry_date")} />
             </FormRow>
 
-
-            <ActionButton onClick={handleSubmit(onSubmit)}>Save</ActionButton>
+            <ActionButton type="submit">Save</ActionButton>
           </FormContainer>
         </FormOverlay>
       )}

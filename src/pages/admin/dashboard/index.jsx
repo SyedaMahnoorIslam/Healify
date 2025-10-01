@@ -65,15 +65,6 @@ export default function AdminDashboard() {
   const { dashboardStats } = UseAdmin();
   const [dashboardStat, setDashboardStat] = useState();
 
-  // useEffect(() => {
-  //   const fetchAgents = async () => {
-  //     const data = await dashboardStats();
-  //     console.log("API Response:", data);
-  //     setDashboardStat(data);
-  //     console.log("Final Dashboard Stats:", dashboardStat);
-  //   };
-  //   fetchAgents();
-  // }, []);
   useEffect(() => {
   const fetchAgents = async () => {
     const data = await dashboardStats();
@@ -117,7 +108,7 @@ useEffect(() => {
               <CardHeader>
                 <FaBoxOpen color="var(--color-primary)" /> Low Inventory
               </CardHeader>
-              <p className="stat-value">{dashboardStat?.lowStockItems??0} items</p>
+              <p className="stat-value">{dashboardStat?.lowStockItems??0}</p>
             </Card>
           </DashboardGrid>
           {/* Charts */}

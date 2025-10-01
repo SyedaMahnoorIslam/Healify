@@ -54,7 +54,7 @@ export const DetailsCard = styled.div`
   }
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -92,6 +92,20 @@ export const Input = styled.input`
     border-color: var(--color-primary);
     box-shadow: 0 0 5px rgba(83, 199, 190, 0.4);
   }
+`;
+
+export const RadioGroup = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 5px;
+`;
+
+export const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  cursor: pointer;
 `;
 
 export const SaveButton = styled.button`

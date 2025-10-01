@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
-import profile from "../../assets/images/profile.png";
+import profileImg from "../../assets/images/logo-image.png";
 import { MdNotificationsNone, MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa6";
-import { FaSun, FaMoon } from "react-icons/fa";
 
 import {
   StyledNav,
@@ -17,46 +16,56 @@ import {
   Nav,
   Hamburger,
   MobileMenu,
-  ThemeToggle,
-  ToggleSwitch,
-  ToggleSlider,
 } from "./style";
+import { UseProfile } from "../useHooks";
+import { Roles } from "../../enum/roles";
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
+  const userRole = localStorage.getItem("role");
+  const { getProfile } = UseProfile();
+  const [profile, setProfile] = useState(null);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Theme Toggle Logic
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  // const handleThemeToggle = () => {
-  //   setTheme(theme === "light" ? "dark" : "light");
-  // };
 
   const handleNavClick = (path) => {
     setMenuOpen(false);
     navigate(path);
   };
+  const customerDropdown = [
+    { label: "Profile", path: "/customer/profile" },
+    { label: "Support", path: "/customer/support" },
+    { label: "Logout", path: "/logout" }
+  ];
+  let dropdownItems = [];
+  if (userRole === Roles.CUSTOMER) {
+    dropdownItems = customerDropdown;
+  }
+  const handleNavigation = (path) => {
+    if (path === "/logout") {
+      localStorage.clear();
+      navigate("/auth/login");
+    } else {
+      navigate(path);
+    }
+    setDropdownOpen(false);
+  };
+  // Fetch Profile
+  const fetchProfile = async () => {
+    const res = await getProfile();
+    if (res) {
+      setProfile(res);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const getActive = (path) => {
     return location.pathname === path ? "active" : "";
-  };
-
-  const goToProfile = () => {
-    navigate("/customer/profile");
-  };
-
-  const goToSupport = () => {
-    navigate("/customer/support");
   };
 
   return (
@@ -80,14 +89,14 @@ export default function Navbar() {
                   Medicine
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
-                  className={getActive("/customer/productDetail")}
-                  onClick={() => handleNavClick("/customer/productDetail")}
+                  className={getActive(`/customer/productDetail`)}
+                  onClick={() => handleNavClick(`/customer/productDetail`)}
                 >
                   Product Detail
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   className={getActive("/customer/prescription")}
@@ -130,23 +139,20 @@ export default function Navbar() {
         </Nav>
 
         <div className="Nav-Right-Section">
-          {/* <ThemeToggle onClick={handleThemeToggle}>
-            <ToggleSwitch checked={theme === "dark"}>
-              <ToggleSlider className="slider" />
-              {theme === "dark" ? <FaMoon color="#fff" /> : <FaSun color="#f1c40f" />}
-            </ToggleSwitch>
-          </ThemeToggle> */}
+
 
           <Profile>
             <div onClick={toggleDropdown}>
-              <img src={profile} alt="Profile" />
-              <span>Wan Fateh</span>
+              <img src={profileImg} alt="Profile" />
+              <span onClick={toggleDropdown}>{profile?.name ? profile.name : "Loading..."}</span>
             </div>
             {dropdownOpen && (
               <DropdownMenu>
-                <li onClick={goToProfile}>Profile</li>
-                <li onClick={goToSupport}>Support</li>
-                <li logout>Logout</li>
+                {dropdownItems.map((item, idx) => (
+                  <li key={idx} onClick={() => handleNavigation(item.path)}>
+                    {item.label}
+                  </li>
+                ))}
               </DropdownMenu>
             )}
           </Profile>
@@ -169,14 +175,14 @@ export default function Navbar() {
               Medicine
             </a>
           </li>
-          <li>
+          {/* <li>
             <a
               className={getActive("/customer/productDetail")}
               onClick={() => handleNavClick("/customer/productDetail")}
             >
               Product Detail
             </a>
-          </li>
+          </li> */}
           <li>
             <a
               className={getActive("/customer/prescription")}

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Prescription1 from '../../../assets/images/doc-prescription.jpeg';
-import Prescription2 from '../../../assets/images/prescription2.jpeg';
 
+
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Title,
@@ -19,39 +18,27 @@ import {
 import { UseAdmin } from "../useHooks";
 
 const CustomerManagement = () => {
-  const { getCustomers } = UseAdmin();
+  const { getCustomers, getCustomersbyid } = UseAdmin();
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(false);
 
-  // const customers = [
-  //   {
-  //     id: 1,
-  //     name: "Wan Fateh",
-  //     email: "wan.fateh@example.com",
-  //     phone: "+92 300 1234567",
-  //     history: ["Order #101 - Delivered", "Order #115 - Cancelled"],
-  //     prescriptions: [
-  //       { Prescription1 },
-  //       { Prescription2 },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Taliya Murad",
-  //     email: "taliya.murad@example.com",
-  //     phone: "+92 322 9876543",
-  //     history: ["Order #120 - Shipped"],
-  //     prescriptions: { Prescription1 },
-  //   },
-  // ];
+  // Fetch all customers
   useEffect(() => {
-    const fetchAgents = async () => {
+    const fetchCustomers = async () => {
       const data = await getCustomers();
-      console.log("API Response:", data); 
-      setCustomers(data); 
+      setCustomers(data);
     };
-    fetchAgents();
+    fetchCustomers();
   }, []);
+
+  // Handle view details click
+  const handleViewDetails = async (id) => {
+    setLoadingDetails(true);
+    const data = await getCustomersbyid(id);
+    if (data) setSelectedCustomer(data);
+    setLoadingDetails(false);
+  };
 
   return (
     <Container>
@@ -67,18 +54,16 @@ const CustomerManagement = () => {
           </TableRow>
         </thead>
         <tbody>
-          {customers && customers.length > 0 ? (
+          {customers.length > 0 ? (
             customers.map((cust) => (
               <TableRow key={cust.id}>
                 <TableData>{cust.name}</TableData>
                 <TableData>{cust.email}</TableData>
                 <TableData>{cust.phone}</TableData>
                 <TableData>
-                  <ActionButton onClick={() => setSelectedCustomer(cust)}>
+                  <ActionButton onClick={() => handleViewDetails(cust.id)}>
                     View Details
                   </ActionButton>
-                  <ActionButton>Email</ActionButton>
-                  <ActionButton>Call</ActionButton>
                 </TableData>
               </TableRow>
             ))
@@ -97,30 +82,52 @@ const CustomerManagement = () => {
             <h2>{selectedCustomer.name}</h2>
             <p><strong>Email:</strong> {selectedCustomer.email}</p>
             <p><strong>Phone:</strong> {selectedCustomer.phone}</p>
+            <p><strong>DOB:</strong> {selectedCustomer.dob}</p>
+            <p><strong>Gender:</strong> {selectedCustomer.gender}</p>
+
             <ModalSection>
-              <h3>Order History</h3>
-              <ul>
-                {selectedCustomer?.history?.length > 0 ? (
-                  selectedCustomer.history.map((h, index) => (
-                    <li key={index}>{h}</li>
-                  ))
-                ) : (
-                  <li>No history available</li>
-                )}
-              </ul>
+              <h3>Addresses</h3>
+              {selectedCustomer.addresses?.length > 0 ? (
+                <ul>
+                  {selectedCustomer.addresses.map((addr) => (
+                    <li key={addr.id}>
+                      {addr.street}, {addr.city}, {addr.state} - {addr.zip_code}, {addr.country}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No addresses available</p>
+              )}
+            </ModalSection>
+
+            <ModalSection>
+              <h3>Orders</h3>
+              {selectedCustomer.Orders?.length > 0 ? (
+                <ul>
+                  {selectedCustomer.Orders.map((order) => (
+                    <li key={order.id}>
+                      Order ID: {order.id}, Amount: Rs.{order.total_amount}, Status: {order.status}, Payment: {order.payment_status}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No orders available</p>
+              )}
             </ModalSection>
 
             <ModalSection>
               <h3>Prescriptions</h3>
-              <div>
-                {selectedCustomer?.prescriptions?.length > 0 ? (
-                  selectedCustomer.prescriptions.map((img, index) => (
-                    <PrescriptionImage key={index} src={img} alt="Prescription" />
-                  ))
-                ) : (
-                  <p>No prescriptions uploaded</p>
-                )}
-              </div>
+              {selectedCustomer.Prescriptions?.length > 0 ? (
+                <ul>
+                  {selectedCustomer.Prescriptions.map((presc) => (
+                    <li key={presc.id}>
+                      Status: {presc.status}, Notes: {presc.pharmacist_notes}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No prescriptions uploaded</p>
+              )}
             </ModalSection>
           </ModalContent>
         </ModalOverlay>

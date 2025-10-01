@@ -30,10 +30,15 @@ export const Main = styled.div`
 
 export const DashboardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);  
   gap: 1.5rem;
   margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; 
+  }
 `;
+
 
 export const Card = styled.div`
   background-color: var(--color-section);
@@ -151,4 +156,23 @@ export const ContactLinks = styled.div`
       text-decoration: underline;
     }
   }
+`;
+
+
+export const StatusBadge = styled.span`
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  background-color: ${({ status }) => {
+    switch(status) {
+      case "Pending": return "#f0ad4e";
+      case "Approved": return "#5cb85c";
+      case "Rejected": return "#d9534f";
+      default: return "#777";
+    }
+  }};
 `;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import {
     CategoryRow,
@@ -9,9 +9,25 @@ import {
     Main,
 } from "./style";
 import ProductCard from '../../../components/cards/productCard';
+import { useCustomer } from '../useHooks';
 
 const Medicine = () => {
+    const [medicines, setMedicines] = useState([]);
+    const { medicinesList } = useCustomer();
+
+
+    const fetchMedicines = async () => {
+        const meds = await medicinesList();
+        setMedicines(meds || []);
+    };
+    useEffect(() => {
+        fetchMedicines();
+    }, []);
+    
+  // BASEURL for image
+  const BASE_URL = process.env.REACT_APP_API_URL;
     const categories = ["Medicines", "Health Care", "Wellness", "Supplements", "Personal Care", "Baby Care", "Organic"];
+
     return (
         <MainDiv>
             <CategoryRow>
@@ -20,16 +36,12 @@ const Medicine = () => {
                     <CategoryButton key={opt}>{opt}</CategoryButton>
                 ))}
                 <SearchWrapper>
-                    <StyledInput type="text" placeholder="Search products..."  />
+                    <StyledInput type="text" placeholder="Search products..." />
                     <div><FaSearch /></div>
                 </SearchWrapper>
             </CategoryRow>
             <Main>
-                {/* <h1>Top Products</h1> */}
-                {/* {productCards.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))} */}
-                <ProductCard/>
+                <ProductCard products={medicines} />
             </Main>
         </MainDiv>
     )

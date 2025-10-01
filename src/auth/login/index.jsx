@@ -43,15 +43,10 @@ export default function LoginPage() {
 
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
-  
 
- 
-//  const googlelogin = useGoogleLogin({
-//     onSuccess:(tokenResponse) => console.log(tokenResponse)
-//  })
-const handleGoogleRedirect = () => {
-  window.location.href = "http://192.168.1.7:3000/api/auth/google";
-};
+  const handleGoogleRedirect = () => {
+    window.location.href = "http://192.168.1.7:3000/api/auth/google";
+  };
 
   return (
     <FormSide>
