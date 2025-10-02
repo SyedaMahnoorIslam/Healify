@@ -14,14 +14,21 @@ import {
   ButtonGroup,
   Button,
   Button1,
+  BackArrow,
 } from "./style";
 import { useNavigate } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const ProductDetail = ({ product }) => {
+  console.log(product);
+  
   const navigate = useNavigate();
 
   const goToCheckOut = () => {
     navigate('/customer/checkOut');
+  };
+  const goToMedicine = () => {
+    navigate('/customer/medicine');
   };
   const goToCart = () => {
     navigate('/customer/cart');
@@ -31,10 +38,13 @@ const ProductDetail = ({ product }) => {
   return (
     <Wrapper>
       <Container>
+        <BackArrow onClick={goToMedicine}>
+          <IoMdArrowRoundBack size={28} />
+        </BackArrow>
         {/* Image Section */}
         <ImageWrapper>
           <img
-            src ={`${process.env.REACT_APP_API_URL}/${product.images[0].file_path}`}
+            src={`${process.env.REACT_APP_API_URL}/${product.images[0].file_path}`}
             alt={product.name}
           />
 
@@ -42,17 +52,17 @@ const ProductDetail = ({ product }) => {
 
         {/* Info Section */}
         <InfoWrapper>
-          <Title>{product.name||"N/A"}</Title>
-          <Company>{product.brand||"N/A"}</Company>
-          <Category>{product.category||"N/A"}</Category>
+          <Title>{product.name || "N/A"}</Title>
+          <Company>{product.brand || "N/A"}</Company>
+          <Category>{product.category || "N/A"}</Category>
           <DetailRow>
-          <Label>Description: </Label>
-          <Value>{product.description||"N/A"}</Value>
+            <Label>Description: </Label>
+            <Value>{product.description || "N/A"}</Value>
           </DetailRow>
 
           <DetailRow>
             <Label>Type:</Label>
-            <Value>{product.category||"N/A"}</Value>
+            <Value>{product.category || "N/A"}</Value>
           </DetailRow>
 
           {/* <DetailRow>
@@ -62,12 +72,12 @@ const ProductDetail = ({ product }) => {
 
           <DetailRow>
             <Label>Dosage:</Label>
-            <Value>{product.dosage|| "As per your doctor Recomendation"}</Value>
+            <Value>{product.dosage || "As per your doctor Recomendation"}</Value>
           </DetailRow>
 
           <DetailRow>
             <Label>Side Effects:</Label>
-            <Value>{product.side_effects ||"No specific Side effect but still use after consulting your doctor"}</Value>
+            <Value>{product.side_effects || "No specific Side effect but still use after consulting your doctor"}</Value>
           </DetailRow>
 
           <DetailRow>
@@ -81,9 +91,13 @@ const ProductDetail = ({ product }) => {
 
           {/* Pricing */}
           <PriceBox>
-            <h2>Rs {product.final_price||"N/A"}</h2>
-             <h4>Rs {product.price||"N/A"}</h4>
-            <span>{product.discount_percentage||"N/A"}</span>
+            <h2>Rs {product.final_price}</h2>
+            {product.price === product.final_price && (
+              <h4>Rs {product.price}</h4>
+            )}
+            {product.discount_percentage !== "0.00" && (
+              <span>{product.discount_percentage}</span>
+            )}
           </PriceBox>
 
           {/* Buttons */}

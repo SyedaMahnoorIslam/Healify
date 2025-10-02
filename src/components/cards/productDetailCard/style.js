@@ -28,7 +28,14 @@ export const Container = styled.div`
     align-items: center;
   }
 `;
-
+export const BackArrow = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  display: flex;
+  align-items: start;
+`;
 export const ImageWrapper = styled.div`
   flex: 1;
   display: flex;

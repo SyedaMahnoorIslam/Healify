@@ -4,7 +4,7 @@ import { useCustomer } from '../useHooks';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import {
-  EmptyState,
+  EmptyState,Wrapper,Header,Content,
 } from './style'
 
 const ProductDetailPage = () => {
@@ -38,11 +38,17 @@ const ProductDetailPage = () => {
       {product ? (
         <ProductDetail product={product} />
       ) : (
-        <EmptyState>
-          <h3>No Product Found</h3>
-          <p>Looks like this product doesn’t exist or wasn’t selected.</p>
-          <button onClick={goToBrowsing}>Browse Products</button>
-        </EmptyState>
+        <Wrapper>
+          <Header>Product Detail</Header>
+          <Content>
+            <EmptyState>
+              <h3>No Product Found</h3>
+              <p>Looks like this product doesn’t exist or wasn’t selected.</p>
+              <button onClick={goToBrowsing}>Browse Products</button>
+            </EmptyState>
+
+          </Content>
+        </Wrapper>
       )}
     </div>
   );

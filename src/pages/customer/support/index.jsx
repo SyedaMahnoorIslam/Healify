@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 import {
   PageContainer,
@@ -10,7 +10,6 @@ import {
 
 const SupportScreen = () => {
   const [openFAQ, setOpenFAQ] = useState(null);
-
   const toggleFAQ = (index) => {
     setOpenFAQ(openFAQ === index ? null : index);
   };

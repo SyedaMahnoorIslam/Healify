@@ -41,6 +41,9 @@ export const ApiEndPoints = {
  
 // ----------------- Customer Panel -----------------
   medicinesList: async (body) => await getData('/api/medicines', body),
+  getWishlist: async (body) => await getData('/api/wishlist', body),
+  addToWishlist: async(id)=> await postData('/api/wishlist/add', { medicineId: id }),
+  searchMedicine: async (params) => await getData('/api/medicines/search/suggestions', params),
 
 
 

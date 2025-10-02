@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
 import profileImg from "../../assets/images/logo-image.png";
-import { MdNotificationsNone, MdOutlineShoppingCart } from "react-icons/md";
+// import { MdNotificationsNone, MdOutlineShoppingCart } from "react-icons/md";
+// import { FaRegHeart } from "react-icons/fa6";
+import { MdOutlineMedicalServices, MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa6";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
 
 import {
   StyledNav,
@@ -59,7 +63,6 @@ export default function Navbar() {
       setProfile(res);
     }
   };
-
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -86,36 +89,23 @@ export default function Navbar() {
                   className={getActive("/customer/medicine")}
                   onClick={() => handleNavClick("/customer/medicine")}
                 >
-                  Medicine
+                  <MdOutlineMedicalServices /> Medicine
                 </a>
               </li>
-              {/* <li>
-                <a
-                  className={getActive(`/customer/productDetail`)}
-                  onClick={() => handleNavClick(`/customer/productDetail`)}
-                >
-                  Product Detail
-                </a>
-              </li> */}
               <li>
                 <a
                   className={getActive("/customer/prescription")}
                   onClick={() => handleNavClick("/customer/prescription")}
                 >
-                  Upload Prescription
+                  <HiOutlineDocumentArrowUp /> Upload Prescription
                 </a>
               </li>
-            </ul>
-          </Navlinks>
-
-          <NavIcons>
-            <ul>
               <li>
                 <a
                   className={getActive("/customer/cart")}
                   onClick={() => handleNavClick("/customer/cart")}
                 >
-                  <MdOutlineShoppingCart />
+                  <MdOutlineShoppingCart /> Cart
                 </a>
               </li>
               <li>
@@ -123,19 +113,11 @@ export default function Navbar() {
                   className={getActive("/customer/wishlist")}
                   onClick={() => handleNavClick("/customer/wishlist")}
                 >
-                  <FaRegHeart />
-                </a>
-              </li>
-              <li>
-                <a
-                  className={getActive("/customer/notifications")}
-                  onClick={() => handleNavClick("/customer/notifications")}
-                >
-                  <MdNotificationsNone />
+                  <FaRegHeart /> Wishlist
                 </a>
               </li>
             </ul>
-          </NavIcons>
+          </Navlinks>
         </Nav>
 
         <div className="Nav-Right-Section">
@@ -157,7 +139,10 @@ export default function Navbar() {
             )}
           </Profile>
 
-          <Hamburger onClick={() => setMenuOpen(!menuOpen)}>
+          <Hamburger
+            className={menuOpen ? "open" : ""}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <span></span>
             <span></span>
             <span></span>
@@ -172,23 +157,15 @@ export default function Navbar() {
               className={getActive("/customer/medicine")}
               onClick={() => handleNavClick("/customer/medicine")}
             >
-              Medicine
+              <MdOutlineMedicalServices /> Medicine
             </a>
           </li>
-          {/* <li>
-            <a
-              className={getActive("/customer/productDetail")}
-              onClick={() => handleNavClick("/customer/productDetail")}
-            >
-              Product Detail
-            </a>
-          </li> */}
           <li>
             <a
               className={getActive("/customer/prescription")}
               onClick={() => handleNavClick("/customer/prescription")}
             >
-              Upload Prescription
+              <HiOutlineDocumentArrowUp /> Upload Prescription
             </a>
           </li>
           <li>
@@ -196,7 +173,7 @@ export default function Navbar() {
               className={getActive("/customer/cart")}
               onClick={() => handleNavClick("/customer/cart")}
             >
-              Cart
+              <MdOutlineShoppingCart /> Cart
             </a>
           </li>
           <li>
@@ -204,15 +181,7 @@ export default function Navbar() {
               className={getActive("/customer/wishlist")}
               onClick={() => handleNavClick("/customer/wishlist")}
             >
-              Wishlist
-            </a>
-          </li>
-          <li>
-            <a
-              className={getActive("/customer/notifications")}
-              onClick={() => handleNavClick("/customer/notifications")}
-            >
-              Notifications
+              <FaRegHeart /> Wishlist
             </a>
           </li>
         </ul>

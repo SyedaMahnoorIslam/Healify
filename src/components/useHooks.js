@@ -25,7 +25,7 @@ export const UseProfile = () => {
             throw error;
         }
     };
-    
+
 
     return { getProfile, updateProfile };
 };
