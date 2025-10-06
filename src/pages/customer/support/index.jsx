@@ -7,9 +7,18 @@ import {
   FAQBox,
   Footer,
 } from "./style";
+import { useCustomer } from "../useHooks";
+
 
 const SupportScreen = () => {
   const [openFAQ, setOpenFAQ] = useState(null);
+  const {getCmsSectionDetail} = useCustomer();
+  const [cmsContent, setCmsContent] = useState({
+    about: null,
+    privacy: null,
+    terms: null,
+  });
+
   const toggleFAQ = (index) => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
@@ -37,6 +46,21 @@ const SupportScreen = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchCMS = async () => {
+      const about = await getCmsSectionDetail("about-us");
+      const privacy = await getCmsSectionDetail("privacy-policy");
+      const terms = await getCmsSectionDetail("terms-and-conditions");
+
+      setCmsContent({
+        about: about?.content || "About section not found.",
+        privacy: privacy?.content || "Privacy section not found.",
+        terms: terms?.content || "Terms section not found.",
+      });
+    };
+    fetchCMS();
+  }, []);
+
   return (
     <PageContainer>
       <Header>
@@ -47,53 +71,19 @@ const SupportScreen = () => {
       {/* About Section */}
       <Section>
         <h3>About Us</h3>
-        <p>
-          <b>Healify</b> is your trusted ePharmacy platform that makes healthcare
-          simple, safe, and accessible. From prescription medicines to wellness
-          products, we deliver everything you need at your doorstep. Our mission
-          is to make healthcare convenient for everyone in Pakistan.
-        </p>
-        <p>
-          With a dedicated team and licensed pharmacists, <b>Healify</b> ensures
-          authenticity, affordability, and quality in every order you place.
-        </p>
+        <p dangerouslySetInnerHTML={{ __html: cmsContent.about }} />
       </Section>
 
       {/* Privacy Policy */}
       <Section>
         <h3>Privacy Policy</h3>
-        <p>
-          At <b>Healify</b>, your privacy is our top priority. We only collect data
-          necessary to process your orders and enhance your experience. We never
-          share your personal data with unauthorized third parties.
-        </p>
-        <p>
-          Your transactions are processed through secure payment gateways. By
-          using <b>Healify</b>, you agree to our privacy practices mentioned here.
-        </p>
+        <p dangerouslySetInnerHTML={{ __html: cmsContent.privacy }} />
       </Section>
 
       {/* Terms & Conditions */}
       <Section>
         <h3>Terms & Conditions</h3>
-        <p>
-          By using <b>Healify</b> services, you agree to abide by the following terms:
-        </p>
-        <ul>
-          <li>Users must be 18+ years of age to place orders.</li>
-          <li>
-            All orders are subject to availability and verification by our
-            pharmacists.
-          </li>
-          <li>
-            Payments must be made through authorized methods provided on our
-            platform.
-          </li>
-          <li>
-            <b>Healify</b> is not a replacement for professional medical advice; always
-            consult a doctor.
-          </li>
-        </ul>
+        <p dangerouslySetInnerHTML={{ __html: cmsContent.terms }} />
       </Section>
 
       {/* FAQs */}
@@ -108,7 +98,10 @@ const SupportScreen = () => {
               </span>
             </div>
             {openFAQ === index && (
-              <div className="faq-answer">{faq.answer}</div>
+              <div
+                className="faq-answer"
+                dangerouslySetInnerHTML={{ __html: faq.answer }}
+              />
             )}
           </FAQBox>
         ))}

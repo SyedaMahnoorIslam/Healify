@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
 import profileImg from "../../assets/images/logo-image.png";
-// import { MdNotificationsNone, MdOutlineShoppingCart } from "react-icons/md";
-// import { FaRegHeart } from "react-icons/fa6";
 import { MdOutlineMedicalServices, MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa6";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
 
 import {
@@ -14,7 +11,6 @@ import {
   TopRow,
   LogoName,
   Navlinks,
-  NavIcons,
   Profile,
   DropdownMenu,
   Nav,
@@ -86,7 +82,7 @@ export default function Navbar() {
             <ul>
               <li>
                 <a
-                  className={getActive("/customer/medicine")}
+                  className={getActive("/customer/medicine"|| "/customer/productDetail/:id")}
                   onClick={() => handleNavClick("/customer/medicine")}
                 >
                   <MdOutlineMedicalServices /> Medicine
@@ -154,8 +150,8 @@ export default function Navbar() {
         <ul>
           <li>
             <a
-              className={getActive("/customer/medicine")}
-              onClick={() => handleNavClick("/customer/medicine")}
+              className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
+              onClick={() => handleNavClick("/customer/medicine"  || "/customer/productDetail/:id")}
             >
               <MdOutlineMedicalServices /> Medicine
             </a>

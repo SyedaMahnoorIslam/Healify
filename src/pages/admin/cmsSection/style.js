@@ -44,6 +44,12 @@ export const Select = styled.select`
   outline: none;
   background: var(--color-bg);
   color: var(--color-text-primary);
+ option{
+  background-color: var(--color-bg);
+  &:hover{
+    background-color: var(--color-primary);
+  }
+ }
 `;
 
 export const SaveButton = styled.button`

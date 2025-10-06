@@ -6,6 +6,8 @@ export const StyledNav = styled.nav`
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   padding: 0.5rem 0; 
+  position: sticky;
+  top: 0;
 `;
 
 export const TopRow = styled.div`

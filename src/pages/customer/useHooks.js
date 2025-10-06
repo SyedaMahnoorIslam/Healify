@@ -87,8 +87,26 @@ export const useCustomer = () => {
         return null;
       }
     };
+    //--------------- Get Medicines ----------------
+  const getOrderDetail = async () => {
+    try {
+      const data = await ApiEndPoints.getOrderDetail();
+      console.log("Raw order Response:", data);
+
+      if (Array.isArray(data?.medicines)) {
+        return data.medicines;
+      } else {
+        toast.error("No order found");
+        return [];
+      }
+    } catch (error) {
+      console.error("Get order error:", error);
+      return [];
+    }
+  };
   return {
-    getCmsSection, uploadMedImage, medicinesList, addToWishlist,searchMedicine,getCmsSectionDetail
+    getCmsSection, uploadMedImage, medicinesList, addToWishlist,
+    searchMedicine,getCmsSectionDetail,getOrderDetail
   }
 }
 

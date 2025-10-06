@@ -28,7 +28,7 @@ const CmsManagement = () => {
     "About Us": { title: "About Us", slug: "about-us" },
     "Privacy Policy": { title: "Privacy Policy", slug: "privacy-policy" },
     Terms: { title: "Our Terms and Conditions", slug: "terms-and-conditions" },
-    FAQs: { title: "FAQs", slug: "faqs" },
+    // FAQs: { title: "FAQs", slug: "faqs" },
   };
 
   // Fetch content when page changes
@@ -80,7 +80,7 @@ const CmsManagement = () => {
                   <option>About Us</option>
                   <option>Privacy Policy</option>
                   <option>Terms</option>
-                  <option>FAQs</option>
+                  {/* <option>FAQs</option> */}
                 </Select>
               )}
             />

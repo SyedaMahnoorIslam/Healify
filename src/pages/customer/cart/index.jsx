@@ -43,14 +43,6 @@ const CartPage = () => {
       {activeTab === "orders" && (
         <TabContent>
           <Heading>📦 Order Details</Heading>
-          {/* <OrderItem>
-            <p>Order #12345</p>
-            <span>Status: Delivered ✅</span>
-          </OrderItem> */}
-          {/* <OrderItem>
-            <p>Order #12346</p>
-            <span>Status: Pending ⏳</span>
-          </OrderItem> */}
           <OrderHistory/>
         </TabContent>
       )}

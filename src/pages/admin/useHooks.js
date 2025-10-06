@@ -125,7 +125,7 @@ export const UseAdmin = () => {
   };
 
   //--------------- Edit Medicines ----------------
-  const editMedicine = async (medicineData,id ) => {
+  const editMedicine = async (medicineData, id) => {
     try {
       const res = await ApiEndPoints.editMedicine(id, medicineData);
       console.log("Update Medicine Response:", res);
@@ -204,7 +204,7 @@ export const UseAdmin = () => {
     try {
       const response = await getData(`/api/pages/${slug}`);
       console.log("CMS API Response:", response);
-      return response || null; 
+      return response || null;
     } catch (err) {
       toast.error("Failed to fetch CMS content");
       return null;
@@ -259,30 +259,108 @@ export const UseAdmin = () => {
   };
   // ---------------- Upload Medicine Image ---------------
 
-const uploadMedImage = async (image ,setImageId) => {
-  try {
-    const formData = new FormData();
-    formData.append("image", image);
+  const uploadMedImage = async (image, setImageId) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
 
-   const res = await ApiEndPoints.uploadMedImage(formData);
-   const uploadedImageId = res?.imageIds?.[0] || null;
+      const res = await ApiEndPoints.uploadMedImage(formData);
+      const uploadedImageId = res?.imageIds?.[0] || null;
 
-    console.log(uploadedImageId , "id in hook")
+      console.log(uploadedImageId, "id in hook")
 
-    setImageId(uploadedImageId);
+      setImageId(uploadedImageId);
 
-  } catch (error) {
-    console.error("Image upload failed:", error);
-    return null;
-  }
-};
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      return null;
+    }
+  };
 
+//--------------- ADD FAQ ----------------
+  const addFaqSection = async (params) => {
+    try {
+      const res = await ApiEndPoints.addFaqSection(params);
+      console.log("Add FAQ Response:", res);
 
+      if (res?.success || res?.id) {
+        toast.success("FAQ added successfully");
+        return res;
+      } else {
+        toast.error(res?.message || "Failed to add FAQ");
+        return null;
+      }
+    } catch (err) {
+      console.error("Add FAQ Error:", err);
+      toast.error("Failed to save FAQ");
+      return null;
+    }
+  };
+
+  //--------------- GET FAQ ----------------
+  const getFaqSection = async () => {
+    try {
+      const res = await ApiEndPoints.getFaqSection();
+      console.log("Raw FAQ Response:", res);
+
+      // handle both array and object response
+      if (Array.isArray(res)) return res;
+      if (Array.isArray(res?.faqs)) return res.faqs;
+
+      toast.info("No FAQs found");
+      return [];
+    } catch (error) {
+      console.error("Get FAQ Error:", error);
+      toast.error("Failed to fetch FAQs");
+      return [];
+    }
+  };
+
+  //--------------- DELETE FAQ ----------------
+  const deleteFaqSection = async (id) => {
+    try {
+      const res = await ApiEndPoints.deleteFaqSection(id);
+      console.log("Delete FAQ Response:", res);
+
+      if (res?.success) {
+        toast.success("FAQ deleted successfully");
+        return true;
+      } else {
+        toast.error(res?.message || "Failed to delete FAQ");
+        return false;
+      }
+    } catch (error) {
+      console.error("Delete FAQ Error:", error);
+      toast.error("Something went wrong");
+      return false;
+    }
+  };
+
+  //--------------- EDIT FAQ ----------------
+  const editFaqSection = async (id, body) => {
+    try {
+      const res = await ApiEndPoints.editFaqSection(id, body);
+      console.log("Edit FAQ Response:", res);
+
+      if (res?.success || res?.data) {
+        toast.success("FAQ updated successfully");
+        return res?.data || res;
+      } else {
+        toast.error(res?.message || "Failed to update FAQ");
+        return null;
+      }
+    } catch (error) {
+      console.error("Edit FAQ Error:", error);
+      toast.error("Something went wrong");
+      return null;
+    }
+  };
   return {
     deliveryAgentRegister, getCustomers, getCustomersbyid, getDeliveryAgents,
     dashboardStats, getMedicines, addMedicines, deleteMedicine, editMedicine, getOrders,
     updateOrderStatus, assignDeliveryAgent, stock_and_expiry, addCmsSection, getPrescription,
-    uploadMedImage, prescriptionStatus, getCmsSectionDetail,
+    uploadMedImage, prescriptionStatus, getCmsSectionDetail, addFaqSection, getFaqSection,
+    editFaqSection, deleteFaqSection,
   }
 
 }

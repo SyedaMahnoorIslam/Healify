@@ -9,6 +9,7 @@ import {
   FaUser,
   FaChartBar,
   FaCog,
+  FaUserCog,
 } from "react-icons/fa";
 import {
   SidebarContainer,
@@ -21,8 +22,9 @@ import {
   Name,
 } from "./style";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaFilePrescription } from "react-icons/fa6";
+import { FaFilePrescription, FaQ } from "react-icons/fa6";
 import { Roles } from "../../enum/roles";
+import { GrUserWorker } from "react-icons/gr";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -32,10 +34,12 @@ const Sidebar = () => {
     { label: "Medicine Managment", icon: <FaPills />, path: "/admin/medicineManagment" },
     { label: "Prescription Managment", icon: <FaFilePrescription />, path: "/admin/prescriptionManagment" },
     { label: "Order Managment", icon: <FaShoppingCart />, path: "/admin/orderManagment" },
-    { label: "Customer Managment", icon: <FaUser />, path: "/admin/customerManagment" },
-    { label: "DA Managment", icon: <FaUser />, path: "/admin/deliveryAgentManagment" },
+    { label: "Customer Managment", icon: <FaUserCog />, path: "/admin/customerManagment" },
+    { label: "DA Managment", icon: <GrUserWorker />, path: "/admin/deliveryAgentManagment" },
     { label: "Report & Analysis", icon: <FaChartBar />, path: "/admin/report&Analytics" },
     { label: "CMS Managment", icon: <FaCog />, path: "/admin/cmsManagment" },
+    { label: "FAQ Managment", icon: <FaQ />, path: "/admin/faqManagment" },
+
   ];
   const deliveryAgentMenu = [
     { label: "Dashboard", icon: <FaHome />, path: "/delivery-agent/delivery-dashboard" },

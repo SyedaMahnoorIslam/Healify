@@ -1,38 +1,41 @@
 
-import React, { useRef, useState } from "react";
-import { orders as dummyOrders } from "../../../../helpers/dummyData";
+import React, { useRef, useState, useEffect } from "react";
+import { ApiEndPoints } from "../../../../libs/http-service/api/endPoint"; 
 import Logo from "../../../../assets/images/logo-image.png";
 import {
   Container, OrderCard, Button, ModalOverlay,
-  ModalContent, ModalBody, ModalFooter, SaveButton, CancelButton,
+  ModalContent, ModalFooter, SaveButton, CancelButton,
   InvoiceContainer, Header, CompanyInfo, InvoiceTitle, InvoiceDetails,
   DetailsRow, Table, TableHead, TableBody, TableRow, TableCell, Footer,
-  TotalRow, TrackingContainer, Step, StepIcon, StepLabel, ProgressLine
+  TotalRow,StatusButton
 } from "./style";
 import { useNavigate } from "react-router-dom";
 
 const OrderHistory = () => {
   const navigate = useNavigate();
 
-  const [orders, setOrders] = useState(dummyOrders);
+  const [orders, setOrders] = useState([]);
   const [isViewDetailOpen, setisViewDetailOpen] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
-
-  const [currentStep, setCurrentStep] = useState(2); // Example: 0=pending,1=packed,2=shipped,...
-
-  const items = [
-    { description: "Vitamin D3 Drops", quantity: 2, price: 1250 },
-    { description: "Aspirin 300mg", quantity: 1, price: 100 },
-    { description: "Ibuprofen 400mg", quantity: 3, price: 75 },
-  ];
-
-  const subtotal = items.reduce((acc, item) => acc + item.quantity * item.price, 0);
-  const tax = subtotal * 0.1;
-  const total = subtotal + tax;
-
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const invoiceRef = useRef();
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await ApiEndPoints.getOrderDetail();
+        console.log("Orders from API:", data);
+        if (Array.isArray(data)) {
+          setOrders(data);
+        }
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+      }
+    };
+    fetchOrders();
+  }, []);
+
   const handleDownload = () => {
     const printContents = invoiceRef.current.innerHTML;
     const originalContents = document.body.innerHTML;
@@ -45,7 +48,7 @@ const OrderHistory = () => {
   const handleCancelOrder = () => {
     setOrders(prev =>
       prev.map(order =>
-        order.id === selectedOrderId ? { ...order, status: "Cancelled" } : order
+        order.id === selectedOrder?.id ? { ...order, status: "Cancelled" } : order
       )
     );
     setIsCancelOpen(false);
@@ -58,19 +61,34 @@ const OrderHistory = () => {
         <OrderCard key={order.id}>
           <div className="order-info">
             <h3>Order #{order.id}</h3>
-            <p>Date: {order.date}</p>
-            <p>Status: <strong>{order.status}</strong></p>
-            <p>Total: Rs {order.total}</p>
+            <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
+            <p><strong>Shipping:</strong> {order.shipping_address}</p>
+            <p><strong>Status:</strong> {order.status}</p>
+            <p><strong>Payment Status:</strong> {order.payment_status}</p>
+            <p><strong>Total:</strong> Rs {order.total_amount}</p>
+
+            {/* Medicine details (first item only for quick view) */}
+            {order.items.length > 0 && (
+              <>
+                <p><strong>Medicine:</strong> {order.items[0].Medicine.name}</p>
+                <p><strong>Quantity:</strong> {order.items[0].quantity}</p>
+                <p><strong>Price:</strong> Rs {order.items[0].price}</p>
+              </>
+            )}
           </div>
+
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-            <Button onClick={() => setisViewDetailOpen(true)}>View Details</Button>
-            <Button onClick={() => setIsTrackingOpen(true)} style={{ background: "#10B981" }}>Track Order</Button>
-            {order.status !== "Delivered" && order.status !== "Cancelled" && (
+            <Button onClick={() => { setSelectedOrder(order); setisViewDetailOpen(true); }}>View Invoice</Button>
+            <StatusButton >
+              {order.status}
+            </StatusButton>
+            {(order.status === "Pending" || order.status === "Processing") && (
               <Button
                 style={{ background: "#EF4444" }}
                 onClick={() => {
-                  setSelectedOrderId(order.id);
+                  setSelectedOrder(order);
                   setIsCancelOpen(true);
+                  handleCancelOrder();
                 }}
               >
                 Cancel Order
@@ -80,39 +98,16 @@ const OrderHistory = () => {
         </OrderCard>
       ))}
 
-      {/* 🔹 Tracking Modal */}
-      {isTrackingOpen && (
-        <ModalOverlay>
-          <ModalContent>
-            <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Track My Order</h3>
-            <ModalBody>
-              <TrackingContainer>
-                {["Packed", "Shipped", "On the Way", "Out for Delivery", "Delivered"].map((label, index) => (
-                  <Step key={index} active={index <= currentStep}>
-                    <StepIcon active={index <= currentStep}>{index + 1}</StepIcon>
-                    <StepLabel>{label}</StepLabel>
-                    {index < 4 && <ProgressLine active={index < currentStep} />}
-                  </Step>
-                ))}
-              </TrackingContainer>
-            </ModalBody>
-            <ModalFooter>
-              <CancelButton onClick={() => setIsTrackingOpen(false)}>Close</CancelButton>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-
-      {/* 🔹 Invoice Modal */}
-      {isViewDetailOpen && (
+      {/*  Invoice Modal */}
+      {isViewDetailOpen && selectedOrder && (
         <ModalOverlay>
           <ModalContent style={{ maxWidth: "700px" }}>
             <InvoiceContainer ref={invoiceRef}>
               <Header>
-                <InvoiceTitle><img src={Logo} alt="logo" />Healify</InvoiceTitle>
+                <InvoiceTitle><img src={Logo} alt="logo" /> Healify</InvoiceTitle>
                 <CompanyInfo>
                   <h3>Invoice</h3>
-                  <p>Business St, Karachi</p>
+                  <p>{selectedOrder.shipping_address}</p>
                   <p>healify@example.com</p>
                 </CompanyInfo>
               </Header>
@@ -120,14 +115,13 @@ const OrderHistory = () => {
                 <DetailsRow>
                   <div>
                     <h4>Billed To:</h4>
-                    <p>WanFateh</p>
-                    <p>Rahim Yar Khan, PK</p>
+                    <p>User #{selectedOrder.user_id}</p>
                   </div>
                   <div>
                     <h4>Invoice #</h4>
-                    <p>INV-2025-01</p>
+                    <p>INV-{selectedOrder.id}</p>
                     <h4>Order Placed</h4>
-                    <p>22 Aug, 2025</p>
+                    <p>{new Date(selectedOrder.createdAt).toLocaleDateString()}</p>
                   </div>
                 </DetailsRow>
               </InvoiceDetails>
@@ -141,25 +135,17 @@ const OrderHistory = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {items.map((item, i) => (
+                  {selectedOrder.items.map((item, i) => (
                     <TableRow key={i}>
-                      <TableCell>{item.description}</TableCell>
+                      <TableCell>{item.Medicine.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>Rs.{item.price}</TableCell>
                       <TableCell>Rs.{item.quantity * item.price}</TableCell>
                     </TableRow>
                   ))}
                   <TotalRow>
-                    <TableCell colSpan={3}>Subtotal</TableCell>
-                    <TableCell>Rs.{subtotal}</TableCell>
-                  </TotalRow>
-                  <TotalRow>
-                    <TableCell colSpan={3}>Tax (2%)</TableCell>
-                    <TableCell>Rs.{tax}</TableCell>
-                  </TotalRow>
-                  <TotalRow>
                     <TableCell colSpan={3}><strong>Total</strong></TableCell>
-                    <TableCell><strong>Rs.{total}</strong></TableCell>
+                    <TableCell><strong>Rs.{selectedOrder.total_amount}</strong></TableCell>
                   </TotalRow>
                 </TableBody>
               </Table>
@@ -175,21 +161,19 @@ const OrderHistory = () => {
         </ModalOverlay>
       )}
 
-      {/* 🔹 Cancel Order Confirmation Modal */}
-      {isCancelOpen && (
+      {/*Tracking Modal
+      {isTrackingOpen && selectedOrder && (
         <ModalOverlay>
-          <ModalContent>
-            <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Cancel Order</h3>
-            <ModalBody>
-              <p>Are you sure you want to cancel this order?</p>
-            </ModalBody>
+          <ModalContent style={{ maxWidth: "500px", textAlign: "center" }}>
+            <h3>Order Tracking</h3>
+            <p><strong>Order #{selectedOrder.id}</strong></p>
+            <p>Status: <span style={{ color: "#10B981" }}>{selectedOrder.status}</span></p>
             <ModalFooter>
-              <SaveButton onClick={handleCancelOrder}>Yes, Cancel</SaveButton>
-              <CancelButton onClick={() => setIsCancelOpen(false)}>No</CancelButton>
+              <CancelButton onClick={() => setIsTrackingOpen(false)}>Close</CancelButton>
             </ModalFooter>
           </ModalContent>
         </ModalOverlay>
-      )}
+      )} */}
     </Container>
   );
 };

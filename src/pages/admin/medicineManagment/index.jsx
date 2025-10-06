@@ -113,6 +113,8 @@ const MedicineManagement = () => {
           ...(imageId ? { imageId } : {}),
           medicineId: editingMedicine.id
         }
+        console.log(body);
+        
         await editMedicine(body);
       } else {
         const body = {
@@ -120,11 +122,15 @@ const MedicineManagement = () => {
           imageId: imageId
         }
         const newMed = await addMedicines(body);
+        console.log("Medicines from API:", newMed); 
         setMedicines((prev) => [...prev, newMed]);
       };
 
-      await fetchMedicines();
       resetForm();
+      setTimeout(() => {
+        fetchMedicines();
+      }, 500);
+      // await fetchMedicines();
     } catch (error) {
       console.error("Save Medicine Error:", error);
     }

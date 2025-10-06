@@ -32,7 +32,12 @@ export const ApiEndPoints = {
   getCmsSectionDetail: async (slug,body) => await getData(`/pages/${slug}`,body),
   getPrescription: async (body) => await getData('/api/admin/prescriptions', body),
   prescriptionStatus: async (id, body) => await patchData(`/api/admin/prescriptions/${id}/status`, body),
+  addFaqSection: async (params) => await postData("/api/faqs", params),
+  getFaqSection: async (body) => await getData("/api/faqs", body),
+  editFaqSection: async (id, body) => await patchData(`/api/faqs/${id}`, body),
+  deleteFaqSection: async (id, body) => await deleteData(`/api/faqs/${id}`, body),
 
+ 
   //  ------------------- Delivery Agent ---------------------
 
   getTask: async (body) => await getData(`/api/delivery/tasks`, body),
@@ -44,7 +49,7 @@ export const ApiEndPoints = {
   getWishlist: async (body) => await getData('/api/wishlist', body),
   addToWishlist: async(id)=> await postData('/api/wishlist/add', { medicineId: id }),
   searchMedicine: async (params) => await getData('/api/medicines/search/suggestions', params),
-
+  getOrderDetail: async (body) => await getData('/api/orders', body),
 
 
 

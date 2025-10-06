@@ -67,6 +67,22 @@ export const Button = styled.button`
     background: var(--color-primary-light);
   }
 `;
+export const StatusButton = styled.button`
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: #fff;
+  transition: all 0.3s ease;
+  font-family: var(--font-secondary);
+
+  &:hover {
+    background: var(--color-primary-light);
+  }
+`;
 export const DangerButton = styled(Button)`
   background: #EF4444;
   &:hover {
