@@ -31,11 +31,9 @@ export const TableHeader = styled.th`
 `;
 
 export const TableRow = styled.tr`
+
   &:nth-child(even) {
-    background: #f9f9f9;
-    [data-theme="dark"] & {
-      background: var(--color-section);
-    }
+    background: white;
   }
 `;
 

@@ -71,3 +71,33 @@ export const CheckoutButton = styled.button`
     background-color: var(--color-primary-light);
   }
 `;
+export const EmptyState = styled.div`
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  text-align: center;
+
+  p {
+    margin-top: 0.5rem;
+  }
+
+  button {
+    margin-top: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--color-primary);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: var(--color-primary-light);
+    }
+  }
+`;

@@ -22,13 +22,13 @@ export const useCustomer = () => {
     }
   };
   //--------------- Get Medicines ----------------
-  const medicinesList = async () => {
+  const medicinesList = async (page=1) => {
     try {
-      const data = await ApiEndPoints.medicinesList();
+      const data = await ApiEndPoints.medicinesList(page);
       console.log("Raw Medicines Response:", data);
 
       if (Array.isArray(data?.medicines)) {
-        return data.medicines;
+        return data;
       } else {
         toast.error("No medicines found");
         return [];
@@ -57,11 +57,22 @@ export const useCustomer = () => {
       return null;
     }
   };
-  // --------------- Add To WishList ----------------
+  // --------------- get WishList ----------------
+  const getWishlist = async () => {
+    try {
+      const response = await ApiEndPoints.getWishlist();
+      console.log(response.message);
+      return response;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+    // --------------- Add To WishList ----------------
   const addToWishlist = async (id) => {
     try {
       const response = await ApiEndPoints.addToWishlist(id);
       console.log(response.message);
+      return response;
     } catch (error) {
       console.error("Error:", error);
     }
@@ -92,7 +103,6 @@ export const useCustomer = () => {
     try {
       const data = await ApiEndPoints.getOrderDetail();
       console.log("Raw order Response:", data);
-
       if (Array.isArray(data?.medicines)) {
         return data.medicines;
       } else {
@@ -104,9 +114,80 @@ export const useCustomer = () => {
       return [];
     }
   };
+   // --------------- Add To Cart ----------------
+  const addToCart = async (payload) => {
+    try {
+      const response = await ApiEndPoints.addToCart(payload);
+      console.log(response.message);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  // --------------- Get Cart ----------------
+  const getCart = async () => {
+    try {
+      const response = await ApiEndPoints.getCart();
+      console.log(response.message);
+      return response;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+   //--------------- GET FAQ ----------------
+  const getFaqSection = async () => {
+    try {
+      const res = await ApiEndPoints.getFaqSection();
+      if (Array.isArray(res)) return res;
+      if (Array.isArray(res?.faqs)) return res.faqs;
+      toast.info("No FAQs found");
+      return [];
+    } catch (error) {
+      toast.error("Failed to fetch FAQs");
+      return [];
+    }
+  };
+  
+    // -------------------- Add Adresses -----------------------
+    const addAddress = async (params) => {
+        try {
+            const response = await ApiEndPoints.addAddress(params);
+            return response?.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+     // -------------------- Get Adresses -----------------------
+    const getAddress = async (body) => {
+        try {
+            const response = await ApiEndPoints.getAddress(body);
+            console.log("response of Address in hook ",response)
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }; 
+    // -------------------- Delete Adresses -----------------------
+    const deleteAddress = async (id) => {
+        try {
+            const response = await ApiEndPoints.deleteAdress(id);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    };
+     // -------------------- Get Order History -----------------------
+    const getOrderHistory = async (body) => {
+        try {
+            const response = await ApiEndPoints.getOrderHistory(body);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }; 
   return {
     getCmsSection, uploadMedImage, medicinesList, addToWishlist,
-    searchMedicine,getCmsSectionDetail,getOrderDetail
+    searchMedicine,getCmsSectionDetail,getOrderDetail,addToCart,getCart,getFaqSection,
+    addAddress,deleteAddress,getAddress,getOrderHistory,getWishlist
   }
 }
 

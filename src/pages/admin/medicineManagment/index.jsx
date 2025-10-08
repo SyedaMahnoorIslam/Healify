@@ -22,6 +22,7 @@ import {
   UploadLabel,
 } from "./style";
 import { UseAdmin } from "../useHooks";
+import Pagination from "../../../components/pagination";
 
 const categoriesList = [
   "Health Care",
@@ -39,24 +40,29 @@ const MedicineManagement = () => {
   const [editingMedicine, setEditingMedicine] = useState(null);
   const [preview, setPreview] = useState(null);
   const [imageId, setImageId] = useState();
-
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const { getMedicines, addMedicines, deleteMedicine, editMedicine, uploadMedImage } = UseAdmin();
-  const { register, handleSubmit, reset, control, setValue, getValues } = useForm({
-
-  });
+  const { register, handleSubmit, reset, control, setValue, getValues } = useForm({});
 
   // BASEURL for image
   const BASE_URL = process.env.REACT_APP_API_URL;
 
   // ek hi jagah fetch function
-  const fetchMedicines = async () => {
-    const meds = await getMedicines();
-    setMedicines(meds || []);
+  const fetchMedicines = async (page = 1) => {
+    const meds = await getMedicines(page);
+    if (meds) {
+      setMedicines(meds.medicines || []);
+      setTotalItems(meds.totalItems || 0);
+      setTotalPages(meds.totalPages || 0);
+      setCurrentPage(meds.currentPage || 1);
+    }
+    // setMedicines(meds || []);
   };
   useEffect(() => {
-    fetchMedicines();
-  }, []);
+    fetchMedicines(currentPage);
+  }, [currentPage]);
 
 
   const handleDelete = async (id) => {
@@ -100,41 +106,38 @@ const MedicineManagement = () => {
     uploadMedImage(selectedFile, setImageId)
 
   };
-
   const onSubmit = async (params) => {
     console.log("on submit data:", params);
-    console.log(params);
 
     try {
-
       if (editingMedicine) {
-        const body = {
+
+        const updatedData = {
           ...params,
           ...(imageId ? { imageId } : {}),
-          medicineId: editingMedicine.id
-        }
-        console.log(body);
-        
-        await editMedicine(body);
+        };
+
+        console.log("Final Update Body:", updatedData);
+
+        await editMedicine(editingMedicine.id, updatedData);
       } else {
-        const body = {
+        const newData = {
           ...params,
-          imageId: imageId
-        }
-        const newMed = await addMedicines(body);
-        console.log("Medicines from API:", newMed); 
+          imageId: imageId || null,
+        };
+        const newMed = await addMedicines(newData);
         setMedicines((prev) => [...prev, newMed]);
-      };
+      }
 
       resetForm();
       setTimeout(() => {
         fetchMedicines();
       }, 500);
-      // await fetchMedicines();
     } catch (error) {
       console.error("Save Medicine Error:", error);
     }
   };
+
   const resetForm = () => {
     reset();
     setIsFormVisible(false);
@@ -181,8 +184,21 @@ const MedicineManagement = () => {
             <ActionButton $delete onClick={() => handleDelete(med.id)}>Delete</ActionButton>
           </ButtonGroup>
         </MedicineCard>
-      ))}
 
+      ))}
+      {totalPages > 1 && (
+        <Pagination
+          totalItems={totalItems}
+          itemsPerPage={Math.ceil(totalItems / totalPages)}
+          currentPage={currentPage}
+          onPageChange={(page) => {
+            if (page !== currentPage) {
+              setCurrentPage(page);
+              fetchMedicines(page);
+            }
+          }}
+        />
+      )}
       {isFormVisible && (
         <FormOverlay>
           <FormContainer as="form" onSubmit={handleSubmit(onSubmit)}>
@@ -306,6 +322,7 @@ const MedicineManagement = () => {
             <FormRow>
               <label>Expiry Date</label>
               <FormInput type="date" {...register("expiry_date")} />
+
             </FormRow>
 
             <ActionButton type="submit">Save</ActionButton>
@@ -313,6 +330,7 @@ const MedicineManagement = () => {
         </FormOverlay>
       )}
     </PageContainer>
+
   );
 };
 

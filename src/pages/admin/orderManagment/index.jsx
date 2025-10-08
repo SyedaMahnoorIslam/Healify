@@ -127,7 +127,7 @@ const OrderManagement = () => {
                 <TableCell>
                   <ActionGroup>
                     <ActionButton
-                      color="#2196f3"
+                      color="var(--color-primary)"
                       onClick={() => setSelectedOrder(order)}
                     >
                       View Details
@@ -206,7 +206,7 @@ const OrderManagement = () => {
                   )}
                 />
               </FormRow>
-              <ActionButton type="submit" color="#4caf50">
+              <ActionButton type="submit" color="var(--color-primary)">
                 Save Changes
               </ActionButton>
             </form>

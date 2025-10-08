@@ -35,6 +35,10 @@ export const TableHead = styled.tr`
 export const TableRow = styled.tr`
   border-bottom: 1px solid var(--color-border);
   transition: background 0.2s ease;
+  background-color: var(--color-section);
+  &:nth-child(even) {
+    background-color: white;
+  }
 `;
 
 export const TableHeader = styled.th`

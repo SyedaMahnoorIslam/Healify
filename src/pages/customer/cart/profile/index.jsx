@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Heading,
@@ -25,82 +25,125 @@ import {
   CloseButton,
   StatusBadge,
   OrderTable,
+  RadioGroup,
+  RadioLabel,
 } from "./style";
 import ProfileImg from "../../../../assets/images/profile.png";
+import { FiEdit2 } from "react-icons/fi";
+import { UseProfile } from "../../../../components/useHooks";
+import { toast } from "react-toastify";
+import { useCustomer } from "../../useHooks";
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    name: "Wan Fateh",
-    email: "wanfateh@example.com",
-    phone: "+92 300 1234567",
-  });
-
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      street: "House 123, Block C",
-      city: "Lahore",
-      state: "Punjab",
-      zip_code: "54000",
-      country: "Pakistan",
-    },
-    {
-      id: 2,
-      street: "456 Road",
-      city: "Karachi",
-      state: "Sindh",
-      zip_code: "75000",
-      country: "Pakistan",
-    },
-  ]);
-
-  const [orders] = useState([
-    { id: "ORD001", product: "Blood Pressure Monitor", price: "5000 PKR", delivery_status: "Delivered", payment_status: "Paid" },
-    { id: "ORD002", product: "Glucose Meter", price: "3500 PKR", delivery_status: "Pending", payment_status: "Unpaid" },
-    { id: "ORD003", product: "Thermometer", price: "1200 PKR", delivery_status: "Shipped", payment_status: "Paid" },
-  ]);
-
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
-  const [isEditAddressModalOpen, setIsEditAddressModalOpen] = useState(false);
-  const [editAddress, setEditAddress] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const [addressData, setAddressData] = useState([]);
+  const [orderHistory, setOrderHistory] = useState([]);
+  const { getProfile, updateProfile } = UseProfile();
+  const { getAddress, getOrderHistory, addAddress,deleteAddress } = useCustomer();
+  // React Hook Form setup
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
-  const handleSaveUserInfo = (data) => {
-    setUser(data);
-    reset();
-    setIsEditInfoModalOpen(false);
+  // Fetch Profile Data
+  const fetchProfile = async () => {
+    const profile = await getProfile();
+    if (profile) {
+      setProfileData(profile);
+      setValue("name", profile.name || "");
+      setValue("email", profile.email || "");
+      setValue("phone", profile.phone || "");
+      setValue(
+        "dob",
+        profile.dob
+          ? new Date(profile.dob).toISOString().split("T")[0]
+          : ""
+      );
+      setValue("gender", profile.gender || "");
+    }
   };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
-  const handleSaveAddress = (data) => {
-    setAddresses([...addresses, { id: Date.now(), ...data }]);
+  // Handle Update Profile API
+  const onSubmit = async (data) => {
+    const payload = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      dob: data.dob
+        ? new Date(data.dob).toLocaleDateString("en-GB")
+        : null,
+      gender: data.gender,
+      imageId: null,
+    };
+    updateProfile(payload);
+    setIsEditInfoModalOpen(false);
+    fetchProfile();
+  };
+  // Fetch Address Data
+  const fetchAddress = async () => {
+    const address = await getAddress();
+    console.log("address: ", address);
+
+    if (address) setAddressData(address);
+  };
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+  // Fetch Order History
+  const fetchOrderHistory = async () => {
+    const orderHistoryData = await getOrderHistory();
+    console.log(orderHistoryData);
+    if (orderHistoryData) setOrderHistory(orderHistoryData);
+
+  };
+  useEffect(() => {
+    fetchOrderHistory();
+  }, [])
+  // Add Address
+  const handleSaveAddress = (params) => {
+    console.log("add adress", params);
+    addAddress(params);
     reset();
     setIsAddressModalOpen(false);
+    fetchAddress();
   };
-
-  const handleSaveEditedAddress = (data) => {
-    setAddresses(addresses.map((addr) =>
-      addr.id === editAddress.id ? { ...addr, ...data } : addr
-    ));
+  // Add Address
+  const handleDeleteAddress = (id) => {
+    console.log("del adres", id);
+    deleteAddress(id);
     reset();
-    setIsEditAddressModalOpen(false);
+    setIsAddressModalOpen(false);
+    fetchAddress();
   };
-
   return (
     <div>
-      <Heading><h1>User Profile</h1></Heading>
+      <Heading>
+        <h1>User Profile</h1>
+      </Heading>
 
       {/* Profile Section */}
       <ProfileSection>
         <ProfileCard>
           <img src={ProfileImg} alt="User" className="profile-img" />
           <UserInfo>
-            <h2>{user.name}</h2>
-            <p>Email: {user.email}</p>
-            <p>Phone: {user.phone}</p>
-            <EditButton onClick={() => { reset(user); setIsEditInfoModalOpen(true); }}>
-              ✏️ Edit Info
+            <h2>{profileData?.name || "User"}</h2>
+            <p>Email: {profileData?.email}</p>
+            <p>Phone: {profileData?.phone}</p>
+            <p>DOB: {profileData?.dob || "—"}</p>
+            <p>Gender: {profileData?.gender || "—"}</p>
+
+            <EditButton onClick={() => setIsEditInfoModalOpen(true)}>
+              Edit Info
             </EditButton>
           </UserInfo>
         </ProfileCard>
@@ -110,15 +153,21 @@ const Profile = () => {
       <AddressBookSection>
         <SectionTitle>Address Book</SectionTitle>
         <AddressList>
-          {addresses.map((addr) => (
-            <AddressItem key={addr.id}>
-              {`${addr.street}, ${addr.city}, ${addr.state}, ${addr.zip_code}, ${addr.country}`}
-              <div className="actions">
-                <SmallButton onClick={() => { setEditAddress(addr); reset(addr); setIsEditAddressModalOpen(true); }}>✏️</SmallButton>
-                <SmallButton del onClick={() => setAddresses(addresses.filter((a) => a.id !== addr.id))}>🗑️</SmallButton>
-              </div>
-            </AddressItem>
-          ))}
+          {Array.isArray(addressData) && addressData.length > 0 ? (
+            addressData.map((addr) => (
+              <AddressItem key={addr.id}>
+                {`${addr?.street}, ${addr?.city}, ${addr?.state}, ${addr?.zip_code}, ${addr?.country}`}
+                <div className="actions">
+                  <SmallButton del onClick={()=>handleDeleteAddress(addr.id) }>
+                    Delete
+                  </SmallButton>
+                </div>
+              </AddressItem>
+            ))
+          ) : (
+            <p>No addresses found.</p>
+          )}
+
         </AddressList>
         <AddButton onClick={() => { reset(); setIsAddressModalOpen(true); }}>+ Add New Address</AddButton>
       </AddressBookSection>
@@ -137,12 +186,24 @@ const Profile = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((o) => (
+            {orderHistory.map((o) => (
               <tr key={o.id}>
                 <td>{o.id}</td>
-                <td>{o.product}</td>
-                <td>{o.price}</td>
-                <td><StatusBadge status={o.delivery_status}>{o.delivery_status}</StatusBadge></td>
+                {/* <td>{o.items?.Medicine?.name}</td> */}
+                <td>
+                  {o.items && o.items.length > 0 ? (
+                    o.items.map((item, index) => (
+                      <div key={index}>
+                        {item.Medicine?.name} ({item.quantity})
+                      </div>
+                    ))
+                  ) : (
+                    "No items"
+                  )}
+                </td>
+
+                <td>{o.total_amount}</td>
+                <td><StatusBadge status={o.status}>{o.status}</StatusBadge></td>
                 <td><StatusBadge status={o.payment_status}>{o.payment_status}</StatusBadge></td>
               </tr>
             ))}
@@ -156,35 +217,96 @@ const Profile = () => {
           <ModalContent>
             <ModalHeader>
               Edit Profile Info
-              <CloseButton onClick={() => setIsEditInfoModalOpen(false)}>×</CloseButton>
+              <CloseButton onClick={() => setIsEditInfoModalOpen(false)}>
+                ×
+              </CloseButton>
             </ModalHeader>
-            <form onSubmit={handleSubmit(handleSaveUserInfo)}>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
               <ModalBody>
                 <Field>
                   <Label>Name</Label>
-                  <Input {...register("name", { required: true })} />
-                  {errors.name && <span>Name is required</span>}
+                  <Input
+                    type="text"
+                    {...register("name")}readOnly
+                  />
+                  {errors.name && <span>{errors.name.message}</span>}
                 </Field>
+
                 <Field>
                   <Label>Email</Label>
-                  <Input type="email" {...register("email", { required: true })} />
-                  {errors.email && <span>Email is required</span>}
+                  <Input
+                    type="email"
+                    {...register("email")}readOnly
+                  />
+                  {errors.email && <span>{errors.email.message}</span>}
                 </Field>
+
                 <Field>
                   <Label>Phone</Label>
-                  <Input {...register("phone", { required: true })} />
-                  {errors.phone && <span>Phone is required</span>}
+                  <Input
+                    type="text"
+                    {...register("phone", {
+                      required: "Phone number is required",
+                      minLength: { value: 7, message: "At least 7 digits" },
+                    })}
+                  />
+                  {errors.phone && <span>{errors.phone.message}</span>}
+                </Field>
+
+                <Field>
+                  <Label>Date of Birth</Label>
+                  <Input
+                    type="date"
+                    {...register("dob", { required: "Date of Birth is required" })}
+                  />
+                  {errors.dob && <span>{errors.dob.message}</span>}
+                </Field>
+
+                <Field>
+                  <Label>Gender</Label>
+                  <RadioGroup>
+                    <RadioLabel>
+                      <input
+                        type="radio"
+                        value="male"
+                        {...register("gender", { required: "Gender is required" })}
+                      />
+                      Male
+                    </RadioLabel>
+                    <RadioLabel>
+                      <input
+                        type="radio"
+                        value="female"
+                        {...register("gender")}
+                      />
+                      Female
+                    </RadioLabel>
+                    <RadioLabel>
+                      <input
+                        type="radio"
+                        value="other"
+                        {...register("gender")}
+                      />
+                      Other
+                    </RadioLabel>
+                  </RadioGroup>
+                  {errors.gender && <span>{errors.gender.message}</span>}
                 </Field>
               </ModalBody>
+
               <ModalFooter>
-                <SaveButton type="submit">Save</SaveButton>
-                <CancelButton onClick={() => setIsEditInfoModalOpen(false)}>Cancel</CancelButton>
+                <SaveButton type="submit" disabled={loading}>
+                  {loading ? "Saving..." : "Save"}
+                </SaveButton>
+                <CancelButton onClick={() => setIsEditInfoModalOpen(false)}>
+                  Cancel
+                </CancelButton>
               </ModalFooter>
             </form>
           </ModalContent>
         </ModalOverlay>
       )}
-
       {/* Add Address Modal */}
       {isAddressModalOpen && (
         <ModalOverlay>
@@ -197,38 +319,13 @@ const Profile = () => {
               <ModalBody>
                 <Field><Label>Street</Label><Input {...register("street", { required: true })} /></Field>
                 <Field><Label>City</Label><Input {...register("city", { required: true })} /></Field>
-                <Field><Label>State</Label><Input {...register("state")} /></Field>
+                <Field><Label>Province</Label><Input {...register("state")} /></Field>
                 <Field><Label>Zip Code</Label><Input {...register("zip_code")} /></Field>
                 <Field><Label>Country</Label><Input {...register("country")} /></Field>
               </ModalBody>
               <ModalFooter>
                 <SaveButton type="submit">Save</SaveButton>
                 <CancelButton onClick={() => setIsAddressModalOpen(false)}>Cancel</CancelButton>
-              </ModalFooter>
-            </form>
-          </ModalContent>
-        </ModalOverlay>
-      )}
-
-      {/* Edit Address Modal */}
-      {isEditAddressModalOpen && (
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>
-              Edit Address
-              <CloseButton onClick={() => setIsEditAddressModalOpen(false)}>×</CloseButton>
-            </ModalHeader>
-            <form onSubmit={handleSubmit(handleSaveEditedAddress)}>
-              <ModalBody>
-                <Field><Label>Street</Label><Input {...register("street", { required: true })} /></Field>
-                <Field><Label>City</Label><Input {...register("city", { required: true })} /></Field>
-                <Field><Label>State</Label><Input {...register("state")} /></Field>
-                <Field><Label>Zip Code</Label><Input {...register("zip_code")} /></Field>
-                <Field><Label>Country</Label><Input {...register("country")} /></Field>
-              </ModalBody>
-              <ModalFooter>
-                <SaveButton type="submit">Save</SaveButton>
-                <CancelButton onClick={() => setIsEditAddressModalOpen(false)}>Cancel</CancelButton>
               </ModalFooter>
             </form>
           </ModalContent>

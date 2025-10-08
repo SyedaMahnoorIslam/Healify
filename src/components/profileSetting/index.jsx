@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiEdit2 } from "react-icons/fi";
@@ -65,9 +64,6 @@ const ProfilePage = () => {
         phone: data.phone,
         imageId: null,
       };
-
-
-      // await updateProfile(payload);
       const res = await updateProfile(payload);
       console.log("Update API response:", res);
      console.log("Payload sending to API:", payload);
@@ -79,8 +75,6 @@ const ProfilePage = () => {
       console.error(error);
     }
   };
-
-
   return (
     <Container>
       <HeaderCard>

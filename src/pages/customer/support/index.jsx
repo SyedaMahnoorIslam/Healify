@@ -12,7 +12,9 @@ import { useCustomer } from "../useHooks";
 
 const SupportScreen = () => {
   const [openFAQ, setOpenFAQ] = useState(null);
-  const {getCmsSectionDetail} = useCustomer();
+  const {getCmsSectionDetail,getFaqSection} = useCustomer();
+   const [loading, setLoading] = useState(false);
+  const [faqs, setFaqs] = useState([]);
   const [cmsContent, setCmsContent] = useState({
     about: null,
     privacy: null,
@@ -23,43 +25,55 @@ const SupportScreen = () => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
 
-  const faqs = [
-    {
-      question: "How do I place an order?",
-      answer:
-        "Simply browse our medicines and healthcare products, add them to your cart, and proceed to checkout. You will receive confirmation on your email/SMS.",
-    },
-    {
-      question: "Do you deliver nationwide?",
-      answer:
-        "Yes, <b>Healify</b> delivers across Pakistan through reliable shipping partners. Delivery times may vary depending on your location.",
-    },
-    {
-      question: "Can I return a product?",
-      answer:
-        "Products can be returned if they are damaged, incorrect, or expired upon delivery. Please contact our support team within 48 hours.",
-    },
-    {
-      question: "Is my data safe with Healify?",
-      answer:
-        "Yes, we value your privacy. All personal data is encrypted and used strictly for order processing and service improvement.",
-    },
-  ];
+  // const faqs = [
+  //   {
+  //     question: "How do I place an order?",
+  //     answer:
+  //       "Simply browse our medicines and healthcare products, add them to your cart, and proceed to checkout. You will receive confirmation on your email/SMS.",
+  //   },
+  //   {
+  //     question: "Do you deliver nationwide?",
+  //     answer:
+  //       "Yes, <b>Healify</b> delivers across Pakistan through reliable shipping partners. Delivery times may vary depending on your location.",
+  //   },
+  //   {
+  //     question: "Can I return a product?",
+  //     answer:
+  //       "Products can be returned if they are damaged, incorrect, or expired upon delivery. Please contact our support team within 48 hours.",
+  //   },
+  //   {
+  //     question: "Is my data safe with Healify?",
+  //     answer:
+  //       "Yes, we value your privacy. All personal data is encrypted and used strictly for order processing and service improvement.",
+  //   },
+  // ];
 
   useEffect(() => {
-    const fetchCMS = async () => {
-      const about = await getCmsSectionDetail("about-us");
-      const privacy = await getCmsSectionDetail("privacy-policy");
-      const terms = await getCmsSectionDetail("terms-and-conditions");
+  const fetchAllData = async () => {
+    setLoading(true);
+    try {
+      const [about, privacy, terms, faqsData] = await Promise.all([
+        getCmsSectionDetail("about-us"),
+        getCmsSectionDetail("privacy-policy"),
+        getCmsSectionDetail("terms-and-conditions"),
+        getFaqSection(),
+      ]);
 
       setCmsContent({
         about: about?.content || "About section not found.",
         privacy: privacy?.content || "Privacy section not found.",
         terms: terms?.content || "Terms section not found.",
       });
-    };
-    fetchCMS();
-  }, []);
+      setFaqs(faqsData || []);
+    } catch (error) {
+      console.error("Error fetching support data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchAllData();
+}, []);
 
   return (
     <PageContainer>

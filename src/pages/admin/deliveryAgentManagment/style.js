@@ -42,6 +42,7 @@ export const Th = styled.th`
   color: white;
   text-align: left;
   padding: 1rem;
+  
 `;
 
 export const Td = styled.td`
@@ -51,8 +52,8 @@ export const Td = styled.td`
 `;
 
 export const Tr = styled.tr`
-  &:hover {
-    background: #f9fdfd;
+   &:nth-child(even) {
+    background-color: white;
   }
 `;
 

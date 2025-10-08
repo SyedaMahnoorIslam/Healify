@@ -74,13 +74,13 @@ export const UseAdmin = () => {
     }
   };
   //--------------- Get Medicines ----------------
-  const getMedicines = async () => {
+  const getMedicines = async (page=1) => {
     try {
-      const data = await ApiEndPoints.getMedicines();
+      const data = await ApiEndPoints.getMedicines(page);
       console.log("Raw Medicines Response:", data);
 
       if (Array.isArray(data?.medicines)) {
-        return data.medicines;
+        return data;
       } else {
         toast.error("No medicines found");
         return [];
@@ -125,7 +125,7 @@ export const UseAdmin = () => {
   };
 
   //--------------- Edit Medicines ----------------
-  const editMedicine = async (medicineData, id) => {
+  const editMedicine = async ( id , medicineData) => {
     try {
       const res = await ApiEndPoints.editMedicine(id, medicineData);
       console.log("Update Medicine Response:", res);

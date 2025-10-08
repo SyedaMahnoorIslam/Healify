@@ -1,6 +1,4 @@
-
-import React, { useRef, useState, useEffect } from "react";
-import { ApiEndPoints } from "../../../../libs/http-service/api/endPoint"; 
+import React, { useRef, useState, useEffect } from "react"; 
 import Logo from "../../../../assets/images/logo-image.png";
 import {
   Container, OrderCard, Button, ModalOverlay,
@@ -10,6 +8,7 @@ import {
   TotalRow,StatusButton
 } from "./style";
 import { useNavigate } from "react-router-dom";
+import { useCustomer } from "../../useHooks";
 
 const OrderHistory = () => {
   const navigate = useNavigate();
@@ -20,18 +19,14 @@ const OrderHistory = () => {
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const invoiceRef = useRef();
-
+  const{getOrderHistory}=useCustomer();
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const data = await ApiEndPoints.getOrderDetail();
+        const data = await getOrderHistory();
         console.log("Orders from API:", data);
         if (Array.isArray(data)) {
           setOrders(data);
         }
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-      }
     };
     fetchOrders();
   }, []);
@@ -84,7 +79,7 @@ const OrderHistory = () => {
             </StatusButton>
             {(order.status === "Pending" || order.status === "Processing") && (
               <Button
-                style={{ background: "#EF4444" }}
+                style={{ background: "var(--color-alert)" }}
                 onClick={() => {
                   setSelectedOrder(order);
                   setIsCancelOpen(true);
@@ -160,20 +155,6 @@ const OrderHistory = () => {
           </ModalContent>
         </ModalOverlay>
       )}
-
-      {/*Tracking Modal
-      {isTrackingOpen && selectedOrder && (
-        <ModalOverlay>
-          <ModalContent style={{ maxWidth: "500px", textAlign: "center" }}>
-            <h3>Order Tracking</h3>
-            <p><strong>Order #{selectedOrder.id}</strong></p>
-            <p>Status: <span style={{ color: "#10B981" }}>{selectedOrder.status}</span></p>
-            <ModalFooter>
-              <CancelButton onClick={() => setIsTrackingOpen(false)}>Close</CancelButton>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      )} */}
     </Container>
   );
 };

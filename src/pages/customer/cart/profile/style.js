@@ -194,7 +194,19 @@ export const ModalFooter = styled.div`
   gap: 1rem;
   margin-top: 1rem;
 `;
+export const RadioGroup = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 5px;
+`;
 
+export const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  cursor: pointer;
+`;
 export const SaveButton = styled.button`
   background: var(--color-primary);
   color: #fff;
@@ -231,7 +243,7 @@ export const EditButton = styled.button`
 `;
 
 export const SmallButton = styled.button`
-  background: ${({ del }) => (del ? "#ff4d4f" : "var(--color-primary)")};
+  background: ${({ del }) => (del ? "var(--color-alert)" : "var(--color-primary)")};
   color: #fff;
   border: none;
   border-radius: 0.4rem;
