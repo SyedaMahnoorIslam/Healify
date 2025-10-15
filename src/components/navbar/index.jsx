@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
 import profileImg from "../../assets/images/logo-image.png";
 import { MdOutlineMedicalServices, MdOutlineShoppingCart } from "react-icons/md";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaRobot } from "react-icons/fa6";
 import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
 
 import {
@@ -82,7 +82,7 @@ export default function Navbar() {
             <ul>
               <li>
                 <a
-                  className={getActive("/customer/medicine"|| "/customer/productDetail/:id")}
+                  className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
                   onClick={() => handleNavClick("/customer/medicine")}
                 >
                   <MdOutlineMedicalServices /> Medicine
@@ -110,6 +110,14 @@ export default function Navbar() {
                   onClick={() => handleNavClick("/customer/wishlist")}
                 >
                   <FaRegHeart /> Wishlist
+                </a>
+              </li>
+              <li>
+                <a
+                  className={getActive("/customer/ai-model")}
+                  onClick={() => handleNavClick("/customer/ai-model")}
+                >
+                  <FaRobot /> Ai Feature
                 </a>
               </li>
             </ul>
@@ -151,7 +159,7 @@ export default function Navbar() {
           <li>
             <a
               className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
-              onClick={() => handleNavClick("/customer/medicine"  || "/customer/productDetail/:id")}
+              onClick={() => handleNavClick("/customer/medicine" || "/customer/productDetail/:id")}
             >
               <MdOutlineMedicalServices /> Medicine
             </a>

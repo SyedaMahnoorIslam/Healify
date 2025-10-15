@@ -146,3 +146,17 @@ export const Button = styled.button`
     background: var(--color-primary-light);
   }
 `;
+
+export const Googlebutton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+
+  // Optional: control width to make it match your buttons
+  width: 100%;
+  > div {
+    display: flex;
+    justify-content: center;
+  }
+`;

@@ -17,7 +17,6 @@ const UseAuth = () => {
                 if (response?.data?.accessToken) {
                     localStorage.setItem("token", response?.data?.accessToken);
                     console.log("token", response?.data?.accessToken);
-
                 }
                 handleNavigation(response?.data);
             } else {
@@ -119,13 +118,14 @@ const UseAuth = () => {
 
 
     // -------- Google Login ----------
-    const googleLogin = async (token) => {
+    const googleLogin = async (idToken) => {
         try {
-            const response = await ApiEndPoints.google({ token });
+            const response = await ApiEndPoints.googleLogin({ 'id_token': idToken  });
 
             if (response?.success || response?.message?.includes("success")) {
                 toast.success(response?.message || "Logged in successfully!");
-                handleNavigation(response?.data);
+                navigate('/customer/medicine');
+                
             } else {
                 toast.error(response?.error || "Google login failed!");
             }

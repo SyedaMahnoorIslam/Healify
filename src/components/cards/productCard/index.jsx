@@ -103,7 +103,7 @@ const ProductCard = ({ products = [], perRow = 4, wishlistIds = [] }) => {
 
                             <ButtonGroup>
                                 <Button onClick={() => handleAddCart(item.id)}>Add to Cart</Button>
-                                <Button1 onClick={goToCheckOut}>Checkout</Button1>
+                                {/* <Button1 onClick={goToCheckOut}>Checkout</Button1> */}
                             </ButtonGroup>
                         </Card>
                     );

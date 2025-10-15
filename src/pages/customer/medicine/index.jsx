@@ -155,7 +155,7 @@ const Medicine = () => {
                 }}
               />
             )}
-            <br/>
+            <br />
           </>
         )}
       </Main>

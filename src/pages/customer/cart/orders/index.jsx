@@ -1,32 +1,29 @@
-import React, { useRef, useState, useEffect } from "react"; 
+import React, { useRef, useState, useEffect } from "react";
 import Logo from "../../../../assets/images/logo-image.png";
 import {
   Container, OrderCard, Button, ModalOverlay,
   ModalContent, ModalFooter, SaveButton, CancelButton,
   InvoiceContainer, Header, CompanyInfo, InvoiceTitle, InvoiceDetails,
   DetailsRow, Table, TableHead, TableBody, TableRow, TableCell, Footer,
-  TotalRow,StatusButton
+  TotalRow, StatusButton
 } from "./style";
-import { useNavigate } from "react-router-dom";
 import { useCustomer } from "../../useHooks";
 
 const OrderHistory = () => {
-  const navigate = useNavigate();
+
 
   const [orders, setOrders] = useState([]);
   const [isViewDetailOpen, setisViewDetailOpen] = useState(false);
-  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
-  const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const invoiceRef = useRef();
-  const{getOrderHistory}=useCustomer();
+  const { getOrderHistory } = useCustomer();
   useEffect(() => {
     const fetchOrders = async () => {
-        const data = await getOrderHistory();
-        console.log("Orders from API:", data);
-        if (Array.isArray(data)) {
-          setOrders(data);
-        }
+      const data = await getOrderHistory();
+      console.log("Orders from API:", data);
+      if (Array.isArray(data)) {
+        setOrders(data);
+      }
     };
     fetchOrders();
   }, []);
@@ -40,15 +37,6 @@ const OrderHistory = () => {
     window.location.reload();
   };
 
-  const handleCancelOrder = () => {
-    setOrders(prev =>
-      prev.map(order =>
-        order.id === selectedOrder?.id ? { ...order, status: "Cancelled" } : order
-      )
-    );
-    setIsCancelOpen(false);
-  };
-
   return (
     <Container>
       <h2>Your Orders</h2>
@@ -58,13 +46,14 @@ const OrderHistory = () => {
             <h3>Order #{order.id}</h3>
             <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
             <p><strong>Shipping:</strong> {order.shipping_address}</p>
-            <p><strong>Status:</strong> {order.status}</p>
+            <p><strong>Delivery Status:</strong> {order.status}</p>
             <p><strong>Payment Status:</strong> {order.payment_status}</p>
             <p><strong>Total:</strong> Rs {order.total_amount}</p>
 
-            {/* Medicine details (first item only for quick view) */}
+            {/* Medicine details */}
             {order.items.length > 0 && (
               <>
+                 
                 <p><strong>Medicine:</strong> {order.items[0].Medicine.name}</p>
                 <p><strong>Quantity:</strong> {order.items[0].quantity}</p>
                 <p><strong>Price:</strong> Rs {order.items[0].price}</p>
@@ -74,21 +63,9 @@ const OrderHistory = () => {
 
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             <Button onClick={() => { setSelectedOrder(order); setisViewDetailOpen(true); }}>View Invoice</Button>
-            <StatusButton >
+            {/* <StatusButton >
               {order.status}
-            </StatusButton>
-            {(order.status === "Pending" || order.status === "Processing") && (
-              <Button
-                style={{ background: "var(--color-alert)" }}
-                onClick={() => {
-                  setSelectedOrder(order);
-                  setIsCancelOpen(true);
-                  handleCancelOrder();
-                }}
-              >
-                Cancel Order
-              </Button>
-            )}
+            </StatusButton> */}
           </div>
         </OrderCard>
       ))}

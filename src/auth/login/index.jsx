@@ -16,12 +16,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import UseAuth from "../useHook";
-import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const { login } = UseAuth()
+  const { login ,googleLogin } = UseAuth()
   const navigate = useNavigate();
 
 
@@ -35,7 +35,7 @@ export default function LoginPage() {
     console.log("Form Submitted:", data);
     login(data)
 
-  };
+  }
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -44,10 +44,7 @@ export default function LoginPage() {
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
 
-  const handleGoogleRedirect = () => {
-    window.location.href = "http://192.168.1.7:3000/api/auth/google";
-  };
-
+ 
   return (
     <FormSide>
       <Card>
@@ -117,8 +114,16 @@ export default function LoginPage() {
             </p>
             <h3>OR</h3>
             <div>
-              <button type="button" onClick={handleGoogleRedirect}><img src={google} alt="google" /></button>
-              <button type="button"><img src={facebook} alt="facebook" /></button>
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  console.log("Google credential response:", credentialResponse);
+                  const idToken = credentialResponse.credential;
+                  await googleLogin(idToken);
+                }}
+                onError={() => console.error("Google Login Failed")}
+                />
+              {/* <button type="button" onClick={handleGoogleLogin}><img src={google} alt="google" /></button> */}
+              {/* <button type="button"><img src={facebook} alt="facebook" /></button> */}
             </div>
           </div>
 

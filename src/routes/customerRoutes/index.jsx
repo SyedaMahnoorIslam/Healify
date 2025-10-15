@@ -11,6 +11,7 @@ import Profile from '../../pages/customer/cart/profile'
 import AboutUs from '../../pages/customer/aboutus'
 import CheckOut from '../../pages/customer/checkout'
 import SupportScreen from '../../pages/customer/support'
+import AiModel from '../../pages/customer/aiModel'
 
 
 const CustomerRoutes = () => {
@@ -28,6 +29,8 @@ const CustomerRoutes = () => {
                     <Route path='/aboutUs' element={<AboutUs/>} />
                     <Route path='/checkOut' element={<CheckOut/>} />
                     <Route path='/support' element={<SupportScreen/>} />
+                    <Route path='/ai-model' element={<AiModel/>} />
+
 
 
                 </Routes>
