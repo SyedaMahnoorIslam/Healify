@@ -23,7 +23,7 @@ export const TopRow = styled.div`
     gap: 2rem;
     align-items: center;
 
-    @media (max-width: 600px) {
+    @media (max-width: 900px) {
       gap: 1rem;
       flex-wrap: wrap;
     }
@@ -63,8 +63,9 @@ export const Nav = styled.div`
   align-items: center;
   gap: 3rem;
 
-  @media (max-width: 880px) {
-    gap: 2rem;
+  @media (max-width: 900px) {
+    gap: 1rem;
+    display: none;
   }
 
   @media (max-width: 768px) {
@@ -79,12 +80,17 @@ export const Navlinks = styled.div`
     gap: 2rem;
     flex-wrap: wrap;
 
+    li{
+      align-items: center;
+      justify-content: center;
+    }
+
     li a {
       font-size: 0.95rem;
       font-weight: 500;
       color: var(--color-text-primary);
       cursor: pointer;
-      position: relative;
+      /* position: relative; */
       padding-bottom: 3px;
 
       &:hover {
@@ -221,7 +227,7 @@ export const Hamburger = styled.div`
   }
 
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     display: flex;
     margin-left: 0.5rem; 
   }

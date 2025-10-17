@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import ProductDetail from '../../../components/cards/productDetailCard';
-import { useCustomer } from '../useHooks';
-import { useParams, useNavigate } from 'react-router-dom';
 
-import {
-  EmptyState,Wrapper,Header,Content,
-} from './style'
+import React, { useEffect, useState } from "react";
+import ProductDetail from "../../../components/cards/productDetailCard";
+import { useCustomer } from "../useHooks";
+import { useParams, useNavigate } from "react-router-dom";
+import { EmptyState, Wrapper, Header, Content } from "./style";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
@@ -15,24 +13,30 @@ const ProductDetailPage = () => {
 
   const fetchProduct = async () => {
     try {
-      const meds = await medicinesList();
-      const selectedProduct = meds?.find((item) => String(item.id) === id);
-      setProduct(selectedProduct || null);
+      const medsData = await medicinesList();
+      const meds = medsData?.medicines || [];
+      const selectedProduct = meds.find(
+        (item) => String(item.id) === String(id)
+      );
+      if (selectedProduct) {
+        setProduct(selectedProduct);
+      } else {
+        setProduct(null);
+      }
     } catch (error) {
-      console.error("Error fetching product:", error);
+      setProduct(null);
     }
   };
 
   useEffect(() => {
+    if (!id || !medicinesList) return;
     fetchProduct();
-  }, [id]);
+  }, [id, medicinesList]);
 
   const goToBrowsing = () => {
-    navigate('/customer/medicine');
+    navigate("/customer/medicine");
   };
 
-  // BASEURL for image
-  const BASE_URL = process.env.REACT_APP_API_URL;
   return (
     <div>
       {product ? (
@@ -46,7 +50,6 @@ const ProductDetailPage = () => {
               <p>Looks like this product doesn’t exist or wasn’t selected.</p>
               <button onClick={goToBrowsing}>Browse Products</button>
             </EmptyState>
-
           </Content>
         </Wrapper>
       )}

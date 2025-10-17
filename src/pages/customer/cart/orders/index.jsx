@@ -16,7 +16,7 @@ const OrderHistory = () => {
   const [isViewDetailOpen, setisViewDetailOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const invoiceRef = useRef();
-  const { getOrderHistory } = useCustomer();
+  const { getOrderHistory,getInvoice } = useCustomer();
   useEffect(() => {
     const fetchOrders = async () => {
       const data = await getOrderHistory();
@@ -24,8 +24,18 @@ const OrderHistory = () => {
       if (Array.isArray(data)) {
         setOrders(data);
       }
+
     };
     fetchOrders();
+  }, []);
+  useEffect(() => {
+    const fetchInvoice = async () => {
+      const res = await getInvoice();
+      console.log("Orders from API:", res);
+   
+      
+    };
+    fetchInvoice();
   }, []);
 
   const handleDownload = () => {

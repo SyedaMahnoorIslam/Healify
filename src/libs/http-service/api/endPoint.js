@@ -26,7 +26,7 @@ export const ApiEndPoints = {
   getOrders: async (body) => await getData(`/api/admin/orders`, body),
   updateOrderStatus: async (id, body) => await patchData(`/api/admin/orders/status/${id}`, body),
   assignDeliveryAgent: async ({ orderId, agentId }) => await patchData(`/api/admin/orders/assign`, { orderId, agentId }),
-  stock_and_expiry: async (body) => await getData('/api/medicines', body),
+  stock_and_expiry: async (body) => await getData('/api/admin/reports/inventory', body),
   addCmsSection: async (params) => await postData("/api/pages", params),
   getCmsSection: async (body) => await getData("/pages", body),
   getCmsSectionDetail: async (slug, body) => await getData(`/pages/${slug}`, body),
@@ -63,9 +63,8 @@ export const ApiEndPoints = {
   uploadPrescription: async (params) => await postData(`/api/prescriptions`, params),
   getPrescriptions: async (body) => await getData(`/api/prescriptions`, body),
   stripePayment: async(payload) => await postData(`/api/payment/create-checkout-session`, payload),
-
+  getInvoice: async(id, body)=> await getData(`/api/orders/${id}/invoice`,body),
 
   // ----------------- Customer Panel ----------------
-  // aiModelUploadPrescription: async(params)=> await postData(`/prescriptions/upload`, params),
   aiModelUploadPrescription: async (body, config) => await postData(`/prescriptions/upload`, body, config,{ timeout: 120000}),
 };

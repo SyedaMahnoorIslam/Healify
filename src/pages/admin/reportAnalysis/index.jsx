@@ -43,21 +43,20 @@ const ReportsAnalytics = () => {
 
   const { stock_and_expiry } = UseAdmin();
 
-  // Fetch stock data
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const response = await stock_and_expiry(); 
-        console.log("API Response:", response);
-        setStockData(response?.medicines || []);
+        const response = await stock_and_expiry();
+        console.log("API Stock and Report Response:", response);
+        setStockData(response || []);
       } catch (err) {
         console.error("Error fetching stock data:", err);
       }
     };
     fetchStockData();
-  }, [stock_and_expiry]);
+  }, []);
 
-  // Sales Chart Data
+  // Chart Data
   const getSalesData = () => {
     switch (filter) {
       case "Weekly":
@@ -76,12 +75,12 @@ const ReportsAnalytics = () => {
       case "Yearly":
         return {
           labels: [
-            "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
           ],
           datasets: [
             {
               label: "Yearly Sales",
-              data: [12000,15000,17000,13000,18000,22000,20000,24000,21000,25000,27000,30000],
+              data: [12000, 15000, 17000, 13000, 18000, 22000, 20000, 24000, 21000, 25000, 27000, 30000],
               borderColor: "#1c9f94",
               backgroundColor: "#53c7be",
               fill: true,
@@ -90,11 +89,11 @@ const ReportsAnalytics = () => {
         };
       default:
         return {
-          labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
           datasets: [
             {
               label: "Daily Sales",
-              data: [120,190,300,250,200,300,400],
+              data: [120, 190, 300, 250, 200, 300, 400],
               borderColor: "#1c9f94",
               backgroundColor: "#53c7be",
               fill: true,
@@ -106,27 +105,14 @@ const ReportsAnalytics = () => {
 
   // Best-selling products
   const bestSellingData = {
-    labels: ["Panadol","Amoxicillin","Brufen","Vitamin C","Cough Syrup"],
+    labels: ["Panadol", "Amoxicillin", "Brufen", "Vitamin C", "Cough Syrup"],
     datasets: [
       {
         label: "Units Sold",
-        data: [300,250,180,150,120],
+        data: [300, 250, 180, 150, 120],
         backgroundColor: "#1c9f94",
       },
     ],
-  };
-
-  // Function to calculate status
-  const getStatus = (item) => {
-    if (!item.expiry_date || item.inventory_quantity == null) return "Unknown";
-
-    const today = new Date();
-    const expiryDate = new Date(item.expiry_date);
-    const diffDays = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
-
-    if (diffDays <= 30) return "Expiring Soon";
-    if (item.inventory_quantity > 70) return "Normal";
-    return "Low Stock";
   };
 
   return (
@@ -146,6 +132,7 @@ const ReportsAnalytics = () => {
           </div>
           <Line data={getSalesData()} />
         </ChartBox>
+
         <ChartBox>
           <h3>Best Selling Products</h3>
           <Bar data={bestSellingData} />
@@ -165,18 +152,26 @@ const ReportsAnalytics = () => {
             </tr>
           </thead>
           <tbody>
-            {stockData.map((item, index) => (
-              <tr key={index}>
-                <Td>{item.name}</Td>
-                <Td>{item.inventory_quantity ?? "N/A"}</Td>
-                <Td className="td-date">{item.expiry_date ?? "N/A"}</Td>
-                <Td>
-                  <StatusBadge status={getStatus(item)}>
-                    {getStatus(item)}
-                  </StatusBadge>
+            {stockData.length > 0 ? (
+              stockData.map((item, index) => (
+                <tr key={index}>
+                  <Td>{item.name}</Td>
+                  <Td>{item.inventory_quantity ?? "N/A"}</Td>
+                  <Td className="td-date">{item.expiry_date ?? "N/A"}</Td>
+                  <Td>
+                    <StatusBadge>
+                      {item.inventory_status ?? "N/A"}
+                    </StatusBadge>
+                  </Td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <Td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
+                  No data available
                 </Td>
               </tr>
-            ))}
+            )}
           </tbody>
         </Table>
       </TableSection>

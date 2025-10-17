@@ -11,7 +11,6 @@ import {
     Button,
     Wishlist,
     Top,
-    Button1,
     ButtonGroup,
     PrescriptionTag
 } from './style';
@@ -26,10 +25,6 @@ const ProductCard = ({ products = [], perRow = 4, wishlistIds = [] }) => {
 
     const goToDetail = (id) => {
         navigate(`/customer/productDetail/${id}`);
-    };
-
-    const goToCheckOut = () => {
-        navigate('/customer/checkOut');
     };
 
     const handleAddWishlist = async (id) => {
@@ -103,7 +98,6 @@ const ProductCard = ({ products = [], perRow = 4, wishlistIds = [] }) => {
 
                             <ButtonGroup>
                                 <Button onClick={() => handleAddCart(item.id)}>Add to Cart</Button>
-                                {/* <Button1 onClick={goToCheckOut}>Checkout</Button1> */}
                             </ButtonGroup>
                         </Card>
                     );

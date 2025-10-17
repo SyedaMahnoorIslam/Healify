@@ -81,7 +81,7 @@ export const useCustomer = () => {
   const searchMedicine = async (params) => {
     try {
       const res = await ApiEndPoints.searchMedicine(params);
-      return res?.data || [];
+      return res;
     } catch (error) {
       console.error("Search medicine error:", error);
       return [];
@@ -298,13 +298,24 @@ export const useCustomer = () => {
       toast.error("Failed to create prescription");
     }
   };
+   //--------------- Get CMS Section ----------------
+  const getInvoice = async (id) => {
+    try {
+      const response = await ApiEndPoints.getInvoice(id);
+      console.log("Invoice Response:", response);
+      return response || null;
+    } catch (err) {
+      toast.error("Failed to fetch Invoice");
+      return null;
+    }
+  };
   
   return {
     getCmsSection, uploadMedImage, medicinesList, addToWishlist,
     searchMedicine, getCmsSectionDetail, getOrderDetail, addToCart, getCart, getFaqSection,
     addAddress, deleteAddress, getAddress, getOrderHistory, getWishlist, checkout,
     removeFromCart, getDeliverySlot, updateCartQuantity, uploadImage,
-    getPrescriptions, createPrescription,aiModelUploadPrescription,stripePayment
+    getPrescriptions, createPrescription,aiModelUploadPrescription,stripePayment,getInvoice
   }
 }
 

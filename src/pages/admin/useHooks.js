@@ -192,7 +192,6 @@ export const UseAdmin = () => {
       const response = await ApiEndPoints.stock_and_expiry(body);
       console.log("response", response);
       return response;
-
     } catch (error) {
       console.error("Get customers error:", error.response?.data || error.message);
       return [];

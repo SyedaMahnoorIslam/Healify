@@ -125,7 +125,7 @@ const UseAuth = () => {
             if (response?.success || response?.message?.includes("success")) {
                 toast.success(response?.message || "Logged in successfully!");
                 navigate('/customer/medicine');
-                
+                return response?.data;
             } else {
                 toast.error(response?.error || "Google login failed!");
             }

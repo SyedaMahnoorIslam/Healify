@@ -24,7 +24,7 @@
 //   const [selectedSlot, setSelectedSlot] = useState(null);
 //   const [selectedPayment, setSelectedPayment] = useState("");
 
-//   const { getAddress, getDeliverySlot, checkout } = useCustomer();
+//   const { getAddress, getDeliverySlot, checkout, stripePayment } = useCustomer();
 //   const navigate = useNavigate();
 
 //   // -------------------- Fetch Address --------------------
@@ -71,22 +71,25 @@
 //       return;
 //     }
 
-//     const addressId = addressData[selectedAddress]?.id || addressData[selectedAddress]?.addressId;
+//     const addressId =
+//       addressData[selectedAddress]?.id || addressData[selectedAddress]?.addressId;
 
-//     // Extract delivery date and time from the selectedSlot
+//     // --- Extract date and time slot ---
 //     let deliveryDate = "";
 //     let deliveryTimeSlot = "";
 
 //     if (selectedSlot.startsWith("Today:")) {
-//       deliveryDate = new Date().toLocaleDateString("en-GB");
+//       const today = new Date();
+//       deliveryDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
 //       deliveryTimeSlot = selectedSlot.replace("Today: ", "").trim();
 //     } else if (selectedSlot.startsWith("Tomorrow:")) {
 //       const tomorrow = new Date();
 //       tomorrow.setDate(tomorrow.getDate() + 1);
-//       deliveryDate = tomorrow.toLocaleDateString("en-GB");
+//       deliveryDate = `${tomorrow.getMonth() + 1}-${tomorrow.getDate()}-${tomorrow.getFullYear()}`;
 //       deliveryTimeSlot = selectedSlot.replace("Tomorrow: ", "").trim();
 //     }
 
+//     // --- Checkout Payload ---
 //     const payload = {
 //       addressId,
 //       paymentMethod: selectedPayment,
@@ -97,24 +100,31 @@
 //     console.log("Checkout Payload:", payload);
 
 //     try {
-//     const response = await checkout(payload);
-//       if(response){
-//       console.log("Checkout Response:", response);
-//       toast.alert("check-out status",response)
-//       setTimeout(() => {
-//         navigate("/customer/cart");
-//       }, 2200);
-//     }else{
-//         toast.alert(response.message, { autoClose: 500 });
-
+//       const response = await checkout(payload);
+//       if (!response) {
+//         toast.error("Checkout failed!");
+//         return;
 //       }
-      
+
+//       console.log("Checkout Response:", response);
+
+//       const { orderId } = response;
+
+//       // COD Flow
+//       if (selectedPayment === "COD") {
+//         toast.success("Order placed successfully with Cash on Delivery!");
+//         setTimeout(() => navigate("/customer/cart"), 2000);
+//         return;
+//       }
+
+//       // Stripe Flow
+//       if (selectedPayment === "Stripe") {
+//         toast.success("Order Placed Succesfully Now Pay in Your Order Detail Page");
+//           setTimeout(() => navigate("/customer/cart"), 2000);
+//       }
 //     } catch (error) {
 //       console.error("Checkout error:", error);
-//       toast.error(error);
-//       setTimeout(() => {
-//         navigate("/customer/cart");
-//       }, 2200);
+//       toast.error("Something went wrong!");
 //     }
 //   };
 
@@ -211,9 +221,7 @@
 //                           name="deliverySlot"
 //                           id={`today-${index}`}
 //                           checked={selectedSlot === `Today: ${time}`}
-//                           onChange={() =>
-//                             setSelectedSlot(`Today: ${time}`)
-//                           }
+//                           onChange={() => setSelectedSlot(`Today: ${time}`)}
 //                         />
 //                         <label htmlFor={`today-${index}`}>{time}</label>
 //                       </Option>
@@ -231,9 +239,7 @@
 //                           name="deliverySlot"
 //                           id={`tomorrow-${index}`}
 //                           checked={selectedSlot === `Tomorrow: ${time}`}
-//                           onChange={() =>
-//                             setSelectedSlot(`Tomorrow: ${time}`)
-//                           }
+//                           onChange={() => setSelectedSlot(`Tomorrow: ${time}`)}
 //                         />
 //                         <label htmlFor={`tomorrow-${index}`}>{time}</label>
 //                       </Option>
@@ -266,11 +272,11 @@
 //               <input
 //                 type="radio"
 //                 name="payment"
-//                 id="card"
-//                 checked={selectedPayment === "CARD"}
-//                 onChange={() => setSelectedPayment("CARD")}
+//                 id="stripe"
+//                 checked={selectedPayment === "Stripe"}
+//                 onChange={() => setSelectedPayment("Stripe")}
 //               />
-//               <label htmlFor="card">Credit/Debit Card</label>
+//               <label htmlFor="stripe">Credit/Debit Card (Stripe)</label>
 //             </Option>
 //             <Option>
 //               <input
@@ -324,8 +330,6 @@ const Checkout = () => {
   const fetchAddress = async () => {
     try {
       const address = await getAddress();
-      console.log("Address: ", address);
-
       if (address) {
         const formatted =
           Array.isArray(address) && address.length > 0 ? address : [address];
@@ -340,7 +344,6 @@ const Checkout = () => {
   const fetchDeliverySlot = async () => {
     try {
       const slots = await getDeliverySlot();
-      console.log("Delivery Slots: ", slots);
       if (slots && typeof slots === "object") {
         setDeliverySlot(slots);
       }
@@ -373,12 +376,12 @@ const Checkout = () => {
 
     if (selectedSlot.startsWith("Today:")) {
       const today = new Date();
-      deliveryDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+      deliveryDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
       deliveryTimeSlot = selectedSlot.replace("Today: ", "").trim();
     } else if (selectedSlot.startsWith("Tomorrow:")) {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      deliveryDate = `${tomorrow.getDate()}-${tomorrow.getMonth() + 1}-${tomorrow.getFullYear()}`;
+      deliveryDate = `${tomorrow.getMonth() + 1}-${tomorrow.getDate()}-${tomorrow.getFullYear()}`;
       deliveryTimeSlot = selectedSlot.replace("Tomorrow: ", "").trim();
     }
 
@@ -401,7 +404,7 @@ const Checkout = () => {
 
       console.log("Checkout Response:", response);
 
-      const { orderId } = response;
+      const { paymentDetails } = response;
 
       // COD Flow
       if (selectedPayment === "COD") {
@@ -412,8 +415,15 @@ const Checkout = () => {
 
       // Stripe Flow
       if (selectedPayment === "Stripe") {
-        toast.success("Order Placed Succesfully Now Pay in Your Order Detail Page");
-          setTimeout(() => navigate("/customer/cart"), 2000);
+        if (paymentDetails?.url) {
+          toast.success("Redirecting to Stripe for payment...");
+          // Redirect user to Stripe checkout page
+          window.location.href = paymentDetails.url;
+
+         
+        } else {
+          toast.error("Stripe payment link not found!");
+        }
       }
     } catch (error) {
       console.error("Checkout error:", error);

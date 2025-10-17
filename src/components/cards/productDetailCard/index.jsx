@@ -18,22 +18,30 @@ import {
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useCustomer } from "../../../pages/customer/useHooks";
+import { toast } from "react-toastify";
 
 const ProductDetail = ({ product }) => {
-  console.log(product);
-  
+  console.log("product detail card",product);
+  const {addToCart}=useCustomer();
   const navigate = useNavigate();
 
-  const goToCheckOut = () => {
-    navigate('/customer/checkOut');
-  };
+  // const goToCheckOut = () => {
+  //   navigate('/customer/checkOut');
+  // };
   const goToMedicine = () => {
     navigate('/customer/medicine');
   };
-  const goToCart = () => {
-    navigate('/customer/cart');
+  // const goToCart = () => {
+  //   navigate('/customer/cart');
+  // };
+   const handleAddCart = async (id) => {
+          const payload = { medicineId: id, quantity: 1 }; 
+          await addToCart(payload);
+          console.log("Added to cart successfully!");
+            toast.success("Added to cart!");
   };
-
+  
   if (!product) return null;
   return (
     <Wrapper>
@@ -64,11 +72,6 @@ const ProductDetail = ({ product }) => {
             <Label>Type:</Label>
             <Value>{product.category || "N/A"}</Value>
           </DetailRow>
-
-          {/* <DetailRow>
-            <Label>Pack Size:</Label>
-            <Value>{product.packSize}</Value>
-          </DetailRow> */}
 
           <DetailRow>
             <Label>Dosage:</Label>
@@ -102,8 +105,7 @@ const ProductDetail = ({ product }) => {
 
           {/* Buttons */}
           <ButtonGroup>
-            <Button onClick={goToCart}>Add to Cart</Button>
-            <Button1 onClick={goToCheckOut}>Checkout</Button1>
+            <Button onClick={() => handleAddCart(product.id)}>Add to Cart</Button>
           </ButtonGroup>
         </InfoWrapper>
       </Container>

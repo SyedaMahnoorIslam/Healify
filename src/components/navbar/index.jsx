@@ -85,7 +85,7 @@ export default function Navbar() {
                   className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
                   onClick={() => handleNavClick("/customer/medicine")}
                 >
-                  <MdOutlineMedicalServices /> Medicine
+                  <MdOutlineMedicalServices size={22}/> Medicine
                 </a>
               </li>
               <li>
@@ -93,7 +93,7 @@ export default function Navbar() {
                   className={getActive("/customer/prescription")}
                   onClick={() => handleNavClick("/customer/prescription")}
                 >
-                  <HiOutlineDocumentArrowUp /> Upload Prescription
+                  <HiOutlineDocumentArrowUp size={22}/> Upload Prescription
                 </a>
               </li>
               <li>
@@ -101,7 +101,7 @@ export default function Navbar() {
                   className={getActive("/customer/cart")}
                   onClick={() => handleNavClick("/customer/cart")}
                 >
-                  <MdOutlineShoppingCart /> Cart
+                  <MdOutlineShoppingCart size={22}/> Cart
                 </a>
               </li>
               <li>
@@ -109,7 +109,7 @@ export default function Navbar() {
                   className={getActive("/customer/wishlist")}
                   onClick={() => handleNavClick("/customer/wishlist")}
                 >
-                  <FaRegHeart /> Wishlist
+                  <FaRegHeart size={22}/> Wishlist
                 </a>
               </li>
               <li>
@@ -117,7 +117,7 @@ export default function Navbar() {
                   className={getActive("/customer/ai-model")}
                   onClick={() => handleNavClick("/customer/ai-model")}
                 >
-                  <FaRobot /> Ai Feature
+                  <FaRobot size={22}/> Ai Feature
                 </a>
               </li>
             </ul>
@@ -186,6 +186,14 @@ export default function Navbar() {
               onClick={() => handleNavClick("/customer/wishlist")}
             >
               <FaRegHeart /> Wishlist
+            </a>
+          </li>
+          <li>
+            <a
+              className={getActive("/customer/ai-model")}
+              onClick={() => handleNavClick("/customer/ai-model")}
+            >
+              <FaRobot /> Ai Feature
             </a>
           </li>
         </ul>
