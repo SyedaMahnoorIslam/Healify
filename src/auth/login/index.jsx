@@ -21,7 +21,7 @@ import { GoogleLogin } from "@react-oauth/google";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const { login ,googleLogin } = UseAuth()
+  const { login, googleLogin } = UseAuth()
   const navigate = useNavigate();
 
 
@@ -44,7 +44,7 @@ export default function LoginPage() {
   const goToSignup = () => navigate('/auth/signup');
   const goToForgetPassword = () => navigate('/auth/forgetPassword');
 
- 
+
   return (
     <FormSide>
       <Card>
@@ -70,7 +70,6 @@ export default function LoginPage() {
           {errors.email && (
             <p style={{ color: "red", fontSize: "0.8rem" }}>{errors.email.message}</p>
           )}
-
 
           <InputWrapper>
             <Input
@@ -117,12 +116,14 @@ export default function LoginPage() {
               <GoogleLogin
                 onSuccess={async (credentialResponse) => {
                   console.log("Google credential response:", credentialResponse);
-                  const idToken = credentialResponse.credential;
-                  await googleLogin(idToken);
+                  const token = credentialResponse.credential;
+                  console.log(token);
+                  
+                  await googleLogin(token);
                 }}
                 onError={() => console.error("Google Login Failed")}
                 />
-              {/* <button type="button" onClick={handleGoogleLogin}><img src={google} alt="google" /></button> */}
+              {/* <button type="button" onClick={'handleGoogleLogin'}><img src={google} alt="google" /></button> */}
               {/* <button type="button"><img src={facebook} alt="facebook" /></button> */}
             </div>
           </div>

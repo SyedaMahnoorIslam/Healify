@@ -42,7 +42,6 @@ export const CategoryButton = styled.button`
 `;
 
 export const SearchWrapper = styled.div`
-  position: relative;
   width: 20rem;
   max-width: 60%;
   display: flex;

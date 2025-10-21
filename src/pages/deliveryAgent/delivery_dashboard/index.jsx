@@ -1,145 +1,3 @@
-// import  { useEffect, useState } from "react";
-// import {
-//   DashboardWrapper,
-//   LHeaderSection,
-//   RHeaderSection,
-//   Greeting,
-//   Subtitle,
-//   TaskList,
-//   TaskCard,
-//   TaskTitle,
-//   TaskSubtitle,
-//   StatusBadge,
-//   ModalDetail,
-//   ModalOverlay,
-//   ModalContent,
-//   ModalHeader,
-//   ButtonRow,
-//   Button,
-//   GreetingSection,
-//   DAImage,
-// } from "./style";
-// import { UseProfile } from "../../../components/useHooks";
-// import { UseDeliveryAgent } from "../useHooks";
-// import DateComponent from "../../../components/dateComponent";
-// import DeliveryAgentPic from "../../../assets/images/Delivery-Agent1.png";
-// function DeliveryDashboard() {
-//   const [tasks, setTasks] = useState([]);
-//   const [selectedTask, setSelectedTask] = useState(null);
-//   const { getProfile } = UseProfile();
-//   const { getTask } = UseDeliveryAgent();
-//   const [profile, setProfile] = useState(null);
-
-//   // Fetch Profile
-//   const fetchProfile = async () => {
-//     const res = await getProfile();
-//     if (res) setProfile(res);
-//   };
-
-//   // Fetch Tasks
-//   const fetchTasks = async () => {
-//     const res = await getTask();
-//     if (res) setTasks(res);
-//   };
-
-//   useEffect(() => {
-//     fetchProfile();
-//     fetchTasks();
-//   }, []);
-
-//   const updateStatus = (id, newStatus) => {
-//     setTasks((prev) =>
-//       prev.map((t) => (t.id === id ? { ...t, status: newStatus } : t))
-//     );
-//     setSelectedTask(null);
-//   };
-
-//   return (
-//     <DashboardWrapper>
-//       <GreetingSection>
-//         <LHeaderSection>
-//           <DAImage>
-//             <img src={DeliveryAgentPic} alt="Delivery Agent" />
-//           </DAImage>
-//           <div>
-//             <Greeting>
-//               Hello, {profile?.name ? profile.name : "Loading..."}!
-//             </Greeting>
-//             <Subtitle>Have a Good Day at Work!</Subtitle>
-//           </div>
-//         </LHeaderSection>
-//         <RHeaderSection>
-//           <DateComponent />
-//         </RHeaderSection>
-//       </GreetingSection>
-
-//       {/* ✅ Render tasks from API */}
-//       <TaskList>
-//         {tasks.length > 0 ? (
-//           tasks.map((task) => (
-//             <TaskCard key={task.id} onClick={() => setSelectedTask(task)}>
-//               <div>
-//                 <TaskTitle>Order #{task.id}</TaskTitle>
-//                 <TaskSubtitle>{task.shipping_address}</TaskSubtitle>
-//               </div>
-//               <StatusBadge status={task.status}>{task.status}</StatusBadge>
-//             </TaskCard>
-//           ))
-//         ) : (
-//           <p>No tasks assigned yet.</p>
-//         )}
-//       </TaskList>
-
-//       {/* ✅ Modal */}
-//       {selectedTask && (
-//         <ModalOverlay onClick={() => setSelectedTask(null)}>
-//           <ModalContent onClick={(e) => e.stopPropagation()}>
-//             <ModalHeader>Delivery Task Details</ModalHeader>
-//             <ModalDetail>
-//               <b>Order ID:</b> {selectedTask.id}
-//             </ModalDetail>
-//             <ModalDetail>
-//               <b>Address:</b> {selectedTask.shipping_address}
-//             </ModalDetail>
-//             <ModalDetail>
-//               <b>Status:</b> {selectedTask.status}
-//             </ModalDetail>
-//             <ModalDetail>
-//               <b>Payment:</b> {selectedTask.payment_status}
-//             </ModalDetail>
-//             <ModalDetail>
-//               <b>Total:</b> Rs. {selectedTask.total_amount}
-//             </ModalDetail>
-
-//             <ButtonRow>
-//               {selectedTask.status !== "Picked" &&
-//                 selectedTask.status !== "Delivered" && (
-//                   <Button
-//                     bg="var(--color-accent-yellow)"
-//                     onClick={() => updateStatus(selectedTask.id, "Picked")}
-//                   >
-//                     Mark Picked
-//                   </Button>
-//                 )}
-//               {selectedTask.status !== "Delivered" && (
-//                 <Button
-//                   bg="var(--color-accent-green)"
-//                   onClick={() => updateStatus(selectedTask.id, "Delivered")}
-//                 >
-//                   Mark Delivered
-//                 </Button>
-//               )}
-//               <Button bg="#718096" onClick={() => setSelectedTask(null)}>
-//                 Close
-//               </Button>
-//             </ButtonRow>
-//           </ModalContent>
-//         </ModalOverlay>
-//       )}
-//     </DashboardWrapper>
-//   );
-// }
-// export default DeliveryDashboard;
 import { useEffect, useState } from "react";
 import {
   DashboardWrapper,
@@ -195,7 +53,6 @@ function DeliveryDashboard() {
     fetchTasks();
   }, []);
 
-  // Update Status API
   const handleSaveStatus = async () => {
     if (!newStatus || newStatus === selectedTask.status) {
       toast.info("Please select a different status to update.");
@@ -258,7 +115,7 @@ function DeliveryDashboard() {
             </TaskCard>
           ))
         ) : (
-          <p>No tasks assigned yet.</p>
+          <p>No tasks assigned</p>
         )}
       </TaskList>
 

@@ -31,7 +31,7 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchInvoice = async () => {
       const res = await getInvoice();
-      console.log("Orders from API:", res);
+      console.log("invoice from API:", res);
    
       
     };
@@ -73,9 +73,6 @@ const OrderHistory = () => {
 
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             <Button onClick={() => { setSelectedOrder(order); setisViewDetailOpen(true); }}>View Invoice</Button>
-            {/* <StatusButton >
-              {order.status}
-            </StatusButton> */}
           </div>
         </OrderCard>
       ))}

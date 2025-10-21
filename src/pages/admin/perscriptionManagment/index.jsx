@@ -31,7 +31,6 @@ export default function PrescriptionManagement() {
       if (Array.isArray(data)) setPrescriptions(data);
       else toast.error("No prescriptions found");
     } catch (error) {
-      console.error("Error fetching prescriptions:", error);
       toast.error("Failed to fetch prescriptions");
     }
   };

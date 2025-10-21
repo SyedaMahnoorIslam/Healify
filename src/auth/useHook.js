@@ -118,22 +118,21 @@ const UseAuth = () => {
 
 
     // -------- Google Login ----------
-    const googleLogin = async (idToken) => {
+    const googleLogin = async (token) => {
         try {
-            const response = await ApiEndPoints.googleLogin({ 'id_token': idToken  });
-
+            const response = await ApiEndPoints.googleLogin({ 'token': token  });
+            
             if (response?.success || response?.message?.includes("success")) {
-                toast.success(response?.message || "Logged in successfully!");
+                toast.success(response?.message);
                 navigate('/customer/medicine');
-                return response?.data;
             } else {
-                toast.error(response?.error || "Google login failed!");
+                toast.error(response?.error);
             }
         } catch (error) {
-            toast.error("Google login API failed!");
             console.error("Google Login Error:", error);
         }
     };
+
 
     // -------- Navigation & Role Handling ----------
     const handleNavigation = (data) => {
