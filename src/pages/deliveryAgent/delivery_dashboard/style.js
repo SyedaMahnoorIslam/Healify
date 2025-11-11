@@ -74,22 +74,22 @@ export const TaskList = styled.div`
   gap: 1rem;
 `;
 
-export const TaskCard = styled.div`
-  background: var(--color-section);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s;
+// export const TaskCard = styled.div`
+//   background: var(--color-section);
+//   border: 1px solid var(--color-border);
+//   border-radius: 14px;
+//   padding: 1rem 1.5rem;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   cursor: pointer;
+//   transition: all 0.2s;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08);
-  }
-`;
+//   &:hover {
+//     transform: translateY(-3px);
+//     box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08);
+//   }
+// `;
 
 export const TaskTitle = styled.h3`
   margin: 0;
@@ -196,5 +196,34 @@ export const Button = styled.button`
   transition: 0.2s;
   &:hover {
     opacity: 0.9;
+  }
+`;
+export const TaskCard = styled.div`
+  background: var(--color-section);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  gap: 1rem;
+
+  .left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08);
   }
 `;

@@ -8,7 +8,7 @@ export const ApiEndPoints = {
   forgetPassword: async (body) => await postData("/api/auth/forgot-password", body),
   resetPassword: async (params) => await postData("/api/auth/reset-password", params),
   otp: async (body) => await postData("/api/auth/handle-otp", body),
-  googleLogin : async (body) => await postData("/api/auth/google/verify", body),
+  googleLogin: async (body) => await postData("/api/auth/google/verify", body),
   // ----------------- Profile --------------------
   getProfile: async (body) => await getData('/api/user/profile', body),
   updateProfile: async (body) => await patchData('/api/user/profile', body),
@@ -36,7 +36,10 @@ export const ApiEndPoints = {
   getFaqSection: async (body) => await getData("/api/faqs", body),
   editFaqSection: async (id, body) => await patchData(`/api/faqs/${id}`, body),
   deleteFaqSection: async (id, body) => await deleteData(`/api/faqs/${id}`, body),
-
+  getBestSellingproducts: async (body) => await getData(`/api/admin/reports/best-sellers`, body),
+  getStock: async (body, period) => await getData(`/api/admin/reports/orders?period=${period}`, body),
+  getOrder: async (body, period) => await getData(`/api/admin/reports/orders?period=${period}`, body),
+  
 
   //  ------------------- Delivery Agent ---------------------
 
@@ -62,9 +65,10 @@ export const ApiEndPoints = {
   getDeliverySlot: async (body) => await getData(`/api/config/delivery-slots`, body),
   uploadPrescription: async (params) => await postData(`/api/prescriptions`, params),
   getPrescriptions: async (body) => await getData(`/api/prescriptions`, body),
-  stripePayment: async(payload) => await postData(`/api/payment/create-checkout-session`, payload),
-  getInvoice: async(id, body)=> await getData(`/api/orders/${id}/invoice`,body),
+  stripePayment: async (payload) => await postData(`/api/payment/create-checkout-session`, payload),
+  getInvoice: async (id, body) => await getData(`/api/orders/${id}/invoice`, body),
+  removeFromWishlist: async (id, body) => await deleteData(`/api/wishlist/remove/${id}`, body),
 
   // ----------------- Customer Panel ----------------
-  aiModelUploadPrescription: async (body, config) => await postData(`/prescriptions/upload`, body, config,{ timeout: 120000}),
+  aiModelUploadPrescription: async (body, config) => await postData(`/prescriptions/upload`, body, config, { timeout: 120000 }),
 };

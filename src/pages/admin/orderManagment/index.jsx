@@ -30,21 +30,52 @@ const OrderManagement = () => {
   const { control, handleSubmit } = useForm();
   const { getOrders, getDeliveryAgents, assignDeliveryAgent, updateOrderStatus } = UseAdmin();
   
-  const onSubmit = async (data) => {
+//   const onSubmit = async (data) => {
+//   if (!selectedOrder) return;
+//   try {
+//     await updateOrderStatus(selectedOrder.id, { status: data.status });
+
+//     if (data.agent) {
+//       await assignDeliveryAgent({ orderId: selectedOrder.id, agentId: data.agent });
+//     }
+//     setOrders(prev =>
+//       prev.map(order =>
+//         order.id === selectedOrder.id
+//           ? { 
+//               ...order, 
+//               status: data.status, 
+//               agent: agents.find(a => a.id === data.agent)?.name
+//             }
+//           : order
+//       )
+//     );
+
+//     toast.success("Order updated successfully");
+//     setSelectedOrder(null);
+
+//   } catch (error) {
+//     console.error("Error in odr api:", error);
+//   }
+// };
+const onSubmit = async (data) => {
   if (!selectedOrder) return;
+
   try {
+ 
     await updateOrderStatus(selectedOrder.id, { status: data.status });
 
-    if (data.agent) {
+    if (data.agent && data.agent !== selectedOrder.agentId) {
       await assignDeliveryAgent({ orderId: selectedOrder.id, agentId: data.agent });
     }
-    setOrders(prev =>
-      prev.map(order =>
+
+    setOrders((prev) =>
+      prev.map((order) =>
         order.id === selectedOrder.id
-          ? { 
-              ...order, 
-              status: data.status, 
-              agent: agents.find(a => a.id === data.agent)?.name || "Unassigned"
+          ? {
+              ...order,
+              status: data.status,
+              agent:
+                agents.find((a) => a.id === data.agent)?.name 
             }
           : order
       )
@@ -52,9 +83,9 @@ const OrderManagement = () => {
 
     toast.success("Order updated successfully");
     setSelectedOrder(null);
-
   } catch (error) {
-    console.error("Error in odr api:", error);
+    console.error("Error updating order:", error);
+    toast.error("Failed to update order");
   }
 };
 
@@ -105,7 +136,7 @@ const OrderManagement = () => {
           <TableHead>
             <TableHeader>Order ID</TableHeader>
             <TableHeader>Customer</TableHeader>
-            <TableHeader>Items</TableHeader>
+            {/* <TableHeader>Items</TableHeader> */}
             <TableHeader>Total</TableHeader>
             <TableHeader>Status</TableHeader>
             <TableHeader>Agent</TableHeader>
@@ -118,12 +149,12 @@ const OrderManagement = () => {
               <TableRow key={order.id}>
                 <TableCell>{order.id}</TableCell>
                 <TableCell>{order.customer?.name}</TableCell>
-                <TableCell>{order.item_count}</TableCell>
+                {/* <TableCell>{order.item_count}</TableCell> */}
                 <TableCell>{order.total_amount}</TableCell>
                 <TableCell>
                   <Status status={order.status}>{order.status}</Status>
                 </TableCell>
-                <TableCell>{order.delivery_agent_id || "Unassigned"}</TableCell>
+                <TableCell>{order?.agent?.name || "Unassigned"}</TableCell>
                 <TableCell>
                   <ActionGroup>
                     <ActionButton
@@ -155,7 +186,21 @@ const OrderManagement = () => {
               {selectedOrder.customer?.email})
             </p>
             <p>
-              <b>Items:{selectedOrder.item_count}</b>
+              {/* <b>Items:{selectedOrder?.items?.Medicine?.name}</b> */}
+              <div style={{ marginTop: "10px" }}>
+              <b>Medicines:</b>
+              {selectedOrder.items?.length > 0 ? (
+                <ol style={{ marginTop: "5px", paddingLeft: "1.2rem" }}>
+                  {selectedOrder.items.map((item, idx) => (
+                    <li key={idx}>
+                      {item.Medicine?.name} × {item.quantity}
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p>No medicines found</p>
+              )}
+            </div>
             </p>
             <p>
               <b>Total:</b> {selectedOrder.total_amount}
@@ -173,8 +218,8 @@ const OrderManagement = () => {
                   defaultValue={selectedOrder.status}
                   render={({ field }) => (
                     <FormSelect {...field}>
-                      <option value="Pending">New</option>
-                      <option value="Processing">New</option>
+                      {/* <option value="Pending">New</option>
+                      <option value="Processing">New</option> */}
                       <option value="Assigned">Packed</option>
                       <option value="Shipped">Shipped</option>
                       <option value="Delivered">Delivered</option>
@@ -192,7 +237,6 @@ const OrderManagement = () => {
                   defaultValue={selectedOrder.agentId || ""}
                   render={({ field }) => (
                     <FormSelect {...field}>
-                      <option value="">Unassigned</option>
                       {agents.length > 0 ? (
                         agents.map((agent) => (
                           <option key={agent.id} value={agent.id}>

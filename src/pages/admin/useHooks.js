@@ -13,7 +13,7 @@ export const UseAdmin = () => {
       if (response?.message && response?.user) {
         toast.success(response.message || "Delivery Agent Registered!");
       } else {
-        toast.error(response?.error || "Registration failed!");
+        toast.error(response?.error);
       }
     } catch (error) {
       console.error("Register error:", error);
@@ -74,7 +74,7 @@ export const UseAdmin = () => {
     }
   };
   //--------------- Get Medicines ----------------
-  const getMedicines = async (page=1) => {
+  const getMedicines = async (page = 1) => {
     try {
       const data = await ApiEndPoints.getMedicines(page);
       console.log("Raw Medicines Response:", data);
@@ -96,13 +96,9 @@ export const UseAdmin = () => {
     try {
 
       const response = await ApiEndPoints.addMedicines(params)
-      if (response?.message && response?.user) {
-        toast.success(response.message || "Delivery Agent Registered!");
-      } else {
-        toast.error(response?.error || "Registration failed!");
-      }
+      toast.success('Medicine Added Successfully');
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration API failed!");
+      toast.error("Failed to Add medicine");
     }
   };
 
@@ -125,7 +121,7 @@ export const UseAdmin = () => {
   };
 
   //--------------- Edit Medicines ----------------
-  const editMedicine = async ( id , medicineData) => {
+  const editMedicine = async (id, medicineData) => {
     try {
       const res = await ApiEndPoints.editMedicine(id, medicineData);
       console.log("Update Medicine Response:", res);
@@ -244,13 +240,7 @@ export const UseAdmin = () => {
     try {
       const res = await ApiEndPoints.prescriptionStatus(id, body);
       console.log("Update Prescription Status:", res);
-      if (res?.success) {
-        toast.success("Prescription status updated successfully");
-        return res.data;
-      } else {
-        toast.error(res?.message || "Failed to update prescription status");
-        return null;
-      }
+      toast.success(res.message)
     } catch (error) {
       console.error("Update Prescription Status error:", error);
       return null;
@@ -276,7 +266,7 @@ export const UseAdmin = () => {
     }
   };
 
-//--------------- ADD FAQ ----------------
+  //--------------- ADD FAQ ----------------
   const addFaqSection = async (params) => {
     try {
       const res = await ApiEndPoints.addFaqSection(params);
@@ -354,12 +344,48 @@ export const UseAdmin = () => {
       return null;
     }
   };
+
+  //--------------- Get CMS Section ----------------
+  const getBestSellingProducts = async (body) => {
+    try {
+      const response = await ApiEndPoints.getBestSellingproducts(body);
+      console.log("Best selling product response:", response);
+      return response;
+    } catch (err) {
+      toast.error("Failed to BSP");
+      return null;
+    }
+  };
+
+  //--------------- Get Sales Graph ----------------
+  const getStock = async (body = null, period = "daily") => {
+    try {
+      const data = await ApiEndPoints.getStock(body, period);
+      console.log("Stock Graph Response:", data);
+      return data;
+    } catch (error) {
+      console.error("Stock Graph error:", error);
+      return [];
+    }
+  };
+  //--------------- Get Orders Graph ----------------
+  const getOrder = async (body = null, period = "daily") => {
+    try {
+      const data = await ApiEndPoints.getOrder(body, period);
+      console.log("Orders Graph Response:", data);
+      return data;
+    } catch (error) {
+      console.error("Orders Graph error:", error);
+      return [];
+    }
+  };
+
   return {
-    deliveryAgentRegister, getCustomers, getCustomersbyid, getDeliveryAgents,
+    deliveryAgentRegister, getCustomers, getCustomersbyid, getDeliveryAgents, getStock,
     dashboardStats, getMedicines, addMedicines, deleteMedicine, editMedicine, getOrders,
     updateOrderStatus, assignDeliveryAgent, stock_and_expiry, addCmsSection, getPrescription,
     uploadMedImage, prescriptionStatus, getCmsSectionDetail, addFaqSection, getFaqSection,
-    editFaqSection, deleteFaqSection,
+    editFaqSection, deleteFaqSection, getBestSellingProducts, getOrder
   }
 
 }

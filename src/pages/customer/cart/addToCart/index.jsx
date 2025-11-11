@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import {
   CartWrapper,
@@ -13,7 +14,6 @@ import {
   ItemQuantity,
   ItemTotal,
   RemoveButton,
-  AddMoreButton,
   ItemRow,
   QuantityControl,
   QuantityButton,
@@ -24,9 +24,10 @@ import { toast } from "react-toastify";
 
 const AddToCart = () => {
   const navigate = useNavigate();
-  const { getCart, removeFromCart, updateCartQuantity } = useCustomer();
+  const { getCart, removeFromCart, updateCartQuantity, getPrescriptions } = useCustomer();
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
+  const [prescriptions, setPrescriptions] = useState([]);
 
   // ---------- Fetch Cart ----------
   const fetchCart = async () => {
@@ -57,14 +58,16 @@ const AddToCart = () => {
   }, []);
 
   // ---------- Increase Quantity ----------
-  const handleIncrease = async (cartItemId, currentQuantity) => {
+  const handleIncrease = async (cartItemId, currentQuantity, availableStock) => {
     try {
+      if (currentQuantity >= availableStock) {
+        toast.warn(`Only ${availableStock} items available in stock.`);
+        return;
+      }
+
       const newQuantity = currentQuantity + 1;
       const payload = { quantity: newQuantity };
-
       await updateCartQuantity(cartItemId, payload);
-
-      // toast.success("Quantity increased!");
       fetchCart();
     } catch (error) {
       console.error("Error increasing quantity:", error);
@@ -79,7 +82,6 @@ const AddToCart = () => {
         const newQuantity = currentQuantity - 1;
         const payload = { quantity: newQuantity };
         await updateCartQuantity(cartItemId, payload);
-        // toast.info("Quantity decreased!");
         fetchCart();
       } else {
         await handleRemove(cartItemId);
@@ -94,12 +96,10 @@ const AddToCart = () => {
   const handleRemove = async (cartItemId) => {
     try {
       await removeFromCart(cartItemId);
-      console.log("remove item id ", cartItemId);
-      toast.warn("Item removed from cart!");
+      // toast.warn("Item removed from cart!");
       fetchCart();
     } catch (error) {
       console.error("Error removing from cart:", error);
-      toast.error("Failed to remove item.");
     }
   };
 
@@ -107,7 +107,19 @@ const AddToCart = () => {
   const goToBrowsing = () => navigate("/customer/medicine");
 
   const delivery = 300;
-  const total = subtotal;
+
+  const fetchPrescriptions = async () => {
+    try {
+      const data = await getPrescriptions();
+      console.log("Prescription Response:", data);
+      setPrescriptions(data);
+    } catch (error) {
+      console.error("Get prescription error:", error);
+    }
+  };
+  useEffect(() => {
+    fetchPrescriptions();
+  }, []);
 
   return (
     <CartWrapper>
@@ -129,6 +141,9 @@ const AddToCart = () => {
                     <h3>{item.name}</h3>
                     <p>{item.brand}</p>
                     <p>{item.category}</p>
+                    <small style={{ color: "#777" }}>
+                      Available: {item.inventory_quantity}
+                    </small>
                     {item.requires_prescription && (
                       <span className="prescription">Prescription Required</span>
                     )}
@@ -141,19 +156,41 @@ const AddToCart = () => {
                     )}
                   </ItemPrice>
 
+                  {/* ---------- Quantity Controls ---------- */}
                   <ItemQuantity>
                     <QuantityControl>
                       <QuantityButton
+                        disabled={item.quantity <= 1}
+                        style={{
+                          opacity: item.quantity <= 1 ? 0.5 : 1,
+                          cursor:
+                            item.quantity <= 1 ? "not-allowed" : "pointer",
+                        }}
                         onClick={() =>
                           handleDecrease(item.cartItemId, item.quantity)
                         }
                       >
                         −
                       </QuantityButton>
+
                       <span>{item.quantity}</span>
+
                       <QuantityButton
+                        disabled={item.quantity >= item.inventory_quantity}
+                        style={{
+                          opacity:
+                            item.quantity >= item.inventory_quantity ? 0.5 : 1,
+                          cursor:
+                            item.quantity >= item.inventory_quantity
+                              ? "not-allowed"
+                              : "pointer",
+                        }}
                         onClick={() =>
-                          handleIncrease(item.cartItemId, item.quantity)
+                          handleIncrease(
+                            item.cartItemId,
+                            item.quantity,
+                            item.inventory_quantity
+                          )
                         }
                       >
                         +
@@ -165,20 +202,19 @@ const AddToCart = () => {
                     Rs. {(item.final_price * item.quantity).toFixed(2)}
                   </ItemTotal>
 
-                  <RemoveButton
-                    onClick={() => handleRemove(item.cartItemId)}
-                  >
+                  <RemoveButton onClick={() => handleRemove(item.cartItemId)}>
                     Remove from Cart
                   </RemoveButton>
                 </ItemRow>
               </CartItem>
             ))}
 
+            {/* ---------- Cart Summary ---------- */}
             <CartSummary>
               <h3>Order Summary</h3>
               <div className="row">
                 <span>Subtotal</span>
-                <span>Rs. {subtotal.toFixed(2)-300}</span>
+                <span>Rs. {(subtotal - delivery).toFixed(2)}</span>
               </div>
               <div className="row">
                 <span>Delivery</span>
@@ -188,9 +224,73 @@ const AddToCart = () => {
                 <span>Total</span>
                 <span>Rs. {subtotal.toFixed(2)}</span>
               </div>
-              <CheckoutButton onClick={goToCheckout}>
-                Proceed to Checkout
-              </CheckoutButton>
+
+              {/* ---------- Button Logic ---------- */}
+              {/* {cartItems.some((item) => item.requires_prescription) ? (
+                <>
+                  <CheckoutButton
+                    disabled
+                    style={{
+                      opacity: 0.6,
+                      cursor: "not-allowed",
+                      background: "#ccc",
+                    }}
+                  >
+                    Proceed to Checkout
+                  </CheckoutButton>
+                  <CheckoutButton
+                    style={{
+                      background: "var(--color-primary)",
+                      color: "#fff",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => navigate("/customer/prescription")}
+                  >
+                    Upload Prescription
+                  </CheckoutButton>
+                </>
+              ) : (
+                <CheckoutButton onClick={goToCheckout}>
+                  Proceed to Checkout
+                </CheckoutButton>
+              )} */}
+
+              {/* ---------- Button Logic ---------- */}
+              {cartItems.some((item) => item.requires_prescription) ? (
+                prescriptions.some((p) => p.status === "Approved") ? (
+                  <CheckoutButton onClick={goToCheckout}>
+                    Proceed to Checkout
+                  </CheckoutButton>
+                ) : (
+                  <>
+                    <CheckoutButton
+                      disabled
+                      style={{
+                        opacity: 0.6,
+                        cursor: "not-allowed",
+                        background: "#ccc",
+                      }}
+                    >
+                      Proceed to Checkout
+                    </CheckoutButton>
+                    <CheckoutButton
+                      style={{
+                        background: "var(--color-primary)",
+                        color: "#fff",
+                        marginTop: "10px",
+                      }}
+                      onClick={() => navigate("/customer/prescription")}
+                    >
+                      Upload Prescription
+                    </CheckoutButton>
+                  </>
+                )
+              ) : (
+                <CheckoutButton onClick={goToCheckout}>
+                  Proceed to Checkout
+                </CheckoutButton>
+              )}
+
             </CartSummary>
           </>
         ) : (

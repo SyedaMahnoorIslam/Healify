@@ -18,13 +18,13 @@ import {
 import { toast } from "react-toastify";
 import { UseAdmin } from "../useHooks";
 
-export default function PrescriptionManagement() {
+const PrescriptionManagement = () => {
   const { getPrescription, prescriptionStatus } = UseAdmin();
   const [prescriptions, setPrescriptions] = useState([]);
   const [comments, setComments] = useState({});
-
   const BASE_URL = process.env.REACT_APP_API_URL;
 
+  // Fetch Prescriptions
   const fetchPrescriptions = async () => {
     try {
       const data = await getPrescription();
@@ -39,10 +39,12 @@ export default function PrescriptionManagement() {
     fetchPrescriptions();
   }, []);
 
+  // Handle comment input
   const handleCommentChange = (id, value) => {
     setComments({ ...comments, [id]: value });
   };
 
+  // Handle approve/reject
   const handleStatusUpdate = async (id, status) => {
     const comment = comments[id]?.trim();
     if (!comment) {
@@ -53,18 +55,16 @@ export default function PrescriptionManagement() {
     try {
       const body = {
         status,
-        pharmacist_notes: comment
+        pharmacist_notes: comment,
       };
+
       const res = await prescriptionStatus(id, body);
       if (res) {
         toast.success(`Prescription #${id} ${status}`);
-        
-        setPrescriptions(prev =>
-          prev.map(p =>
-            p.id === id ? { ...p, status, pharmacist_notes: comment } : p
-          )
-        );
-        setComments({ ...comments, [id]: "" }); 
+        setComments({ ...comments, [id]: "" });
+
+
+        await fetchPrescriptions();
       }
     } catch (error) {
       toast.error(`Failed to ${status} prescription`);
@@ -89,7 +89,7 @@ export default function PrescriptionManagement() {
 
                 {/* Images */}
                 {item.images && item.images.length > 0 ? (
-                  item.images.map(img => (
+                  item.images.map((img) => (
                     <Image key={img.id}>
                       <img
                         src={`${BASE_URL}/${img.file_path}`}
@@ -108,7 +108,7 @@ export default function PrescriptionManagement() {
                   </p>
                 )}
 
-                {/*comment box & buttons show only if status is pending */}
+                {/* Comment box & buttons for Pending only */}
                 {item.status === "Pending" && (
                   <>
                     <CommentBox
@@ -151,4 +151,5 @@ export default function PrescriptionManagement() {
       </Main>
     </Container>
   );
-}
+};
+export default PrescriptionManagement;

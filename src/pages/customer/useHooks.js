@@ -4,23 +4,21 @@ import { ApiEndPoints } from '../../libs/http-service/api/endPoint';
 import { getData } from '../../libs/http-service/methods';
 
 export const useCustomer = () => {
-  //--------------- Get CMS Section ----------------
-  const getCmsSection = async () => {
-    try {
-      const data = await ApiEndPoints.getCmsSection();
-      console.log("Raw Medicines Response:", data);
+  // //--------------- Get CMS Section ----------------
+  // const getCmsSection = async () => {
+  //   try {
+  //     const data = await ApiEndPoints.getCmsSection();
 
-      if (Array.isArray(data?.medicines)) {
-        return data.medicines;
-      } else {
-        toast.error("No medicines found");
-        return [];
-      }
-    } catch (error) {
-      console.error("Get medicine error:", error);
-      return [];
-    }
-  };
+  //     if (Array.isArray(data?.medicines)) {
+  //       return data.medicines;
+  //     } else {
+  //       return [];
+  //     }
+  //   } catch (error) {
+  //     console.error("Get medicine error:", error);
+  //     return [];
+  //   }
+  // };
   //--------------- Get Medicines ----------------
   const medicinesList = async (page = 1) => {
     try {
@@ -30,7 +28,6 @@ export const useCustomer = () => {
       if (Array.isArray(data?.medicines)) {
         return data;
       } else {
-        toast.error("No medicines found");
         return [];
       }
     } catch (error) {
@@ -71,7 +68,18 @@ export const useCustomer = () => {
   const addToWishlist = async (id) => {
     try {
       const response = await ApiEndPoints.addToWishlist(id);
-      console.log(response.message);
+      // toast.success(response?.message);
+      return response;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  // --------------- Remove From WishList ----------------
+  const removeFromWishlist = async (id) => {
+    try {
+      const response = await ApiEndPoints.removeFromWishlist(id);
+      console.log("remove api hit ", response);
+      // toast.success(response.message)
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -98,7 +106,7 @@ export const useCustomer = () => {
       return null;
     }
   };
-  //--------------- Get Medicines ----------------
+  //--------------- Get Orders ----------------
   const getOrderDetail = async () => {
     try {
       const data = await ApiEndPoints.getOrderDetail();
@@ -118,10 +126,11 @@ export const useCustomer = () => {
   const addToCart = async (payload) => {
     try {
       const response = await ApiEndPoints.addToCart(payload);
-      console.log(response.message);
+      toast.success(response.message)
       return response;
     } catch (error) {
       console.error("Error:", error);
+     
     }
   };
   // --------------- Update Cart Quantity ----------------
@@ -139,6 +148,7 @@ export const useCustomer = () => {
     try {
       const response = await ApiEndPoints.removeFromCart(id);
       console.log("remove api hit ", response);
+      toast.success(response.message)
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -151,7 +161,7 @@ export const useCustomer = () => {
       console.log(response);
       return response;
     } catch (error) {
-      console.error("Error:", error);
+      console.log("Error:", error);
     }
   };
   //--------------- GET FAQ ----------------
@@ -160,10 +170,9 @@ export const useCustomer = () => {
       const res = await ApiEndPoints.getFaqSection();
       if (Array.isArray(res)) return res;
       if (Array.isArray(res?.faqs)) return res.faqs;
-      toast.info("No FAQs found");
       return [];
     } catch (error) {
-      toast.error("Failed to fetch FAQs");
+      console.log("Failed to fetch FAQs");
       return [];
     }
   };
@@ -181,7 +190,6 @@ export const useCustomer = () => {
   const getAddress = async (body) => {
     try {
       const response = await ApiEndPoints.getAddress(body);
-      console.log("response of Address in hook ", response)
       return response;
     } catch (error) {
       throw error;
@@ -210,6 +218,7 @@ export const useCustomer = () => {
     try {
       const response = await ApiEndPoints.checkout(params);
       console.log(response);
+      toast.success("You placed your order Successfully!");
       return response;
     } catch (error) {
       console.error("Error:", error);
@@ -244,7 +253,8 @@ export const useCustomer = () => {
       if (Array.isArray(data)) {
         return data;
       } else {
-        toast.error("No prescription found");
+       console.log("No prescription found");
+       
         return [];
       }
     } catch (error) {
@@ -258,14 +268,10 @@ export const useCustomer = () => {
     try {
       const formData = new FormData();
       formData.append("image", file);
-
-      // This uploads the image and returns { imageIds: [2] }
       const res = await ApiEndPoints.uploadMedImage(formData);
       const imageId = res?.imageIds?.[0];
-      console.log("Uploaded image ID:", imageId);
       return imageId;
     } catch (error) {
-      console.error("Image upload failed:", error);
       toast.error("Image upload failed");
       return null;
     }
@@ -276,11 +282,9 @@ export const useCustomer = () => {
     try {
       const body = { imageId };
       const res = await ApiEndPoints.uploadPrescription(body);
-      console.log("Prescription created:", res);
       toast.success("Prescription uploaded successfully!");
       return res;
     } catch (error) {
-      console.error("Prescription creation failed:", error);
       toast.error("Failed to create prescription");
     }
   };
@@ -290,11 +294,9 @@ export const useCustomer = () => {
   const aiModelUploadPrescription = async (body) => {
     try {
       const res = await ApiEndPoints.aiModelUploadPrescription(body);
-      console.log("Prescription created:", res);
       toast.success("Prescription uploaded successfully!");
       return res;
     } catch (error) {
-      console.error("Prescription creation failed:", error);
       toast.error("Failed to create prescription");
     }
   };
@@ -311,10 +313,10 @@ export const useCustomer = () => {
   };
   
   return {
-    getCmsSection, uploadMedImage, medicinesList, addToWishlist,
+     uploadMedImage, medicinesList, addToWishlist,
     searchMedicine, getCmsSectionDetail, getOrderDetail, addToCart, getCart, getFaqSection,
     addAddress, deleteAddress, getAddress, getOrderHistory, getWishlist, checkout,
-    removeFromCart, getDeliverySlot, updateCartQuantity, uploadImage,
+    removeFromCart, getDeliverySlot, updateCartQuantity, uploadImage,removeFromWishlist,
     getPrescriptions, createPrescription,aiModelUploadPrescription,stripePayment,getInvoice
   }
 }

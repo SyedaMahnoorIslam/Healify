@@ -1,11 +1,214 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+// import { useNavigate, useLocation } from "react-router-dom";
+// import Logo from "../../assets/images/logo-image.png";
+// import profileImg from "../../assets/images/logo-image.png";
+// import { MdOutlineMedicalServices, MdOutlineShoppingCart } from "react-icons/md";
+// import { FaRegHeart, FaRobot } from "react-icons/fa6";
+// import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
+
+// import {
+//   StyledNav,
+//   TopRow,
+//   LogoName,
+//   Navlinks,
+//   Profile,
+//   DropdownMenu,
+//   Nav,
+//   Hamburger,
+//   MobileMenu,
+// } from "./style";
+// import { UseProfile } from "../useHooks";
+// import { Roles } from "../../enum/roles";
+
+// export default function Navbar() {
+//   const [dropdownOpen, setDropdownOpen] = useState(false);
+//   const [menuOpen, setMenuOpen] = useState(false);
+//   const userRole = localStorage.getItem("role");
+//   const { getProfile } = UseProfile();
+//   const [profile, setProfile] = useState(null);
+//   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   const handleNavClick = (path) => {
+//     setMenuOpen(false);
+//     navigate(path);
+//   };
+//   const customerDropdown = [
+//     { label: "Profile", path: "/customer/profile" },
+//     { label: "Support", path: "/customer/support" },
+//     { label: "Logout", path: "/logout" }
+//   ];
+//   let dropdownItems = [];
+//   if (userRole === Roles.CUSTOMER) {
+//     dropdownItems = customerDropdown;
+//   }
+//   const handleNavigation = (path) => {
+//     if (path === "/logout") {
+//       localStorage.clear();
+//       navigate("/auth/login");
+//     } else {
+//       navigate(path);
+//     }
+//     setDropdownOpen(false);
+//   };
+//   // Fetch Profile
+//   const fetchProfile = async () => {
+//     const res = await getProfile();
+//     if (res) {
+//       setProfile(res);
+//     }
+//   };
+//   useEffect(() => {
+//     fetchProfile();
+//   }, []);
+
+//   const getActive = (path) => {
+//     return location.pathname === path ? "active" : "";
+//   };
+
+//   return (
+//     <StyledNav>
+//       <TopRow>
+//         <div className="Logo-Search">
+//           <LogoName>
+//             <img src={Logo} alt="Healify Logo" />
+//             <span>Healify</span>
+//           </LogoName>
+//         </div>
+
+//         <Nav>
+//           <Navlinks>
+//             <ul>
+//               <li>
+//                 <a
+//                   className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
+//                   onClick={() => handleNavClick("/customer/medicine")}
+//                 >
+//                   <MdOutlineMedicalServices size={22}/> Medicine
+//                 </a>
+//               </li>
+//               <li>
+//                 <a
+//                   className={getActive("/customer/prescription")}
+//                   onClick={() => handleNavClick("/customer/prescription")}
+//                 >
+//                   <HiOutlineDocumentArrowUp size={22}/> Upload Prescription
+//                 </a>
+//               </li>
+//               <li>
+//                 <a
+//                   className={getActive("/customer/cart")}
+//                   onClick={() => handleNavClick("/customer/cart")}
+//                 >
+//                   <MdOutlineShoppingCart size={22}/> Cart
+//                 </a>
+//               </li>
+//               <li>
+//                 <a
+//                   className={getActive("/customer/wishlist")}
+//                   onClick={() => handleNavClick("/customer/wishlist")}
+//                 >
+//                   <FaRegHeart size={22}/> Wishlist
+//                 </a>
+//               </li>
+//               <li>
+//                 <a
+//                   className={getActive("/customer/ai-model")}
+//                   onClick={() => handleNavClick("/customer/ai-model")}
+//                 >
+//                   <FaRobot size={22}/> Ai Feature
+//                 </a>
+//               </li>
+//             </ul>
+//           </Navlinks>
+//         </Nav>
+
+//         <div className="Nav-Right-Section">
+
+
+//           <Profile>
+//             <div onClick={toggleDropdown}>
+//               <img src={profileImg} alt="Profile" />
+//               <span onClick={toggleDropdown}>{profile?.name ? profile.name : "Loading..."}</span>
+//             </div>
+//             {dropdownOpen && (
+//               <DropdownMenu>
+//                 {dropdownItems.map((item, idx) => (
+//                   <li key={idx} onClick={() => handleNavigation(item.path)}>
+//                     {item.label}
+//                   </li>
+//                 ))}
+//               </DropdownMenu>
+//             )}
+//           </Profile>
+
+//           <Hamburger
+//             className={menuOpen ? "open" : ""}
+//             onClick={() => setMenuOpen(!menuOpen)}
+//           >
+//             <span></span>
+//             <span></span>
+//             <span></span>
+//           </Hamburger>
+//         </div>
+//       </TopRow>
+
+//       <MobileMenu open={menuOpen}>
+//         <ul>
+//           <li>
+//             <a
+//               className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
+//               onClick={() => handleNavClick("/customer/medicine" || "/customer/productDetail/:id")}
+//             >
+//               <MdOutlineMedicalServices /> Medicine
+//             </a>
+//           </li>
+//           <li>
+//             <a
+//               className={getActive("/customer/prescription")}
+//               onClick={() => handleNavClick("/customer/prescription")}
+//             >
+//               <HiOutlineDocumentArrowUp /> Upload Prescription
+//             </a>
+//           </li>
+//           <li>
+//             <a
+//               className={getActive("/customer/cart")}
+//               onClick={() => handleNavClick("/customer/cart")}
+//             >
+//               <MdOutlineShoppingCart /> Cart
+//             </a>
+//           </li>
+//           <li>
+//             <a
+//               className={getActive("/customer/wishlist")}
+//               onClick={() => handleNavClick("/customer/wishlist")}
+//             >
+//               <FaRegHeart /> Wishlist
+//             </a>
+//           </li>
+//           <li>
+//             <a
+//               className={getActive("/customer/ai-model")}
+//               onClick={() => handleNavClick("/customer/ai-model")}
+//             >
+//               <FaRobot /> Ai Feature
+//             </a>
+//           </li>
+//         </ul>
+//       </MobileMenu>
+//     </StyledNav>
+//   );
+// }
+
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../../assets/images/logo-image.png";
 import profileImg from "../../assets/images/logo-image.png";
 import { MdOutlineMedicalServices, MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart, FaRobot } from "react-icons/fa6";
 import { HiOutlineDocumentArrowUp } from "react-icons/hi2";
-
 import {
   StyledNav,
   TopRow,
@@ -23,26 +226,24 @@ import { Roles } from "../../enum/roles";
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const menuRef = useRef(null);
+
   const userRole = localStorage.getItem("role");
   const { getProfile } = UseProfile();
   const [profile, setProfile] = useState(null);
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavClick = (path) => {
-    setMenuOpen(false);
-    navigate(path);
-  };
   const customerDropdown = [
     { label: "Profile", path: "/customer/profile" },
     { label: "Support", path: "/customer/support" },
-    { label: "Logout", path: "/logout" }
+    { label: "Logout", path: "/logout" },
   ];
+
   let dropdownItems = [];
-  if (userRole === Roles.CUSTOMER) {
-    dropdownItems = customerDropdown;
-  }
+  if (userRole === Roles.CUSTOMER) dropdownItems = customerDropdown;
+
   const handleNavigation = (path) => {
     if (path === "/logout") {
       localStorage.clear();
@@ -51,21 +252,41 @@ export default function Navbar() {
       navigate(path);
     }
     setDropdownOpen(false);
+    setMenuOpen(false);
   };
-  // Fetch Profile
+
   const fetchProfile = async () => {
     const res = await getProfile();
-    if (res) {
-      setProfile(res);
-    }
+    if (res) setProfile(res);
   };
+
   useEffect(() => {
     fetchProfile();
   }, []);
 
-  const getActive = (path) => {
-    return location.pathname === path ? "active" : "";
+  const getActive = (path) => (location.pathname === path ? "active" : "");
+
+  const handleNavClick = (path) => {
+    setMenuOpen(false);
+    navigate(path);
   };
+
+  // ✅ Close dropdown & menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        menuRef.current &&
+        !menuRef.current.contains(e.target)
+      ) {
+        setDropdownOpen(false);
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <StyledNav>
@@ -82,10 +303,10 @@ export default function Navbar() {
             <ul>
               <li>
                 <a
-                  className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
+                  className={getActive("/customer/medicine")}
                   onClick={() => handleNavClick("/customer/medicine")}
                 >
-                  <MdOutlineMedicalServices size={22}/> Medicine
+                  <MdOutlineMedicalServices size={22} /> Medicine
                 </a>
               </li>
               <li>
@@ -93,7 +314,7 @@ export default function Navbar() {
                   className={getActive("/customer/prescription")}
                   onClick={() => handleNavClick("/customer/prescription")}
                 >
-                  <HiOutlineDocumentArrowUp size={22}/> Upload Prescription
+                  <HiOutlineDocumentArrowUp size={22} /> Upload Prescription
                 </a>
               </li>
               <li>
@@ -101,7 +322,7 @@ export default function Navbar() {
                   className={getActive("/customer/cart")}
                   onClick={() => handleNavClick("/customer/cart")}
                 >
-                  <MdOutlineShoppingCart size={22}/> Cart
+                  <MdOutlineShoppingCart size={22} /> Cart
                 </a>
               </li>
               <li>
@@ -109,7 +330,7 @@ export default function Navbar() {
                   className={getActive("/customer/wishlist")}
                   onClick={() => handleNavClick("/customer/wishlist")}
                 >
-                  <FaRegHeart size={22}/> Wishlist
+                  <FaRegHeart size={22} /> Wishlist
                 </a>
               </li>
               <li>
@@ -117,7 +338,7 @@ export default function Navbar() {
                   className={getActive("/customer/ai-model")}
                   onClick={() => handleNavClick("/customer/ai-model")}
                 >
-                  <FaRobot size={22}/> Ai Feature
+                  <FaRobot size={22} /> Ai Feature
                 </a>
               </li>
             </ul>
@@ -125,12 +346,10 @@ export default function Navbar() {
         </Nav>
 
         <div className="Nav-Right-Section">
-
-
-          <Profile>
-            <div onClick={toggleDropdown}>
+          <Profile ref={dropdownRef}>
+            <div onClick={() => setDropdownOpen(!dropdownOpen)}>
               <img src={profileImg} alt="Profile" />
-              <span onClick={toggleDropdown}>{profile?.name ? profile.name : "Loading..."}</span>
+              <span>{profile?.name ? profile.name : "Loading..."}</span>
             </div>
             {dropdownOpen && (
               <DropdownMenu>
@@ -144,6 +363,7 @@ export default function Navbar() {
           </Profile>
 
           <Hamburger
+            ref={menuRef}
             className={menuOpen ? "open" : ""}
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -154,12 +374,12 @@ export default function Navbar() {
         </div>
       </TopRow>
 
-      <MobileMenu open={menuOpen}>
+      <MobileMenu open={menuOpen} ref={menuRef}>
         <ul>
           <li>
             <a
-              className={getActive("/customer/medicine" || "/customer/productDetail/:id")}
-              onClick={() => handleNavClick("/customer/medicine" || "/customer/productDetail/:id")}
+              className={getActive("/customer/medicine")}
+              onClick={() => handleNavClick("/customer/medicine")}
             >
               <MdOutlineMedicalServices /> Medicine
             </a>
@@ -199,5 +419,4 @@ export default function Navbar() {
         </ul>
       </MobileMenu>
     </StyledNav>
-  );
-}
+  );}

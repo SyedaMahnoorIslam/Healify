@@ -17,11 +17,11 @@ export const Title = styled.h1`
 export const ChartsRow = styled.div`
   display: flex;
   gap: 20px;
-  flex-wrap: wrap; /* responsive */
+  flex-wrap: wrap; 
   margin-bottom: 20px;
   width: 100%;
     @media (max-width: 1000px){
-    width: 80%;
+    width: 90%;
   }
 `;
 
@@ -33,9 +33,7 @@ export const Filter = styled.button`
   font-family: var(--font-secondary);
   font-weight: bold;
   transition: 0.3s ease;
-  &:hover {
-    transform: scale(1.05);
-  }
+  
 `;
 
 export const Dropdown = styled.select`
@@ -47,24 +45,22 @@ export const Dropdown = styled.select`
   font-weight: bold;
   font-family: var(--font-secondary);
   cursor: pointer;
-
-  &:hover {
-    /* transform: scale(1.05); */
-  }
+ 
 `;
 
 export const ChartBox = styled.div`
-  flex: 1;
-  min-width: 300px;
+  /* flex: 1; */
+  /* min-width: 300px; */
+  width: 100%;
   background: var(--color-bg);
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
   transition: 0.3s ease;
 
-  &:hover {
+  /* &:hover {
     transform: scale(1.05);
-  }
+  } */
 
   div {
     display: flex;
@@ -141,4 +137,71 @@ export const StatusBadge = styled.span`
       : status === "Expiring Soon"
       ? "#E74C3C"
       : "#2ECC71"};
+`;
+
+export const BestSellingSection = styled.div`
+  background: var(--color-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+
+  h3 {
+    margin-bottom: 15px;
+    color: var(--color-primary);
+    font-family: var(--font-secondary);
+    font-weight: 700;
+  }
+`;
+
+export const CardRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`;
+
+export const ProductCard = styled.div`
+  flex: 1;
+  min-width: 200px;
+  max-width: 240px;
+  background: var(--color-section);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  h4 {
+    margin-top: 10px;
+    font-family: var(--font-secondary);
+    color: var(--color-primary);
+  }
+
+  p {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+  }
+`;
+
+export const RankBadge = styled.div`
+  background: var(--color-primary);
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 `;

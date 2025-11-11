@@ -2,16 +2,36 @@
 import styled from "styled-components";
 
 export const PageContainer = styled.div`
-  padding: 2rem;
-  max-width: 950px;
+  /* padding: 2rem; */
+  /* max-width: 950px; */
   margin: auto;
   background: var(--color-bg);
   font-family: var(--font-primary);
 `;
+export const MedicinesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1rem;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
 
 export const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1.5rem;
+  margin-top: 2.5rem;
+
   text-align: center;
   font-weight: 700;
   color: var(--color-primary);
@@ -42,7 +62,7 @@ export const MedicineCard = styled.div`
 `;
 
 export const MedicineImage = styled.img`
-  width: 40%;
+  width: 100%;
   /* height: 10rem; */
   object-fit: contain;
   /* border-radius: 0.8rem; */
@@ -90,7 +110,7 @@ export const ActionButton = styled.button`
 
   &:hover {
     background: ${(props) =>
-      props.delete ? "#c62828" : "var(--color-primary-light)"};
+    props.delete ? "#c62828" : "var(--color-primary-light)"};
     transform: scale(1.05);
   }
 `;
@@ -102,7 +122,7 @@ export const AddButton = styled.button`
   border-radius: 0.8rem;
   padding: 0.7rem 1.4rem;
   cursor: pointer;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
   font-weight: bold;
   font-size: 1rem;
   transition: 0.3s;
@@ -116,8 +136,9 @@ export const AddButton = styled.button`
 
 export const FormOverlay = styled.div`
   position: fixed;
-  top: 0;
+  top: 1rem;
   left: 0;
+  bottom: 1rem;
   width: 100%;
   height: 100%;
   /* background: rgba(28, 28, 28, 0.55); */
@@ -125,7 +146,7 @@ export const FormOverlay = styled.div`
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(3px);
-  z-index: 999; 
+  z-index: 999999; 
 `;
 
 export const FormContainer = styled.div`

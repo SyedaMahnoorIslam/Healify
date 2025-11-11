@@ -63,8 +63,10 @@ export const StyledForm = styled.form`
   gap: 10px;
 
   .loginButton {
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
 
     p {
       text-align: center;
@@ -78,12 +80,7 @@ export const StyledForm = styled.form`
       text-align: center;
     }
 
-    div {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
+    
     button {
       display: flex;
       justify-content: center;
@@ -147,16 +144,15 @@ export const Button = styled.button`
   }
 `;
 
-export const Googlebutton = styled.div`
-  display: flex;
+export const GoogleButton = styled.div`
+/* padding-inline: 20px; */
+margin: auto;
+.googleBtn{
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  text-align: center; */
 
-  // Optional: control width to make it match your buttons
-  width: 100%;
-  > div {
-    display: flex;
-    justify-content: center;
-  }
-`;
+}
+  /* background-color: black; */
+`

@@ -11,11 +11,13 @@ import CmsSection from '../../pages/admin/cmsSection'
 import DeliveryAgentManagement from '../../pages/admin/deliveryAgentManagment'
 import ProfilePage from '../../components/profileSetting'
 import FaqManagement from '../../pages/admin/faq_managment'
+import ScrollToTop from '../../helpers/scrollToTop'
 
 const AdminRoutes = () => {
   return (
     <>
       <AdminLayout>
+        <ScrollToTop/>
       <Routes>
         <Route path='/dashboard' element={<AdminDashboard/>} />   
         <Route path='/prescriptionManagment' element={<PrescriptionManagement/>} />  

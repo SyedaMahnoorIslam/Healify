@@ -37,18 +37,23 @@ export const Logo = styled.h2`
   gap: 0.5rem;
   padding-left: 1rem;
 
- @media (max-width: 675px) {
+ @media (max-width: 980px) {
     padding-left: 0;
+
   }
 `;
 export const Image = styled.div`
    justify-content: center;
+   @media (max-width:980px){
+    justify-content: center;
+   }
+
   img{
     height: 3rem;
      width: 3rem;
-     @media (max-width: 675px) {
-    height: 3.5rem;
-    width: 3.5rem;
+     @media (max-width: 980px) {
+    height: 3rem;
+    width: 3rem;
   }
   }
   
@@ -61,8 +66,11 @@ font-family: var(--font-secondary);
   color: var(--color-primary);
   /* margin-bottom: 2rem;  */
   text-align: center;
-   @media (max-width: 768px) {
-    display: none;
+   @media (max-width: 980px) {
+    font-size: 1.5rem;
+  }
+  @media (max-width: 675px) {
+   display: none;
   }
 `;
 export const Menu = styled.ul`

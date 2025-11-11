@@ -12,12 +12,14 @@ import AboutUs from '../../pages/customer/aboutus'
 import CheckOut from '../../pages/customer/checkout'
 import SupportScreen from '../../pages/customer/support'
 import AiModel from '../../pages/customer/aiModel'
+import ScrollToTop from '../../helpers/scrollToTop'
 
 
 const CustomerRoutes = () => {
     return (
         <div>
             <CustomerLayout>
+                <ScrollToTop/>
                 <Routes>
                     <Route path='/medicine' element={< Medicine/>} />
                     <Route path='/productDetail/:id' element={<ProductDetailPage />} />

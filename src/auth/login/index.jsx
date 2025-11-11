@@ -12,6 +12,7 @@ import {
   Button,
   InputWrapper,
   IconWrapper,
+  GoogleButton,
 } from "./style";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -112,21 +113,24 @@ export default function LoginPage() {
               Do you have an account? <a onClick={goToSignup}>SignUp</a>
             </p>
             <h3>OR</h3>
-            <div>
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  console.log("Google credential response:", credentialResponse);
-                  const token = credentialResponse.credential;
-                  console.log(token);
-                  
-                  await googleLogin(token);
-                }}
-                onError={() => console.error("Google Login Failed")}
-                />
-              {/* <button type="button" onClick={'handleGoogleLogin'}><img src={google} alt="google" /></button> */}
-              {/* <button type="button"><img src={facebook} alt="facebook" /></button> */}
-            </div>
           </div>
+          <GoogleButton>
+            <GoogleLogin
+              className="googleBtn"
+
+              onSuccess={async (credentialResponse) => {
+                console.log("Google credential response:", credentialResponse);
+                const token = credentialResponse.credential;
+                console.log(token);
+
+                await googleLogin(token);
+              }}
+              onError={() => console.error("Google Login Failed")}
+            />
+            {/* <button type="button" onClick={'handleGoogleLogin'}><img src={google} alt="google" /></button> */}
+            {/* <button type="button"><img src={facebook} alt="facebook" /></button> */}
+
+          </GoogleButton>
 
         </StyledForm>
       </Card>

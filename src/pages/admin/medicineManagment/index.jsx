@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -20,6 +21,7 @@ import {
   CloseButton,
   UploadArea,
   UploadLabel,
+  MedicinesGrid,
 } from "./style";
 import { UseAdmin } from "../useHooks";
 import Pagination from "../../../components/pagination";
@@ -33,6 +35,7 @@ const categoriesList = [
   "Baby Care",
   "Organic",
 ];
+
 const MedicineManagement = () => {
   const [medicines, setMedicines] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -43,39 +46,43 @@ const MedicineManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+
   const { getMedicines, addMedicines, deleteMedicine, editMedicine, uploadMedImage } = UseAdmin();
   const { register, handleSubmit, reset, control, setValue, getValues } = useForm({});
 
-  // BASEURL for image
   const BASE_URL = process.env.REACT_APP_API_URL;
 
-  // ek hi jagah fetch function
   const fetchMedicines = async (page = 1) => {
-    const meds = await getMedicines(page);
-    if (meds) {
-      setMedicines(meds.medicines || []);
-      setTotalItems(meds.totalItems || 0);
-      setTotalPages(meds.totalPages || 0);
-      setCurrentPage(meds.currentPage || 1);
+    try {
+      const meds = await getMedicines(page);
+      if (meds?.medicines) {
+        setMedicines(meds.medicines.filter((m) => m));
+        setTotalItems(meds.totalItems || 0);
+        setTotalPages(meds.totalPages || 0);
+        setCurrentPage(meds.currentPage || 1);
+      } else {
+        setMedicines([]);
+      }
+    } catch (err) {
+      console.error("Fetch medicines failed:", err);
+      setMedicines([]);
     }
-    // setMedicines(meds || []);
   };
+
   useEffect(() => {
     fetchMedicines(currentPage);
   }, [currentPage]);
 
-
+  // Delete
   const handleDelete = async (id) => {
     const confirmed = window.confirm("Are you sure you want to delete this medicine?");
     if (!confirmed) return;
+
     const success = await deleteMedicine(id);
-    if (success) {
-      // fresh list laao after delete
-      await fetchMedicines();
-    }
+    if (success) await fetchMedicines(currentPage);
   };
 
-  // Edit handler
+  //  Edit
   const handleEdit = (med) => {
     reset(med);
     setEditingMedicine(med);
@@ -83,7 +90,7 @@ const MedicineManagement = () => {
     if (med.images?.length > 0) {
       const imagePath = med.images[0]?.file_path
         ? `${BASE_URL}/${med.images[0].file_path}`
-        : med.images[0]
+        : med.images[0];
       setPreview(imagePath);
     } else {
       setPreview(null);
@@ -92,8 +99,8 @@ const MedicineManagement = () => {
     setFile(null);
     setIsFormVisible(true);
   };
-  // Form reset
 
+  //  Upload handler
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
@@ -101,49 +108,41 @@ const MedicineManagement = () => {
     if (selectedFile) {
       const previewUrl = URL.createObjectURL(selectedFile);
       setPreview(previewUrl);
+      await uploadMedImage(selectedFile, setImageId);
     }
-
-    uploadMedImage(selectedFile, setImageId)
-
   };
-  const onSubmit = async (params) => {
-    console.log("on submit data:", params);
 
+  const onSubmit = async (params) => {
     try {
       if (editingMedicine) {
-
         const updatedData = {
           ...params,
           ...(imageId ? { imageId } : {}),
         };
-
-        console.log("Final Update Body:", updatedData);
-
         await editMedicine(editingMedicine.id, updatedData);
       } else {
         const newData = {
           ...params,
           imageId: imageId || null,
         };
-        const newMed = await addMedicines(newData);
-        setMedicines((prev) => [...prev, newMed]);
+        await addMedicines(newData);
       }
 
       resetForm();
-      setTimeout(() => {
-        fetchMedicines();
-      }, 500);
+      await fetchMedicines(currentPage);
     } catch (error) {
       console.error("Save Medicine Error:", error);
     }
   };
 
+  // Reset form
   const resetForm = () => {
     reset();
     setIsFormVisible(false);
     setFile(null);
     setPreview(null);
     setEditingMedicine(null);
+    setImageId(null);
   };
 
   return (
@@ -151,41 +150,101 @@ const MedicineManagement = () => {
       <Title>Medicine Management</Title>
       <AddButton onClick={() => setIsFormVisible(true)}>+ Add Medicine</AddButton>
 
-      {medicines.map((med) => (
+      {/* {Array.isArray(medicines) && medicines.length > 0 ? (
+        medicines
+          .filter((med) => med)
+          .map((med) => (
+            <MedicineCard key={med.id}>
+              <Top>
+                {med.images && med.images.length > 0 ? (
+                  <MedicineImage
+                    src={`${BASE_URL}/${med.images[0]?.file_path}`}
+                    alt={med.name}
+                  />
+                ) : (
+                  <MedicineImage src="/default-medicine.png" alt="No Image" />
+                )}
+              </Top>
+
+              <MedicineInfo>
+                <strong>{med.name}</strong> <br />
+                <b>Brand:</b> {med.brand || "N/A"} <br />
+                <b> Category:</b> {Array.isArray(med.category)
+                  ? med.category.join(", ")
+                  : med.category || "N/A"}{" "}
+                <br />
+                <b>Description:</b> {med.description || "N/A"} <br />
+                <b>Dosage:</b> {med.dosage || "N/A"} <br />
+                <b>Side Effects:</b> {med.side_effects || "N/A"} <br />
+                <b>Quantity:</b> {med.inventory_quantity ?? "N/A"} <br />
+                <b>Prescription:</b>{" "}
+                {med.requires_prescription ? "Yes" : "No"} <br />
+                <b>Price:</b> Rs.{med.final_price} <s>{med.price}</s> (
+                {med.discount_percentage}%) <br />
+                <b>Expiry Date:</b> {med.expiry_date}
+              </MedicineInfo>
+
+              <ButtonGroup>
+                <ActionButton onClick={() => handleEdit(med)}>Edit</ActionButton>
+                <ActionButton $delete onClick={() => handleDelete(med.id)}>
+                  Delete
+                </ActionButton>
+              </ButtonGroup>
+            </MedicineCard>
+          ))
+      ) : (
+        <p>No medicines found.</p>
+      )} */}
+{Array.isArray(medicines) && medicines.length > 0 ? (
+  <MedicinesGrid>
+    {medicines
+      .filter((med) => med)
+      .map((med) => (
         <MedicineCard key={med.id}>
           <Top>
-            {med.images?.length > 0 ? (
+            {med.images && med.images.length > 0 ? (
               <MedicineImage
-                src={`${BASE_URL}/${med.images[0].file_path}`}
+                src={`${BASE_URL}/${med.images[0]?.file_path}`}
                 alt={med.name}
               />
             ) : (
-              <MedicineImage
-                src="/default-medicine.png"
-                alt="No Image"
-              />
+              <MedicineImage src="/default-medicine.png" alt="No Image" />
             )}
-
           </Top>
+
           <MedicineInfo>
             <strong>{med.name}</strong> <br />
-            Brand: {med.brand || "N/A"} <br />
-            Category: {Array.isArray(med.category) ? med.category.join(", ") : med.category || "N/A"} <br />
+            <b>Brand:</b> {med.brand || "N/A"} <br />
+            <b> Category:</b>{" "}
+            {Array.isArray(med.category)
+              ? med.category.join(", ")
+              : med.category || "N/A"}{" "}
+            <br />
             <b>Description:</b> {med.description || "N/A"} <br />
             <b>Dosage:</b> {med.dosage || "N/A"} <br />
             <b>Side Effects:</b> {med.side_effects || "N/A"} <br />
             <b>Quantity:</b> {med.inventory_quantity ?? "N/A"} <br />
-            <b>Prescription:</b> {med.requires_prescription ? "Yes" : "No"} <br />
-            <b>Price:</b> Rs.{med.final_price} <s>{med.price}</s> ({med.discount_percentage}%) <br />
+            <b>Prescription:</b>{" "}
+            {med.requires_prescription ? "Yes" : "No"} <br />
+            <b>Price:</b> Rs.{med.final_price} <s>{med.price}</s> (
+            {med.discount_percentage}%) <br />
             <b>Expiry Date:</b> {med.expiry_date}
           </MedicineInfo>
+
           <ButtonGroup>
             <ActionButton onClick={() => handleEdit(med)}>Edit</ActionButton>
-            <ActionButton $delete onClick={() => handleDelete(med.id)}>Delete</ActionButton>
+            <ActionButton $delete onClick={() => handleDelete(med.id)}>
+              Delete
+            </ActionButton>
           </ButtonGroup>
         </MedicineCard>
-
       ))}
+  </MedicinesGrid>
+) : (
+  <p>No medicines found.</p>
+)}
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <Pagination
           totalItems={totalItems}
@@ -199,14 +258,15 @@ const MedicineManagement = () => {
           }}
         />
       )}
+
+      {/* Add/Edit Form */}
       {isFormVisible && (
         <FormOverlay>
           <FormContainer as="form" onSubmit={handleSubmit(onSubmit)}>
             <CloseButton onClick={resetForm}>×</CloseButton>
-            <FormTitle>Add / Edit Medicine</FormTitle>
+            <FormTitle>{editingMedicine ? "Edit" : "Add"} Medicine</FormTitle>
 
-            {/* Image Upload */}
-
+            {/* Upload */}
             <FormRow>
               <UploadArea>
                 <UploadLabel htmlFor="fileInput">Upload Image</UploadLabel>
@@ -216,27 +276,40 @@ const MedicineManagement = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                 />
-                <input type="hidden" {...register("imageId", { valueAsNumber: true, })} />
-
+                <input
+                  type="hidden"
+                  {...register("imageId", { valueAsNumber: true })}
+                />
                 {preview && (
                   <img
                     src={preview}
                     alt="Preview"
-                    style={{ marginTop: "10px", width: "120px", borderRadius: "8px" }}
+                    style={{
+                      marginTop: "10px",
+                      width: "120px",
+                      borderRadius: "8px",
+                    }}
                   />
                 )}
               </UploadArea>
             </FormRow>
 
+            {/* Name */}
             <FormRow>
               <label>Medicine Name</label>
-              <FormInput {...register("name", { required: true })} placeholder="Medicine Name" />
+              <FormInput
+                {...register("name", { required: true })}
+                placeholder="Medicine Name"
+              />
             </FormRow>
 
+            {/* Brand */}
             <FormRow>
               <label>Brand</label>
               <FormInput {...register("brand")} placeholder="Brand" />
             </FormRow>
+
+            {/* Price + Discount */}
             <FormRow>
               <label>Original Price</label>
               <FormInput
@@ -244,7 +317,8 @@ const MedicineManagement = () => {
                   valueAsNumber: true,
                   onChange: (e) => {
                     const price = parseFloat(e.target.value) || 0;
-                    const discount = parseFloat(getValues("discount_percentage")) || 0;
+                    const discount =
+                      parseFloat(getValues("discount_percentage")) || 0;
                     setValue("final_price", price - (price * discount) / 100);
                   },
                 })}
@@ -276,6 +350,7 @@ const MedicineManagement = () => {
               />
             </FormRow>
 
+            {/* Category */}
             <FormRow>
               <label>Category</label>
               <Controller
@@ -294,35 +369,48 @@ const MedicineManagement = () => {
               />
             </FormRow>
 
+            {/* Description */}
             <FormRow>
               <label>Description</label>
-              <FormTextarea {...register("description")} placeholder="Description" />
+              <FormTextarea
+                {...register("description")}
+                placeholder="Description"
+              />
             </FormRow>
 
+            {/* Dosage */}
             <FormRow>
               <label>Dosage</label>
               <FormTextarea {...register("dosage")} placeholder="Dosage" />
             </FormRow>
 
+            {/* Side Effects */}
             <FormRow>
               <label>Side Effects</label>
-              <FormTextarea {...register("side_effects")} placeholder="Side Effects" />
+              <FormTextarea
+                {...register("side_effects")}
+                placeholder="Side Effects"
+              />
             </FormRow>
 
+            {/* Quantity + Prescription */}
             <FormRow>
               <label>Quantity</label>
-              <FormInput {...register("inventory_quantity")} type="number" placeholder="Quantity" />
-
+              <FormInput
+                {...register("inventory_quantity")}
+                type="number"
+                placeholder="Quantity"
+              />
               <CheckboxLabel>
                 <input type="checkbox" {...register("requires_prescription")} />
                 Prescription Required
               </CheckboxLabel>
             </FormRow>
 
+            {/* Expiry */}
             <FormRow>
               <label>Expiry Date</label>
               <FormInput type="date" {...register("expiry_date")} />
-
             </FormRow>
 
             <ActionButton type="submit">Save</ActionButton>
@@ -330,7 +418,6 @@ const MedicineManagement = () => {
         </FormOverlay>
       )}
     </PageContainer>
-
   );
 };
 

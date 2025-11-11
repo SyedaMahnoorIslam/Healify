@@ -43,7 +43,7 @@ function UploadPrescription() {
   useEffect(() => {
     fetchPrescriptions();
   }, []);
-
+//  ------------Upload Prescription-----------------------------
   const handleUpload = async () => {
     if (!file) {
       toast.warn("Please select a file to upload!");
@@ -52,7 +52,6 @@ function UploadPrescription() {
 
     setLoading(true);
     try {
-      //  Upload image
       const imageId = await uploadImage(file);
 
       if (!imageId) {
@@ -60,11 +59,7 @@ function UploadPrescription() {
         setLoading(false);
         return;
       }
-
-      // Send imageId to prescriptions API
       await createPrescription(imageId);
-
-      // Refresh list
       await fetchPrescriptions();
     } catch (error) {
       console.error("Upload error:", error);

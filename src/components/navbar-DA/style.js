@@ -1,72 +1,69 @@
+
 import styled from "styled-components";
 
-export const NavbarContainer=styled.div`
+export const NavbarContainer = styled.div`
+  position: fixed;
+  top: 0;
+  /* left: 30%; */
+  width: 73%;
+  /* right: 10px; */
+  z-index: 9999;
   height: 10vh;
   background-color: var(--color-section);
-  border-right: 1px solid var(--color-border);
-  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* border-radius: 1rem; */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  /* margin: 1rem; */
-  
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
 
-
-   @media (max-width: 675px) {
-    /* width: 50px; */
+  @media (max-width: 997px) {
+    /* left: 0; */
+    width: 73%;
   }
 `;
 
-export const Left=styled.div`
- display: flex;
- flex-direction: column;
- /* gap: 5px; */
+export const Left = styled.div`
+  display: flex;
+  flex-direction: column;
 
- span{
-  font-size: 25px;
-  font-weight: bold;
-  color: var(--color-primary);
-  /* color: var(--color-text-primary); */
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  text-align: start;
- }
+  span {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--color-primary);
+    font-family: "Poppins", sans-serif;
+  }
+`;
 
-`
-export const Right=styled.div`
+export const Right = styled.div``;
 
-
-
-`
 export const Profile = styled.div`
   div {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     justify-content: center;
-    /* padding-left: 10rem; */
 
-    @media (max-width: 768px) {
-      
-      
-    }
   }
 
   img {
     height: 2rem;
     width: 2rem;
     cursor: pointer;
+    border-radius: 50%;
+
+    @media (max-width: 650px) {
+      height: 10px;
+      width: 10px;
+    }
   }
 
   span {
-    display: flex;
     color: var(--color-primary);
     font-weight: bold;
     cursor: pointer;
 
-    @media (max-width: 590px) {
+    @media (max-width: 650px) {
       display: none;
     }
   }
@@ -83,18 +80,20 @@ export const DropdownMenu = styled.ul`
   position: absolute;
   right: 1rem;
   width: 10rem;
-   gap: 5px;
 
   li {
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 0.875rem;
     color: var(--color-text-primary);
-    border: 1px solid rgba(148, 146, 146, 0.08);
-    
+    border-bottom: 1px solid rgba(148, 146, 146, 0.08);
 
     &:hover {
       background-color: var(--color-section);
+    }
+
+    &:last-child {
+      border-bottom: none;
     }
   }
 `;

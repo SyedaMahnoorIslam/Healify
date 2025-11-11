@@ -17,6 +17,23 @@ import {
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useCustomer } from "../useHooks";
 
+//  Loader styling
+const loaderStyle = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "rgba(255, 255, 255, 0.8)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 9999,
+  fontSize: "1.2rem",
+  fontWeight: "500",
+  color: "var(--color-primary)",
+};
+
 const Checkout = () => {
   const [step, setStep] = useState(1);
   const [addressData, setAddressData] = useState([]);
@@ -24,8 +41,9 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("");
+  const [loading, setLoading] = useState(false); // 👈 added
 
-  const { getAddress, getDeliverySlot, checkout, stripePayment } = useCustomer();
+  const { getAddress, getDeliverySlot, checkout } = useCustomer();
   const navigate = useNavigate();
 
   // -------------------- Fetch Address --------------------
@@ -56,26 +74,15 @@ const Checkout = () => {
 
   // -------------------- Handle Place Order --------------------
   const handlePlaceOrder = async () => {
-    if (selectedAddress === null) {
-      toast.error("Please select an address!");
-      return;
-    }
-    if (!selectedSlot) {
-      toast.error("Please select a delivery slot!");
-      return;
-    }
-    if (!selectedPayment) {
-      toast.error("Please select a payment method!");
-      return;
-    }
+    if (selectedAddress === null) return toast.error("Please select an address!");
+    if (!selectedSlot) return toast.error("Please select a delivery slot!");
+    if (!selectedPayment) return toast.error("Please select a payment method!");
 
     const addressId =
       addressData[selectedAddress]?.id || addressData[selectedAddress]?.addressId;
 
-    // --- Extract date and time slot ---
     let deliveryDate = "";
     let deliveryTimeSlot = "";
-
     if (selectedSlot.startsWith("Today:")) {
       const today = new Date();
       deliveryDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
@@ -87,7 +94,6 @@ const Checkout = () => {
       deliveryTimeSlot = selectedSlot.replace("Tomorrow: ", "").trim();
     }
 
-    // --- Checkout Payload ---
     const payload = {
       addressId,
       paymentMethod: selectedPayment,
@@ -95,41 +101,29 @@ const Checkout = () => {
       deliveyTimeSlot: deliveryTimeSlot,
     };
 
-    console.log("Checkout Payload:", payload);
-
     try {
+      setLoading(true); // 👈 show loader
       const response = await checkout(payload);
-      if (response) {
-        toast.error(response?.message);
-        return;
-      }
-
       console.log("Checkout Response:", response);
+      setLoading(false); // 👈 hide loader after response
 
-      const { paymentDetails } = response;
+      const { message, paymentDetails, url } = response || {};
+      const stripeUrl = paymentDetails?.url || url;
 
-      // COD Flow
-      // if (selectedPayment === "COD") {
-        
-      //   toast.success("Order placed successfully with Cash on Delivery!");
-      //   setTimeout(() => navigate("/customer/cart"), 2000);
-      //   return;
-      // }
-
-      // Stripe Flow
       if (selectedPayment === "Stripe") {
-        if (paymentDetails?.url) {
+        if (stripeUrl) {
           toast.success("Redirecting to Stripe for payment...");
-          // Redirect user to Stripe checkout page
-          window.location.href = paymentDetails.url;
-
-         
+          setTimeout(() => (window.location.href = stripeUrl), 1000);
         } else {
-          toast.error("Stripe payment link not found!");
+          toast.error("Stripe payment URL missing!");
         }
+      } else {
+        toast.success(message || "Order placed successfully with COD!");
+        setTimeout(() => navigate("/customer/cart"), 1000);
       }
     } catch (error) {
       console.error("Checkout error:", error);
+      setLoading(false); // 👈 hide loader on error
       toast.error("Something went wrong!");
     }
   };
@@ -149,6 +143,28 @@ const Checkout = () => {
       <Heading>
         <h1>Secure Checkout</h1>
       </Heading>
+
+      {loading && (
+        <div style={loaderStyle}>
+          <div>
+            <div className="spinner" style={{
+              border: "4px solid #ccc",
+              borderTop: "4px solid #007bff",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              animation: "spin 1s linear infinite",
+              margin: "0 auto 10px"
+            }} />
+            Processing your order, please wait...
+          </div>
+
+          {/* Inline spinner animation */}
+          <style>
+            {`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}
+          </style>
+        </div>
+      )}
 
       <CheckoutWrapper>
         <ToastContainer />
@@ -172,23 +188,33 @@ const Checkout = () => {
             <h3>1. Address</h3>
             <p>Select your preferred delivery address</p>
 
-            {addressData.length > 0 ? (
-              addressData.map((addr, index) => (
-                <Option key={index}>
-                  <input
-                    type="radio"
-                    name="address"
-                    id={`addr${index}`}
-                    checked={selectedAddress === index}
-                    onChange={() => setSelectedAddress(index)}
-                  />
-                  <label htmlFor={`addr${index}`}>
-                    {`${addr.street}, ${addr.city}, ${addr.state} - ${addr.zip_code}, ${addr.country}`}
-                  </label>
-                </Option>
-              ))
+            {Array.isArray(addressData) && addressData.length > 0 ? (
+              addressData
+                .filter(
+                  (addr) =>
+                    addr &&
+                    (addr.street || addr.city || addr.state || addr.zip_code || addr.country)
+                )
+                .map((addr, index) => (
+                  <Option key={index}>
+                    <input
+                      type="radio"
+                      name="address"
+                      id={`addr${index}`}
+                      checked={selectedAddress === index}
+                      onChange={() => setSelectedAddress(index)}
+                    />
+                    <label htmlFor={`addr${index}`}>
+                      {`${addr?.street || ""}${addr?.city ? `, ${addr.city}` : ""}${addr?.state ? `, ${addr.state}` : ""
+                        }${addr?.zip_code ? ` - ${addr.zip_code}` : ""}${addr?.country ? `, ${addr.country}` : ""
+                        }`}
+                    </label>
+                  </Option>
+                ))
             ) : (
-              <p>No saved addresses found.</p>
+              <p style={{ color: "#888", margin: "10px 0" }}>
+                🚫 No address added yet. Please add your address first.
+              </p>
             )}
 
             <AddAddress onClick={() => navigate("/customer/profile")}>

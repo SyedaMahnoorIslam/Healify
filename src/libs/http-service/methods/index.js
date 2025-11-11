@@ -5,6 +5,7 @@ const getHeaders = () => {
   return {
     headers: {
       Authorization: token ? `Bearer ${token}` : "", 
+       'ngrok-skip-browser-warning': 'true',
     },
   };
 };

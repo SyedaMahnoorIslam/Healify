@@ -61,8 +61,9 @@ export const SaveButton = styled.button`
   border: none;
   border-radius: 0.6rem;
   cursor: pointer;
-  margin-top: 1.5rem;
+  margin-top: 4rem;
   transition: background 0.3s ease;
+
 
   &:hover {
     background: var(--color-primary-light);

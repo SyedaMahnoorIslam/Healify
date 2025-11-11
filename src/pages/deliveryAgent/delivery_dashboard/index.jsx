@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 function DeliveryDashboard() {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [newStatus, setNewStatus] = useState(""); 
+  const [newStatus, setNewStatus] = useState("");
   const { getProfile } = UseProfile();
   const { getTask } = UseDeliveryAgent();
   const [profile, setProfile] = useState(null);
@@ -98,21 +98,25 @@ function DeliveryDashboard() {
         {tasks.length > 0 ? (
           tasks.map((task) => (
             <TaskCard key={task.id}>
-              <div>
+              <div className="left">
                 <TaskTitle>Order #{task.id}</TaskTitle>
                 <TaskSubtitle>{task.shipping_address}</TaskSubtitle>
               </div>
-              <StatusBadge status={task.status}>{task.status}</StatusBadge>
-              <Button
-                bg="var(--color-primary)"
-                onClick={() => {
-                  setSelectedTask(task);
-                  setNewStatus(task.status);
-                }}
-              >
-                View Details
-              </Button>
+
+              <div className="right">
+                <StatusBadge status={task.status}>{task.status}</StatusBadge>
+                <Button
+                  bg="var(--color-primary)"
+                  onClick={() => {
+                    setSelectedTask(task);
+                    setNewStatus(task.status);
+                  }}
+                >
+                  View Details
+                </Button>
+              </div>
             </TaskCard>
+
           ))
         ) : (
           <p>No tasks assigned</p>

@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -10,6 +12,10 @@ import {
   Td,
   StatusBadge,
   Dropdown,
+  BestSellingSection,
+  CardRow,
+  ProductCard,
+  RankBadge,
 } from "./style";
 
 import {
@@ -18,12 +24,11 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  BarElement,
   Title as ChartTitle,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { UseAdmin } from "../useHooks";
 
 ChartJS.register(
@@ -31,7 +36,6 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  BarElement,
   ChartTitle,
   Tooltip,
   Legend
@@ -40,9 +44,13 @@ ChartJS.register(
 const ReportsAnalytics = () => {
   const [filter, setFilter] = useState("Daily");
   const [stockData, setStockData] = useState([]);
+  const [bestSellingData, setBestSellingData] = useState([]);
+  const [salesGraphData, setSalesGraphData] = useState(null);
+  const [loadingGraph, setLoadingGraph] = useState(false);
 
-  const { stock_and_expiry } = UseAdmin();
+  const { stock_and_expiry, getBestSellingProducts, getStock } = UseAdmin();
 
+  // Fetch Stock & Expiry Data
   useEffect(() => {
     const fetchStockData = async () => {
       try {
@@ -56,70 +64,102 @@ const ReportsAnalytics = () => {
     fetchStockData();
   }, []);
 
-  // Chart Data
-  const getSalesData = () => {
-    switch (filter) {
-      case "Weekly":
-        return {
-          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-          datasets: [
-            {
-              label: "Weekly Sales",
-              data: [1200, 1900, 1500, 2200],
-              borderColor: "#1c9f94",
-              backgroundColor: "#53c7be",
-              fill: true,
-            },
-          ],
-        };
-      case "Yearly":
-        return {
-          labels: [
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-          ],
-          datasets: [
-            {
-              label: "Yearly Sales",
-              data: [12000, 15000, 17000, 13000, 18000, 22000, 20000, 24000, 21000, 25000, 27000, 30000],
-              borderColor: "#1c9f94",
-              backgroundColor: "#53c7be",
-              fill: true,
-            },
-          ],
-        };
-      default:
-        return {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          datasets: [
-            {
-              label: "Daily Sales",
-              data: [120, 190, 300, 250, 200, 300, 400],
-              borderColor: "#1c9f94",
-              backgroundColor: "#53c7be",
-              fill: true,
-            },
-          ],
-        };
-    }
-  };
+  // Fetch Best Selling Products Data
+  useEffect(() => {
+    const fetchBestSelling = async () => {
+      try {
+        const response = await getBestSellingProducts();
+        console.log("Best Selling Products Response:", response);
+        setBestSellingData(response?.slice(0, 5) || []);
+      } catch (err) {
+        console.error("Error fetching best selling products:", err);
+      }
+    };
+    fetchBestSelling();
+  }, []);
 
-  // Best-selling products
-  const bestSellingData = {
-    labels: ["Panadol", "Amoxicillin", "Brufen", "Vitamin C", "Cough Syrup"],
-    datasets: [
-      {
-        label: "Units Sold",
-        data: [300, 250, 180, 150, 120],
-        backgroundColor: "#1c9f94",
-      },
-    ],
-  };
+  // Fetch Sales Graph Data (Dynamic by Filter)
+  useEffect(() => {
+    const fetchGraphData = async () => {
+      setLoadingGraph(true);
+      try {
+        const period =
+          filter === "Daily"
+            ? "daily"
+            : filter === "Weekly"
+            ? "weekly"
+            : "yearly";
+
+        const response = await getStock(null, period);
+        console.log("Sales Graph API Response:", response);
+
+        if (response?.chartData?.length > 0) {
+          const labels = response.chartData.map((item) => item.label);
+          const values = response.chartData.map((item) => item.totalOrders);
+
+          setSalesGraphData({
+            labels,
+            datasets: [
+              {
+                label: `${filter} Sales`,
+                data: values,
+                borderColor: "#1c9f94",
+                backgroundColor: "rgba(83, 199, 190, 0.4)",
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          });
+        } else {
+          setSalesGraphData({
+            labels: [],
+            datasets: [
+              {
+                label: `${filter} Sales`,
+                data: [],
+                borderColor: "#1c9f94",
+                backgroundColor: "#53c7be",
+                fill: true,
+              },
+            ],
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching graph data:", error);
+      } finally {
+        setLoadingGraph(false);
+      }
+    };
+
+    fetchGraphData();
+  }, [filter]);
 
   return (
     <Container>
       <Title>Reports & Analytics</Title>
 
-      {/* Charts */}
+      {/* Best Selling Products */}
+      <BestSellingSection>
+        <h3>Top 5 Best Selling Products</h3>
+        <CardRow>
+          {bestSellingData.length > 0 ? (
+            bestSellingData.map((item, index) => (
+              <ProductCard key={index}>
+                <RankBadge>#{index + 1}</RankBadge>
+                <h4>{item.name}</h4>
+                <p>{item.total_sold} units sold</p>
+              </ProductCard>
+            ))
+          ) : (
+            <p style={{ textAlign: "center", width: "100%", padding: "20px" }}>
+              Loading best selling products...
+            </p>
+          )}
+        </CardRow>
+      </BestSellingSection>
+      <Title>Sales Overview</Title>
+
+      {/* Sales Chart */}
       <ChartsRow>
         <ChartBox>
           <div>
@@ -130,12 +170,14 @@ const ReportsAnalytics = () => {
               <option value="Yearly">Yearly</option>
             </Dropdown>
           </div>
-          <Line data={getSalesData()} />
-        </ChartBox>
 
-        <ChartBox>
-          <h3>Best Selling Products</h3>
-          <Bar data={bestSellingData} />
+          {loadingGraph ? (
+            <p style={{ textAlign: "center", padding: "20px" }}>Loading chart...</p>
+          ) : salesGraphData ? (
+            <Line data={salesGraphData} />
+          ) : (
+            <p style={{ textAlign: "center", padding: "20px" }}>No chart data available</p>
+          )}
         </ChartBox>
       </ChartsRow>
 
@@ -159,7 +201,7 @@ const ReportsAnalytics = () => {
                   <Td>{item.inventory_quantity ?? "N/A"}</Td>
                   <Td className="td-date">{item.expiry_date ?? "N/A"}</Td>
                   <Td>
-                    <StatusBadge>
+                    <StatusBadge status={item.inventory_status}>
                       {item.inventory_status ?? "N/A"}
                     </StatusBadge>
                   </Td>
