@@ -1,119 +1,102 @@
-````markdown
 # 💊 Healify — Full-Stack ePharmacy Platform
 
-> **Healify** is a modern full-stack ePharmacy platform designed to streamline the medicine ordering process through dedicated portals for **Patients, Riders, and Administrators**. The platform offers secure authentication, online payments, real-time order management, and a responsive user experience powered by React.js.
+<p align="center">
+
+![React](https://img.shields.io/badge/React.js-61DAFB?style=for-the-badge\&logo=react\&logoColor=black)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=black)
+![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?style=for-the-badge\&logo=styledcomponents\&logoColor=white)
+![REST API](https://img.shields.io/badge/REST-API-009688?style=for-the-badge)
+![Responsive](https://img.shields.io/badge/Responsive-Yes-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen?style=for-the-badge)
+
+</p>
 
 ---
 
-## 🚀 Overview
+## 📖 Overview
 
-Healify is a collaborative full-stack project built to simulate a real-world online pharmacy system. The application enables users to browse medicines, place orders, complete payments, and track deliveries, while providing separate dashboards for administrators and delivery riders.
+**Healify** is a full-stack **ePharmacy platform** designed to simplify the online medicine ordering experience.
 
-As the **Frontend Developer**, I designed and developed the complete user interface, integrated REST APIs, and implemented responsive, reusable, and scalable frontend architecture.
+The platform includes three dedicated dashboards:
 
----
+* 👤 **Patient Panel**
+* 🚚 **Rider Panel**
+* 🛡️ **Admin Panel**
 
-# ✨ Core Features
+Users can browse medicines, securely place orders, complete online payments, and track deliveries through a modern and responsive interface.
 
-## 👤 Patient Panel
-
-- Secure Login & Registration
-- Browse Medicines
-- Search & Filter Products
-- Product Details
-- Add to Cart
-- Wishlist
-- Checkout Process
-- Secure Online Payment
-- Order History
-- Profile Management
-- Responsive UI
+This project was developed collaboratively. I was responsible for the complete **frontend development**, UI implementation, responsive design, and backend API integration.
 
 ---
 
-## 🚚 Rider Panel
+# ✨ Key Features
 
-- Rider Authentication
-- Assigned Deliveries
-- Order Status Management
-- Delivery Updates
-- Profile Management
-
----
-
-## 🛡️ Admin Panel
-
-- Secure Admin Dashboard
-- Manage Medicines
-- Manage Categories
-- Manage Patients
-- Manage Riders
-- Manage Orders
-- Update Order Status
-- Dashboard Analytics
-- User Management
+| 👤 Patient       | 🛡️ Admin           | 🚚 Rider           |
+| ---------------- | ------------------- | ------------------ |
+| Login & Signup   | Dashboard           | Rider Login        |
+| Browse Medicines | Manage Medicines    | Assigned Orders    |
+| Search Products  | Manage Categories   | Delivery Status    |
+| Shopping Cart    | Manage Users        | Update Deliveries  |
+| Wishlist         | Manage Orders       | Order History      |
+| Checkout         | Dashboard Analytics | Profile Management |
+| Online Payments  | Manage Riders       |                    |
+| Order History    |                     |                    |
 
 ---
 
-# 💳 Payment System
+## 💳 Payment System
 
-- Secure Checkout Flow
-- Payment Integration
-- Order Confirmation
-- Payment Status Handling
+✔ Secure Checkout
+
+✔ Online Payment Integration
+
+✔ Order Confirmation
+
+✔ Payment Status Handling
 
 ---
 
 # 🛠 Tech Stack
 
-## Frontend
-
-- React.js
-- JavaScript (ES6+)
-- Styled Components
-- React Router
-- Axios
-- REST APIs
-
----
-
-## Backend
-
-- REST API
-- Authentication System
-- Database Integration
-
-> Backend was developed collaboratively by a teammate, while I focused on frontend development and API integration.
+| Frontend          | Backend        |
+| ----------------- | -------------- |
+| React.js          | REST APIs      |
+| JavaScript (ES6+) | Authentication |
+| Styled Components | Database       |
+| React Router      |                |
+| Axios             |                |
 
 ---
 
-# 👨‍💻 My Responsibilities
+# 👨‍💻 My Contributions
 
-As the Frontend Developer, I was responsible for:
+As the **Frontend Developer**, I worked on:
 
-- Building the complete React.js frontend
-- Developing reusable UI components
-- Implementing responsive layouts
-- Integrating backend REST APIs
-- Creating Patient, Admin, and Rider interfaces
-- Implementing authentication flows
-- Developing shopping cart functionality
-- Integrating payment workflow
-- Managing routing and navigation
-- Optimizing user experience
-- Debugging frontend issues
-- Collaborating with backend developers
+* Complete UI Development
+* React.js Application Architecture
+* Styled Components
+* REST API Integration
+* Authentication Screens
+* Patient Dashboard
+* Admin Dashboard
+* Rider Dashboard
+* Shopping Cart
+* Checkout Flow
+* Payment Integration
+* Responsive Design
+* Component Reusability
+* Routing & Navigation
+* Frontend Optimization
+* Bug Fixing & Testing
 
 ---
 
-# 📂 Project Structure
+## 📂 Project Structure
 
-```
+```text
 src/
-│
 ├── assets/
 ├── components/
-├── layouts/
 ├── pages/
 │   ├── Patient/
 │   ├── Admin/
@@ -125,70 +108,100 @@ src/
 ├── styles/
 └── App.jsx
 ```
+
 ---
 
-# ⚙️ Installation
+# 📸 Screenshots
+
+| Home           | Medicines      |
+| -------------- | -------------- |
+| Add Screenshot | Add Screenshot |
+
+| Cart           | Checkout       |
+| -------------- | -------------- |
+| Add Screenshot | Add Screenshot |
+
+| Patient Dashboard | Admin Dashboard |
+| ----------------- | --------------- |
+| Add Screenshot    | Add Screenshot  |
+
+| Rider Dashboard |
+| --------------- |
+| Add Screenshot  |
+
+---
+
+# ⚙️ Getting Started
+
+### Clone Repository
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/healify.git
+```
 
-cd healify
+### Install Dependencies
 
+```bash
 npm install
+```
 
+### Run Project
+
+```bash
 npm run dev
 ```
 
 ---
 
-# 🌱 Future Improvements
+# 🌱 Future Enhancements
 
-- Live Order Tracking
-- Push Notifications
-- AI-Based Medicine Recommendation
-- Prescription Upload
-- Video Consultation
-- Dark Mode
-- Multi-language Support
+* 📍 Live Order Tracking
+* 🌙 Dark Mode
+* 🌍 Multi-language Support
+* 📄 Prescription Upload
+* 🤖 AI Medicine Recommendation
+* 🔔 Push Notifications
 
 ---
 
 # 🤝 Team Collaboration
 
-This project was developed collaboratively.
-
-### Frontend
+### 👩‍💻 Frontend
 
 **Syeda Mahnoor Islam**
 
-- UI Development
-- React.js Development
-- Styled Components
-- API Integration
-- Responsive Design
+* React.js Development
+* Styled Components
+* Responsive UI
+* API Integration
+* Component Architecture
 
-### Backend
+### ⚙ Backend
 
 Developed collaboratively by a teammate.
 
 ---
 
-# 💡 What I Learned
+# 📚 Key Learnings
 
-Through Healify, I gained hands-on experience with:
-
-- Building scalable React applications
-- REST API integration
-- Authentication & Authorization
-- Component-based architecture
-- Responsive UI development
-- State management
-- Team collaboration
-- Working on a production-style workflow
+* Large-scale React.js development
+* REST API integration
+* Authentication & Authorization
+* Component-based architecture
+* Responsive UI Design
+* Team Collaboration
+* Production-level project workflow
 
 ---
 
-# ⭐ If you found this project interesting, consider giving it a star!
+# ⭐ Support
 
-Built with ❤️ using React.js & Styled Components.
-````
+If you found this project helpful, consider giving it a ⭐ on GitHub.
+
+---
+
+<p align="center">
+
+**Built with ❤️ using React.js & Styled Components**
+
+</p>
